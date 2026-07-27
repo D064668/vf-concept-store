@@ -1,0 +1,12 @@
+# Scratch / temp files
+_build_dashboard.py
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Node / Python artifacts (if any)
+node_modules/
+__pycache__/
+*.pyc
+.env
