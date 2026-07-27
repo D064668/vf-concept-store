@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VF Concept Store — Project Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    --bg-base:      #1e1e1e;
+    --bg-sidebar:   #252526;
+    --bg-panel:     #2d2d2d;
+    --bg-title:     #323233;
+    --bg-hover:     #2a2d2e;
+    --bg-selected:  #094771;
+    --bg-content:   #1e1e1e;
+    --border:       #3c3c3c;
+    --accent:       #007acc;
+    --accent2:      #4ec9b0;
+    --text-primary: #cccccc;
+    --text-dim:     #858585;
+    --text-white:   #ffffff;
+    --text-heading: #9cdcfe;
+    --green:        #4ec9b0;
+    --orange:       #ce9178;
+    --yellow:       #dcdcaa;
+    --blue:         #569cd6;
+    --radius:       4px;
+    --font-ui:      -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:    'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 13px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Title bar */
+  #titlebar {
+    background: var(--bg-title);
+    border-bottom: 1px solid var(--border);
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 10px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .dot.r { background:#ff5f57; } .dot.y { background:#febc2e; } .dot.g { background:#28c840; }
+  #titlebar .title { flex:1; text-align:center; color:var(--text-dim); font-size:12px; letter-spacing:.3px; }
+  #titlebar .badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+
+  /* Layout */
+  #workspace { display:flex; flex:1; overflow:hidden; }
+
+  /* Activity bar */
+  #activitybar {
+    width: 48px;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 6px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .ab-icon {
+    width:36px; height:36px; border-radius:var(--radius);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; color:var(--text-dim); font-size:18px;
+    transition: color .15s, background .15s;
+    position: relative;
+  }
+  .ab-icon:hover { color:var(--text-white); background:var(--bg-hover); }
+  .ab-icon.active { color:var(--text-white); border-left:2px solid var(--accent); }
+  .ab-icon .tooltip {
+    display:none; position:absolute; left:46px; top:50%; transform:translateY(-50%);
+    background:#252526; border:1px solid var(--border); padding:3px 8px;
+    font-size:11px; border-radius:3px; white-space:nowrap; color:var(--text-primary);
+    z-index:100; pointer-events:none;
+  }
+  .ab-icon:hover .tooltip { display:block; }
+
+  /* Sidebar */
+  #sidebar {
+    width: 260px;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  #sidebar-header {
+    padding: 10px 12px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .hdr-actions { display:flex; gap:3px; }
+  .icon-btn {
+    background:none; border:none; cursor:pointer;
+    color:var(--text-dim); font-size:14px; padding:2px 5px;
+    border-radius:3px; line-height:1;
+  }
+  .icon-btn:hover { color:var(--text-white); background:var(--bg-hover); }
+
+  #stats-bar {
+    display:flex; gap:6px; padding:4px 12px 8px; border-bottom:1px solid var(--border); flex-shrink:0;
+  }
+  .stat-chip {
+    background:#2a2a2a; border:1px solid var(--border); border-radius:10px;
+    padding:2px 8px; font-size:10px; color:var(--text-dim);
+    display:flex; align-items:center; gap:4px;
+  }
+  .chip-dot { width:6px;height:6px;border-radius:50%; }
+  .chip-dot.md { background:var(--blue); }
+  .chip-dot.pptx { background:var(--orange); }
+
+  #file-tree { flex:1; overflow-y:auto; padding-bottom:20px; }
+  #file-tree::-webkit-scrollbar { width:4px; }
+  #file-tree::-webkit-scrollbar-thumb { background:#424242; border-radius:3px; }
+
+  .tree-item {
+    display:flex; align-items:center; gap:4px;
+    padding: 3px 8px 3px 0;
+    cursor:pointer; user-select:none;
+    color:var(--text-primary); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+    transition: background .1s;
+  }
+  .tree-item:hover { background:var(--bg-hover); }
+  .tree-item.selected { background:var(--bg-selected); color:#fff; }
+  .tree-item .indent { display:inline-block; flex-shrink:0; }
+  .tree-item .arrow { width:16px; flex-shrink:0; text-align:center; font-size:10px; color:var(--text-dim); }
+  .tree-item .ficon { flex-shrink:0; font-size:14px; }
+  .tree-item .fname { flex:1; overflow:hidden; text-overflow:ellipsis; font-size:13px; }
+  .tree-item .fsize { font-size:10px; color:var(--text-dim); margin-right:6px; flex-shrink:0; }
+
+  /* Editor */
+  #editor-area { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+
+  /* Tabs */
+  #tabs {
+    display:flex; align-items:stretch;
+    background:var(--bg-panel); border-bottom:1px solid var(--border);
+    flex-shrink:0; overflow-x:auto; height:36px;
+  }
+  #tabs::-webkit-scrollbar { height:3px; }
+  #tabs::-webkit-scrollbar-thumb { background:#424242; }
+  .tab {
+    display:flex; align-items:center; gap:6px;
+    padding:0 14px 0 12px;
+    border-right:1px solid var(--border);
+    cursor:pointer; font-size:12px; white-space:nowrap;
+    color:var(--text-dim); background:var(--bg-panel);
+    min-width:130px; max-width:220px;
+    user-select:none; flex-shrink:0;
+  }
+  .tab.active { background:var(--bg-base); color:var(--text-white); border-top:1px solid var(--accent); }
+  .tab .tab-close {
+    margin-left:auto; font-size:14px; color:transparent;
+    background:none; border:none; cursor:pointer;
+    padding:0 2px; line-height:1; border-radius:3px;
+  }
+  .tab:hover .tab-close { color:var(--text-dim); }
+  .tab.active .tab-close { color:var(--text-dim); }
+  .tab .tab-close:hover { color:var(--text-white); background:#3c3c3c; }
+  .tab-placeholder {
+    padding:0 14px; display:flex; align-items:center;
+    color:var(--text-dim); font-size:12px; font-style:italic;
+  }
+
+  /* Breadcrumb */
+  #breadcrumb {
+    display:flex; align-items:center; gap:2px;
+    padding:4px 16px;
+    border-bottom:1px solid var(--border);
+    font-size:12px; color:var(--text-dim);
+    background:var(--bg-content); flex-shrink:0;
+  }
+  #breadcrumb span.crumb-active { color:var(--text-primary); }
+  #breadcrumb .sep { margin:0 3px; opacity:.5; }
+
+  /* Content pane */
+  #content-pane {
+    flex:1; overflow-y:auto;
+    background:var(--bg-content);
+  }
+  #content-pane::-webkit-scrollbar { width:8px; }
+  #content-pane::-webkit-scrollbar-track { background:transparent; }
+  #content-pane::-webkit-scrollbar-thumb { background:#424242; border-radius:3px; }
+
+  /* Welcome */
+  #welcome {
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; height:100%;
+    gap:16px; color:var(--text-dim); text-align:center; padding:40px;
+  }
+  #welcome .big-icon { font-size:64px; opacity:.25; }
+  #welcome h2 { font-size:22px; color:var(--text-primary); font-weight:300; letter-spacing:.5px; }
+  #welcome p { font-size:13px; max-width:360px; line-height:1.7; }
+  #welcome .hint { font-size:11px; color:var(--text-dim); margin-top:4px; }
+  .welcome-files { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+  .wf-chip {
+    display:flex; align-items:center; gap:6px;
+    background:#252526; border:1px solid var(--border);
+    border-radius:6px; padding:6px 12px;
+    cursor:pointer; font-size:12px; color:var(--text-primary);
+    transition: border-color .15s, background .15s;
+  }
+  .wf-chip:hover { border-color:var(--accent); background:var(--bg-hover); }
+
+  /* Markdown */
+  #md-content {
+    padding:32px 52px 72px;
+    max-width:920px; margin:0 auto;
+    line-height:1.75; color:var(--text-primary);
+  }
+  #md-content h1 { color:var(--text-white); font-size:28px; font-weight:600; margin:0 0 6px; border-bottom:1px solid var(--border); padding-bottom:10px; }
+  #md-content h2 { color:var(--text-heading); font-size:19px; font-weight:600; margin:36px 0 12px; }
+  #md-content h3 { color:var(--yellow); font-size:15px; font-weight:600; margin:26px 0 10px; }
+  #md-content h4 { color:var(--accent2); font-size:12px; font-weight:700; margin:18px 0 8px; text-transform:uppercase; letter-spacing:.8px; }
+  #md-content p { margin:0 0 12px; }
+  #md-content strong { color:var(--text-white); font-weight:600; }
+  #md-content em { color:var(--orange); font-style:italic; }
+  #md-content hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+  #md-content ul, #md-content ol { padding-left:24px; margin:0 0 12px; }
+  #md-content li { margin:5px 0; line-height:1.65; }
+  #md-content a { color:var(--accent); text-decoration:none; }
+  #md-content a:hover { text-decoration:underline; }
+  #md-content code { font-family:var(--font-mono); font-size:12px; background:#2d2d2d; color:var(--accent2); padding:1px 5px; border-radius:3px; }
+  #md-content pre { background:#2d2d2d; border:1px solid var(--border); border-radius:var(--radius); padding:14px 18px; overflow-x:auto; margin:0 0 16px; }
+  #md-content pre code { background:none; padding:0; color:var(--text-primary); }
+  #md-content table { width:100%; border-collapse:collapse; margin:0 0 22px; font-size:12.5px; }
+  #md-content th { background:#2a2a2a; color:var(--text-white); padding:8px 14px; text-align:left; border:1px solid var(--border); font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:.6px; }
+  #md-content td { padding:7px 14px; border:1px solid var(--border); vertical-align:top; line-height:1.55; }
+  #md-content tr:nth-child(even) td { background:#252525; }
+  #md-content tr:hover td { background:var(--bg-hover); }
+  #md-content blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:0 0 16px; color:var(--text-dim); background:#252526; border-radius:0 4px 4px 0; }
+
+  /* No preview */
+  #no-preview {
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; height:100%;
+    gap:14px; color:var(--text-dim); text-align:center; padding:40px;
+  }
+  #no-preview .big-icon { font-size:56px; opacity:.25; }
+  #no-preview h3 { font-size:17px; font-weight:400; color:var(--text-primary); }
+  #no-preview p { font-size:12.5px; max-width:320px; line-height:1.65; }
+  .meta-pills { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; justify-content:center; }
+  .pill {
+    display:inline-flex; align-items:center; gap:5px;
+    background:#2d2d2d; border:1px solid var(--border);
+    border-radius:20px; padding:4px 12px;
+    font-size:11px; color:var(--text-dim);
+  }
+
+  /* Status bar */
+  #statusbar {
+    background:var(--accent); color:#fff;
+    font-size:11px; height:22px;
+    display:flex; align-items:center;
+    padding:0 12px; gap:16px;
+    flex-shrink:0; user-select:none;
+  }
+  #statusbar .sb-item { display:flex; align-items:center; gap:4px; opacity:.92; }
+  #statusbar .sb-right { margin-left:auto; display:flex; gap:16px; }
+</style>
+</head>
+<body>
+
+<div id="titlebar">
+  <div class="dot r"></div>
+  <div class="dot y"></div>
+  <div class="dot g"></div>
+  <div class="title">VFConcept_Store — Project Dashboard</div>
+  <div class="badge">DRAFT</div>
+</div>
+
+<div id="workspace">
+
+  <div id="activitybar">
+    <div class="ab-icon active"><span>&#128193;</span><div class="tooltip">Explorer</div></div>
+    <div class="ab-icon"><span style="font-size:15px">&#128269;</span><div class="tooltip">Search</div></div>
+  </div>
+
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <span>Explorer</span>
+      <div class="hdr-actions">
+        <button class="icon-btn" title="Collapse all" onclick="collapseAll()">&#8722;</button>
+        <button class="icon-btn" title="Expand all" onclick="expandAll()">&#43;</button>
+      </div>
+    </div>
+    <div id="stats-bar">
+      <div class="stat-chip"><div class="chip-dot md"></div>1 Markdown</div>
+      <div class="stat-chip"><div class="chip-dot pptx"></div>1 PowerPoint</div>
+    </div>
+    <div id="file-tree"></div>
+  </div>
+
+  <div id="editor-area">
+    <div id="tabs"><div class="tab-placeholder">Select a file to open&hellip;</div></div>
+    <div id="breadcrumb"><span>VFConcept_Store</span></div>
+    <div id="content-pane">
+      <div id="welcome">
+        <div class="big-icon">&#128193;</div>
+        <h2>VF Concept Store</h2>
+        <p>Project dashboard for the Fashion Retail Reimagined concept. Select a file from the Explorer to preview it.</p>
+        <p class="hint">Quick open:</p>
+        <div class="welcome-files">
+          <div class="wf-chip" onclick="openFile('md_mobile','mobile-app-requirements.md','md')">&#128196; mobile-app-requirements.md</div>
+          <div class="wf-chip" onclick="openFile('pptx1','VF_Concept_Store_V2_DRAFT.pptx','pptx')">&#128202; VF_Concept_Store_V2_DRAFT.pptx</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="statusbar">
+  <div class="sb-item">&#128194; VFConcept_Store</div>
+  <div class="sb-item" id="sb-lang"></div>
+  <div class="sb-right">
+    <div class="sb-item">&#128196; 2 files</div>
+    <div class="sb-item">UTF-8</div>
+    <div class="sb-item">UX Dashboard v1.0</div>
+  </div>
+</div>
+
+<script>
+const TREE = [{"id": "root", "name": "VFConcept_Store", "type": "folder", "open": true, "children": [{"id": "ref", "name": "Reference", "type": "folder", "open": false, "children": [{"id": "pptx1", "name": "VF_Concept_Store_V2_DRAFT.pptx", "type": "pptx", "children": []}]}, {"id": "md_mobile", "name": "mobile-app-requirements.md", "type": "md", "children": []}]}];
+const META = {"md_mobile": {"name": "mobile-app-requirements.md", "type": "md", "size": "19.5 KB", "modified": "2026-07-16", "content": "# Mobile App \u2014 UX Requirements\n**Project:** VF Concept Store \u2014 Fashion Retail Reimagined\n**Document type:** UX Requirements\n**Status:** Draft\n**Last updated:** 2026-07-16\n\n---\n\n## Table of Contents\n1. [Overview](#1-overview)\n2. [Scope](#2-scope)\n3. [User Roles](#3-user-roles)\n4. [Feature Requirements](#4-feature-requirements)\n   - [F-01 Store Entry & Authentication](#f-01-store-entry--authentication)\n   - [F-02 Product Discovery & Personalization Browsing](#f-02-product-discovery--personalization-browsing)\n   - [F-03 Fashion Studio \u2014 Virtual Try-On & Preview](#f-03-fashion-studio--virtual-try-on--preview)\n   - [F-04 Garment Configuration & Checkout](#f-04-garment-configuration--checkout)\n   - [F-05 Real-Time Order Progress](#f-05-real-time-order-progress)\n   - [F-06 Notification & Vault Ready](#f-06-notification--vault-ready)\n   - [F-07 Digital Product Passport](#f-07-digital-product-passport)\n   - [F-08 Vault Collection](#f-08-vault-collection)\n   - [F-09 Vault Return Flow](#f-09-vault-return-flow)\n   - [F-10 Loyalty & Engagement](#f-10-loyalty--engagement)\n5. [Non-Functional Requirements](#5-non-functional-requirements)\n6. [Out of Scope](#6-out-of-scope)\n7. [Open Questions](#7-open-questions)\n\n---\n\n## 1. Overview\n\nThe VF Concept Store mobile app is the primary digital touchpoint for customers visiting the SAP \u00d7 VF S.Home Store. It orchestrates the end-to-end in-store experience \u2014 from authenticated entry through personalized product creation to vault pickup \u2014 and serves as the post-purchase home for the Digital Product Passport.\n\nThe app replaces traditional cashier and front-of-house interactions with a seamless, unmanned self-service experience underpinned by the SAP technology ecosystem (Commerce Cloud, Customer Data Cloud, Business AI Platform, S/4HANA Retail).\n\n---\n\n## 2. Scope\n\nThis document covers UX requirements for the **mobile app** only. In-store touchscreens, interactive table (Digital Graffiti Wall), kiosk displays, and holographic hardware interfaces are addressed in separate requirement documents.\n\n**In scope:**\n- Customer authentication and store entry\n- Product discovery and personalization selection\n- Fashion Studio virtual try-on within the app\n- Checkout and payment\n- Real-time order tracking\n- Push notifications and vault ready alerts\n- Digital Product Passport viewer\n- Vault collection (QR/unlock code)\n- Vault return initiation\n- Loyalty points and engagement messaging\n\n---\n\n## 3. User Roles\n\n| Role | Description |\n|------|-------------|\n| **Standard Member** | Registered app user with access to standard store features and product personalization |\n| **Premium Member** | Elevated tier with exclusive access to the Fashion Vault product showcase, premium product drops, and priority service |\n| **Guest / Unregistered** | Not supported \u2014 store entry requires an authenticated account |\n\n---\n\n## 4. Feature Requirements\n\n---\n\n### F-01 Store Entry & Authentication\n\n**Description:**\nThe app is the gate to the unmanned store. Customers must authenticate and scan a QR code to unlock the store entrance.\n\n**User Stories:**\n- As a member, I want to open the app and see a clear entry screen so I can quickly access the store.\n- As a member, I want to scan a QR code at the door so I can enter without queuing at a reception desk.\n- As a returning member, I want my session to be remembered so I am not prompted to log in every visit.\n\n**Functional Requirements:**\n- FR-01.1: The app shall support email/password and social login (OAuth 2.0).\n- FR-01.2: The app shall support biometric authentication (Face ID / fingerprint) as a returning-session shortcut.\n- FR-01.3: Upon successful authentication, the app shall display a scannable entry QR code on the home screen.\n- FR-01.4: The entry QR code shall be time-limited (e.g. 60 seconds) and regenerate automatically.\n- FR-01.5: The app shall display the member tier (Standard / Premium) visibly on the entry screen.\n- FR-01.6: Failed authentication must surface a clear error state with recovery options (forgot password, support contact).\n\n**UX Notes:**\n- Entry screen should be optimized for one-handed use and quick scanning \u2014 minimal UI chrome.\n- The QR code should have high contrast and be large enough to scan at arm's length.\n\n---\n\n### F-02 Product Discovery & Personalization Browsing\n\n**Description:**\nCustomers browse the product catalog in-app, discover available garments, and explore personalization options before interacting with in-store displays.\n\n**User Stories:**\n- As a customer, I want to browse available products in the store so I can plan my personalization experience.\n- As a customer, I want to see which personalization options (embroidery, print, patches) are available per product.\n- As a premium member, I want to see exclusive vault products that are not accessible to standard members.\n\n**Functional Requirements:**\n- FR-02.1: The app shall display a real-time, inventory-aware product catalog sourced from SAP Commerce Cloud.\n- FR-02.2: Each product listing shall show available sizes, colors, and personalization types.\n- FR-02.3: Out-of-stock items shall be clearly flagged and hidden from the add-to-cart flow.\n- FR-02.4: Premium-exclusive products shall be visually distinguished and locked/hidden for standard members.\n- FR-02.5: AI-powered styling recommendations (from SAP Product Recommendation) shall be surfaced as a \"Recommended for You\" section.\n- FR-02.6: Products shall be filterable by category, personalization type, and size.\n\n**UX Notes:**\n- Product cards should prominently surface the personalization CTA (\"Personalize this item\") rather than a generic \"Add to Cart.\"\n- Avoid showing unavailable personalization options \u2014 only surface what the current in-store setup supports at that time.\n\n---\n\n### F-03 Fashion Studio \u2014 Virtual Try-On & Preview\n\n**Description:**\nBefore committing to a design, customers preview their personalized garment via AR virtual try-on within the app, adjust thread colors and embroidery placement, and optionally request an AI Fashion Magazine Cover.\n\n**User Stories:**\n- As a customer, I want to virtually try on a garment with my chosen design so I can confirm it looks right before paying.\n- As a customer, I want to adjust the embroidery placement and thread colors in real time so I can fine-tune my design.\n- As a customer, I want to generate a personalized magazine cover with my look so I can share it on social media.\n\n**Functional Requirements:**\n- FR-03.1: The app shall provide an AR virtual try-on view using the device camera.\n- FR-03.2: Embroidery placement (chest, back, sleeve) shall be selectable via an interactive garment diagram.\n- FR-03.3: Thread color options shall be displayed as swatches with real-time preview updates on the garment.\n- FR-03.4: The app shall support saving or sharing a screenshot of the try-on preview.\n- FR-03.5: The AI Fashion Magazine Cover generator shall produce a styled editorial image combining the customer's photo and chosen garment.\n- FR-03.6: Generated magazine cover images shall be downloadable and shareable directly from the app.\n- FR-03.7: The try-on experience shall fall back gracefully (static 3D model render) on devices that do not support AR.\n\n**UX Notes:**\n- Thread color swatches should match real Pantone/thread color codes used by the Tajima embroidery machine to avoid expectation mismatch.\n- Magazine cover generation should set clear expectations on processing time (progress indicator + estimated wait).\n\n---\n\n### F-04 Garment Configuration & Checkout\n\n**Description:**\nThe final confirmation step where the customer locks in all garment choices and completes payment before the automated production process begins.\n\n**User Stories:**\n- As a customer, I want to review my full order (garment, size, design, placement, thread colors) on one screen before paying.\n- As a customer, I want to pay via multiple methods (card, mobile wallet) so I can use whichever is most convenient.\n- As a customer, I want a clear confirmation that my order has been placed and production is starting.\n\n**Functional Requirements:**\n- FR-04.1: The order summary screen shall display: garment name, size, color, embroidery design preview, placement, thread colors, and total price.\n- FR-04.2: The app shall support payment via credit/debit card, Apple Pay, Google Pay, and any retailer loyalty wallet.\n- FR-04.3: Payment processing shall integrate with SAP Customer Checkout / Payfree.\n- FR-04.4: On successful payment, the app shall transition immediately to the order progress screen (F-05).\n- FR-04.5: A failed payment must return the customer to the payment screen with a clear error and retry option \u2014 the garment configuration must not be lost.\n- FR-04.6: The app shall display an estimated completion time after order placement.\n\n**UX Notes:**\n- This is the highest-stakes screen in the flow \u2014 keep it clean, with one primary CTA (\"Confirm & Pay\"). Avoid distracting elements.\n- Show the embroidery design preview thumbnail prominently so the customer can do a final visual check.\n\n---\n\n### F-05 Real-Time Order Progress\n\n**Description:**\nAfter checkout, customers can follow the automated production process live \u2014 from RFID retrieval through embroidery to vault storage \u2014 via the app.\n\n**User Stories:**\n- As a customer, I want to watch my order being processed so the wait feels engaging rather than passive.\n- As a customer, I want to see a live camera feed of my embroidery being stitched so I feel connected to the creation.\n- As a customer, I want to know how much longer the process will take so I can decide whether to stay in-store or leave.\n\n**Functional Requirements:**\n- FR-05.1: The app shall display a step-by-step progress indicator reflecting the 14-step production journey (Retrieval \u2192 Hooping \u2192 Embroidery \u2192 QC \u2192 Packing \u2192 Vault).\n- FR-05.2: The current active step shall be highlighted; completed steps shall be visually marked as done.\n- FR-05.3: The app shall stream or display captured images/video of the embroidery process in real time (sourced from in-machine cameras).\n- FR-05.4: A dynamic estimated time remaining shall be displayed and updated as each step completes.\n- FR-05.5: The progress screen shall be accessible from the app home screen / persistent notification while the order is active.\n- FR-05.6: If a production error occurs, the app shall notify the customer with a clear message and staff contact option.\n\n**UX Notes:**\n- The live embroidery view is a key emotional differentiator \u2014 give it visual prominence. Consider a \"theater mode\" full-screen view.\n- Progress steps should use plain language (e.g., \"Your garment is being embroidered\") not internal system labels.\n\n---\n\n### F-06 Notification & Vault Ready\n\n**Description:**\nWhen production is complete and the item has been placed in the vault, the customer receives a push notification with everything they need to collect their order.\n\n**User Stories:**\n- As a customer, I want to receive a push notification when my order is ready so I know when to collect it.\n- As a customer, I want the notification to contain my locker number and QR code so I can collect my order without opening multiple screens.\n\n**Functional Requirements:**\n- FR-06.1: The app shall send a push notification when the order status transitions to \"Vault Ready.\"\n- FR-06.2: The notification shall include: locker number, QR/unlock code, and a deep link directly to the collection screen.\n- FR-06.3: The in-app notification screen shall display the Digital Product Passport preview, embroidery video, and receipt alongside the collection QR.\n- FR-06.4: The QR/unlock code shall remain valid until the item is collected (no expiry until pickup).\n- FR-06.5: The app shall support email fallback for customers who have push notifications disabled, via SAP Emarsys.\n\n**UX Notes:**\n- The \"ready\" moment is a premium brand moment \u2014 the notification design and in-app landing screen should feel like a luxury unboxing reveal, not a generic order alert.\n\n---\n\n### F-07 Digital Product Passport\n\n**Description:**\nEach personalized product receives a permanent Digital Product Passport (DPP) accessible via the app \u2014 containing authentication, craftsmanship details, embroidery media, materials, and sustainability information.\n\n**User Stories:**\n- As a customer, I want to view my product's passport in the app so I can see the story behind its creation.\n- As a customer, I want to watch the embroidery video of my product being made so I can relive the experience.\n- As a customer, I want to share my product's story on social media so I can show others my unique piece.\n\n**Functional Requirements:**\n- FR-07.1: Each order shall generate a unique Digital Product Passport linked to the customer's account.\n- FR-07.2: The DPP shall contain: product name, garment details, embroidery artwork image, craftsmanship narrative, embroidery video, materials breakdown, and sustainability data.\n- FR-07.3: The DPP shall include an authenticity certificate with a unique product ID (sourced from SAP S/4HANA Retail).\n- FR-07.4: The DPP shall be shareable via a public link (web) that does not require app installation to view.\n- FR-07.5: Embroidery photos and video shall be viewable inline within the DPP and downloadable.\n- FR-07.6: The DPP shall be permanently accessible in the customer's order history \u2014 it must not expire.\n\n**UX Notes:**\n- Design the DPP as a storytelling experience, not an invoice. Think editorial layout \u2014 large imagery, narrative text, video autoplay (muted by default).\n- The public share link should render as a beautiful, branded web page that works well as a social media preview card.\n\n---\n\n### F-08 Vault Collection\n\n**Description:**\nThe customer uses the app to open their assigned vault compartment and collect their order.\n\n**User Stories:**\n- As a customer, I want to scan a QR code at the vault so my locker opens automatically.\n- As a customer, I want a fallback option (manual unlock code) in case QR scanning fails.\n\n**Functional Requirements:**\n- FR-08.1: The app shall display a scannable QR code on the collection screen for vault door activation.\n- FR-08.2: A numeric unlock code shall be displayed alongside the QR as a fallback.\n- FR-08.3: Upon successful collection (vault door opened and closed), the app shall confirm pickup and trigger loyalty points (F-10).\n- FR-08.4: The collection screen shall clearly indicate the locker number and its physical location in the store.\n- FR-08.5: If the QR scan fails, the app shall surface the unlock code prominently with instructions.\n\n**UX Notes:**\n- The collection screen should be the most streamlined screen in the app \u2014 large QR, locker number, single instruction. No distractions.\n\n---\n\n### F-09 Vault Return Flow\n\n**Description:**\nCustomers who wish to return a purchase can deposit the item back into the vault via the app, initiating the return/exchange workflow in SAP.\n\n**User Stories:**\n- As a customer, I want to initiate a return from the app so I can deposit my item in the vault without speaking to staff.\n- As a customer, I want to see my refund status in the app so I know when to expect my money back.\n\n**Functional Requirements:**\n- FR-09.1: The app shall provide a \"Return Item\" flow accessible from the order history.\n- FR-09.2: The return flow shall assign the customer a vault locker for deposit and display the locker number and QR.\n- FR-09.3: After the item is deposited, the app shall display a confirmation and initiate the SAP return/refund workflow.\n- FR-09.4: Optional AI vision verification result (pass/fail) shall be surfaced to the customer after deposit if available.\n- FR-09.5: The app shall display refund/exchange status and estimated timeline after the return is confirmed.\n- FR-09.6: The return flow shall respect the retailer's return policy rules (e.g., personalized items may be non-returnable \u2014 this must be communicated clearly before initiating).\n\n**UX Notes:**\n- If personalized items are non-returnable, surface this policy prominently at the start of the return flow \u2014 not as a dead end at the end.\n\n---\n\n### F-10 Loyalty & Engagement\n\n**Description:**\nThe app surfaces loyalty points, rewards, and brand engagement moments throughout the customer journey to deepen the relationship with the brand.\n\n**User Stories:**\n- As a customer, I want to see my loyalty points balance in the app so I can track my rewards.\n- As a customer, I want to receive a personalized thank-you after my purchase so the experience feels valued.\n- As a premium member, I want to be notified of exclusive drops and vault events so I can take advantage of member benefits.\n\n**Functional Requirements:**\n- FR-10.1: The app shall display the customer's current loyalty points balance and tier on the home/profile screen.\n- FR-10.2: Points shall be awarded automatically after each completed purchase and reflected in real time.\n- FR-10.3: A thank-you message shall be triggered via SAP Emarsys after vault collection, personalized to the customer's name and product.\n- FR-10.4: Premium members shall receive push notifications for exclusive product drops and vault access events.\n- FR-10.5: The app shall surface a shareable \"loyalty milestone\" moment (e.g., \"You've reached Gold status\") when a tier threshold is crossed.\n\n**UX Notes:**\n- Loyalty messaging should feel like a brand gesture, not a points ledger. Lead with the emotional message; the points number is secondary.\n\n---\n\n## 5. Non-Functional Requirements\n\n| ID | Category | Requirement |\n|----|----------|-------------|\n| NFR-01 | Performance | App launch to entry QR code displayed in \u2264 2 seconds on mid-range devices |\n| NFR-02 | Performance | Virtual try-on preview updates (thread color / placement changes) in \u2264 500 ms |\n| NFR-03 | Reliability | Real-time order progress shall degrade gracefully (polling fallback if WebSocket fails) |\n| NFR-04 | Accessibility | All screens shall meet WCAG 2.1 AA contrast and tap target size standards |\n| NFR-05 | Offline | Entry QR code must be cacheable for \u2264 5 minutes to handle brief connectivity loss in-store |\n| NFR-06 | Security | Vault QR codes and unlock codes shall be single-use after collection is confirmed |\n| NFR-07 | Localisation | App shall support internationalisation (i18n) for at minimum EN, DE, FR at launch |\n| NFR-08 | Platform | App shall support iOS 16+ and Android 13+ |\n\n---\n\n## 6. Out of Scope\n\nThe following are explicitly **not** covered in this document:\n\n- In-store Digital Graffiti Wall interactive canvas (separate requirements document)\n- In-store AI Fashion Cover kiosk UI (separate requirements document)\n- Endless Aisle / AI styling in-store display (separate requirements document)\n- SAP backend system architecture and API specifications\n- Robotic and RFID hardware integration specifications\n- Staff / admin-facing app or store management portal\n\n---\n\n## 7. Open Questions\n\n| # | Question | Owner | Status |\n|---|----------|-------|--------|\n| OQ-01 | Will personalized items be eligible for return? What is the return policy for embroidered garments? | Business / Legal | Open |\n| OQ-02 | What is the maximum embroidery design queue size, and how does the app communicate delays beyond the estimated time? | Operations | Open |\n| OQ-03 | Is the AI magazine cover generation (F-03) processed on-device, on SAP Business AI Platform, or a third-party service? What are latency expectations? | Architecture | Open |\n| OQ-04 | Which payment providers are supported at launch (Payfree confirmed \u2014 others TBC)? | Payments / Business | Open |\n| OQ-05 | Will the Digital Product Passport public link require the customer to authenticate, or is it fully public? | Privacy / Legal | Open |\n| OQ-06 | What is the Premium member tier entry criteria, and is tier status managed in SAP Customer Data Cloud? | CRM / Business | Open |\n| OQ-07 | Are real-time embroidery camera feeds streamed directly or delivered as periodic snapshots? What are the data/privacy implications? | Architecture / Legal | Open |"}, "pptx1": {"name": "VF_Concept_Store_V2_DRAFT.pptx", "type": "pptx", "size": "33.4 MB", "modified": "2026-07-16", "content": null}};
+
+let openTabs = [];
+let activeTab = null;
+let openFolders = new Set(['root']);
+
+function iconFor(type, open) {
+  if (type === 'folder') return open ? '\u{1F4C2}' : '\u{1F4C1}';
+  if (type === 'md')   return '\u{1F4DD}';
+  if (type === 'pptx') return '\u{1F4CA}';
+  return '\u{1F4C4}';
+}
+
+function renderTree() {
+  const c = document.getElementById('file-tree');
+  c.innerHTML = '';
+  renderNode(TREE[0], c, 0);
+}
+
+function renderNode(node, container, depth) {
+  const div = document.createElement('div');
+  div.className = 'tree-item' + (activeTab === node.id ? ' selected' : '');
+  const pad = depth * 16 + 8;
+  const isFolder = node.type === 'folder';
+  const isOpen = openFolders.has(node.id);
+  const icon = isFolder ? (isOpen ? '\u{1F4C2}' : '\u{1F4C1}') : (node.type === 'md' ? '\u{1F4DD}' : node.type === 'pptx' ? '\u{1F4CA}' : '\u{1F4C4}');
+  const meta = META[node.id];
+  const sizeLabel = (meta && meta.size && !isFolder) ? `<span class="fsize">${meta.size}</span>` : '';
+  div.innerHTML = `
+    <span class="indent" style="width:${pad}px"></span>
+    <span class="arrow">${isFolder ? (isOpen ? '\u25BE' : '\u25B8') : ''}</span>
+    <span class="ficon">${icon}</span>
+    <span class="fname">${node.name}</span>
+    ${sizeLabel}
+  `;
+  div.addEventListener('click', () => handleClick(node));
+  container.appendChild(div);
+  if (isFolder && isOpen) node.children.forEach(ch => renderNode(ch, container, depth + 1));
+}
+
+function handleClick(node) {
+  if (node.type === 'folder') {
+    openFolders.has(node.id) ? openFolders.delete(node.id) : openFolders.add(node.id);
+    renderTree();
+  } else {
+    openFile(node.id, node.name, node.type);
+  }
+}
+
+function openFile(id, name, type) {
+  activeTab = id;
+  if (!openTabs.find(t => t.id === id)) openTabs.push({id, name, type});
+  renderTree(); renderTabs(); renderContent(id); renderBreadcrumb(id);
+  document.getElementById('sb-lang').textContent =
+    type === 'md' ? '\u{1F535} Markdown' : type === 'pptx' ? '\u{1F7E0} PowerPoint' : 'File';
+}
+
+function closeTab(id, e) {
+  e.stopPropagation();
+  openTabs = openTabs.filter(t => t.id !== id);
+  if (activeTab === id) {
+    activeTab = openTabs.length ? openTabs[openTabs.length - 1].id : null;
+    if (activeTab) { const t = openTabs.find(t=>t.id===activeTab); renderContent(activeTab); renderBreadcrumb(activeTab); }
+    else showWelcome();
+  }
+  renderTabs(); renderTree();
+}
+
+function renderTabs() {
+  const c = document.getElementById('tabs');
+  if (!openTabs.length) { c.innerHTML = '<div class="tab-placeholder">Select a file to open&hellip;</div>'; return; }
+  c.innerHTML = openTabs.map(t => `
+    <div class="tab ${t.id === activeTab ? 'active' : ''}" onclick="openFile('${t.id}','${t.name}','${t.type}')">
+      <span>${t.type==='md'?'\u{1F4DD}':'\u{1F4CA}'}</span>
+      <span>${t.name}</span>
+      <button class="tab-close" onclick="closeTab('${t.id}',event)">&#x2715;</button>
+    </div>`).join('');
+}
+
+function renderBreadcrumb(id) {
+  const bc = document.getElementById('breadcrumb');
+  const path = findPath(TREE[0], id, []);
+  if (!path) { bc.innerHTML = '<span>VFConcept_Store</span>'; return; }
+  bc.innerHTML = path.map((seg, i) =>
+    `<span class="${i===path.length-1?'crumb-active':''}">${seg}</span>${i<path.length-1?'<span class="sep">&#x203A;</span>':''}`
+  ).join('');
+}
+
+function findPath(node, id, acc) {
+  const cur = [...acc, node.name];
+  if (node.id === id) return cur;
+  for (const ch of (node.children||[])) { const r = findPath(ch,id,cur); if(r) return r; }
+  return null;
+}
+
+function showWelcome() {
+  document.getElementById('content-pane').innerHTML = `
+    <div id="welcome">
+      <div class="big-icon">&#128193;</div>
+      <h2>VF Concept Store</h2>
+      <p>Project dashboard for the Fashion Retail Reimagined concept. Select a file from the Explorer to preview it.</p>
+      <p class="hint">Quick open:</p>
+      <div class="welcome-files">
+        <div class="wf-chip" onclick="openFile('md_mobile','mobile-app-requirements.md','md')">&#128196; mobile-app-requirements.md</div>
+        <div class="wf-chip" onclick="openFile('pptx1','VF_Concept_Store_V2_DRAFT.pptx','pptx')">&#128202; VF_Concept_Store_V2_DRAFT.pptx</div>
+      </div>
+    </div>`;
+  document.getElementById('breadcrumb').innerHTML = '<span>VFConcept_Store</span>';
+  document.getElementById('sb-lang').textContent = '';
+}
+
+function renderContent(id) {
+  const meta = META[id];
+  const pane = document.getElementById('content-pane');
+  if (!meta) return;
+  if (meta.type === 'md' && meta.content) {
+    pane.innerHTML = '<div id="md-content"></div>';
+    document.getElementById('md-content').innerHTML = marked.parse(meta.content);
+  } else {
+    pane.innerHTML = `
+      <div id="no-preview">
+        <div class="big-icon">&#128202;</div>
+        <h3>${meta.name}</h3>
+        <p>Binary file — preview not available in the browser dashboard.<br/>Open the file directly in PowerPoint.</p>
+        <div class="meta-pills">
+          <div class="pill">&#128197; Modified: ${meta.modified}</div>
+          <div class="pill">&#128190; ${meta.size}</div>
+          <div class="pill">&#128202; PowerPoint Presentation</div>
+        </div>
+      </div>`;
+  }
+}
+
+function collapseAll() { openFolders.clear(); renderTree(); }
+function expandAll() {
+  function add(n) { if(n.type==='folder'){openFolders.add(n.id);n.children.forEach(add);} }
+  add(TREE[0]); renderTree();
+}
+
+renderTree();
+</script>
+</body>
+</html>

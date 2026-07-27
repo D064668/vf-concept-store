@@ -2,7 +2,7 @@
 **Project:** VF Concept Store — Fashion Retail Reimagined
 **Document type:** UX Requirements
 **Status:** Draft
-**Last updated:** 2026-07-16
+**Last updated:** 2026-07-27
 
 ---
 
@@ -50,7 +50,7 @@ This document covers UX requirements for three in-store interactive display expe
 | Display | Form Factor | Location | Interaction Mode |
 |---------|-------------|----------|------------------|
 | Digital Graffiti Wall | Horizontal interactive table (~55") | Center of store floor | Multi-touch drawing, two-handed |
-| AI Fashion Cover Kiosk | **Proto Hologram** with front-facing camera | Near fitting area / Fashion Studio zone | Touch + camera + holographic display |
+| AI Fashion Cover Kiosk | Standing kiosk with integrated front-facing camera | Near fitting area / Fashion Studio zone | Touch + camera |
 | Endless Aisle / AI Styling | Wall-mounted vertical display (~55") | Main product wall | Touch browse + scroll |
 
 ---
@@ -159,10 +159,10 @@ Phone drawing syncs to the table in real-time via the session broker. Customers 
 
 ### D-02 AI Fashion Cover Kiosk
 
-**Hardware:** Proto Hologram (confirmed)
+**Hardware:** Standard touchscreen kiosk with integrated front-facing camera
 
 **Description:**
-A Proto hologram display with a front-facing camera that generates editorial-quality O11 magazine cover images featuring the customer. The output is a styled, shareable digital image combining the customer's photo with their chosen garment and a branded O11 magazine layout. The Proto hologram hardware delivers the magazine cover as a volumetric 3D holographic display — creating a premium, theatrical reveal moment that feels like stepping onto an actual magazine cover.
+A standing kiosk with a front-facing camera that generates editorial-quality O11 magazine cover images featuring the customer. The output is a styled, shareable digital image combining the customer's photo with their chosen garment, AI background removal and editorial lighting, and a branded O11 magazine layout. The final cover is delivered to the customer's phone via QR code.
 
 **User Stories:**
 - As a customer, I want to take a photo of myself at the kiosk so I can be featured on a personalized magazine cover.
