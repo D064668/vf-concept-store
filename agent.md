@@ -38,6 +38,7 @@
 - Never invent a design token — if one doesn't exist, stop and ask
 - Never describe D-02 as a standard kiosk — D-02 is a **Proto Luma Hologram** (confirmed 2026-07-29 with hardware image)
 - Never refactor, expand scope, or add features beyond the task at hand
+- Never activate the evaluation loop until `design-tokens.md` and `component-rules.md` are filled and rendered screens exist
 
 ---
 
@@ -46,7 +47,7 @@
 - Design tokens: `Skills/o11-ux-design-system/references/design-tokens.md`
 - Component rules: `Skills/o11-ux-design-system/references/component-rules.md`
 - Motion patterns: `design-system/motion-guide.md` (read-only reference)
-- Evaluation loop: `design-system/evaluation-loop.md` (activate for rendered screens/prototypes)
+- Evaluation loop: `design-system/evaluation-loop.md` (⏸ on hold — needs design system filled first)
 - Source deck: `Reference/VF_Concept_Store_V2_DRAFT.pptx`
 - Open questions: this file, Open Questions Registry section below
 
@@ -71,10 +72,11 @@
 ## Good to Know
 
 - **D-02 IS a Proto Luma Hologram.** Confirmed 2026-07-29 with hardware image. Large cabinet display with top-mounted camera bar. Sessions prior to 2026-07-29 incorrectly described it as a standard kiosk — that is wrong. Never revert to standard kiosk description.
+- **Virtual try-on is in-store only.** Handled by D-02 Proto Luma. Not an in-app feature. F-03 corrected 2026-07-29.
 - **The PPTX is 33 MB** — too large for standard `git push`. It lives in `Reference/` locally but is gitignored. Restore via OneDrive if lost.
-- **Inference rule:** when a requirement detail is inferred from PPTX language rather than explicitly stated, mark it in the doc. Example: "AI background removal — inferred from 'editorial-quality' language, confirmed by user."
+- **Inference rule:** when a requirement detail is inferred from PPTX language rather than explicitly stated, mark it in the doc.
 - **Remote is SAP GitHub:** `https://github.tools.sap/D064668/VFConcept_Store` — not github.com.
-- **Workflow:** I (Joule) push via MCP. You `git pull --rebase origin main` to sync locally. No need to `git push` unless I ask.
+- **Workflow:** Joule pushes via MCP. Run `git pull --rebase origin main` to sync locally.
 
 ---
 
@@ -97,7 +99,7 @@ Responsibilities:
 | Visual change (color, font, spacing, radius) | `o11-ux-design-system` | Runs the token-change confirmation workflow |
 | Build an HTML prototype or screen | `o11-ux-design-system` | Loads design tokens + component rules |
 | Choose a motion pattern or timing | `o11-ux-design-system` | References motion patterns |
-| Evaluate a rendered screen or prototype | `evaluation-loop` (`design-system/evaluation-loop.md`) | Blind adversarial critic panel — activate only when rendered screens exist |
+| Evaluate a rendered screen or prototype | `evaluation-loop` (`design-system/evaluation-loop.md`) | ⏸ **On hold** — do not activate until `design-tokens.md` + `component-rules.md` are filled AND rendered screens exist |
 | Create/update a requirement document | Handle directly | No skill needed |
 | PowerPoint / presentation task | `sap-corporate-pptx` | SAP brand deck generation |
 | Research / current information | `web_search` directly | No skill needed |
@@ -162,7 +164,7 @@ VFConcept_Store/
 │   ├── design-tokens.md
 │   ├── component-rules.md
 │   ├── motion-guide.md
-│   └── evaluation-loop.md
+│   └── evaluation-loop.md             ← on hold until design system filled
 ├── Reference/
 │   └── VF_Concept_Store_V2_DRAFT.pptx    ← gitignored, local only
 └── Skills/
@@ -172,8 +174,6 @@ VFConcept_Store/
             ├── design-tokens.md
             └── component-rules.md
 ```
-
-New requirement docs go in the root. New skills go under `Skills/`. Reference materials go in `Reference/`.
 
 ---
 
@@ -206,4 +206,5 @@ New requirement docs go in the root. New skills go under `Skills/`. Reference ma
 | 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template |
 | 2.1.0 | 2026-07-29 | Added pre-push quality loop |
 | 2.2.0 | 2026-07-29 | Fixed D-02 (Proto Luma confirmed); added evaluation-loop to Skill Routing |
-| 2.3.0 | 2026-07-29 | Removed HTML dashboard; VS Code replaces it; cleaned all dashboard refs |
+| 2.3.0 | 2026-07-29 | Removed HTML dashboard; VS Code replaces it |
+| 2.4.0 | 2026-07-29 | F-03 corrected (no in-app AR try-on); evaluation-loop marked on hold |
