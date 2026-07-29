@@ -5,6 +5,9 @@ _build_dashboard.py
 .DS_Store
 Thumbs.db
 
+# Personal / confidential files
+Q3_2026_Progress_Check_Hyun_Lee.html
+
 # Node / Python artifacts (if any)
 node_modules/
 __pycache__/
