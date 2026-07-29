@@ -2,7 +2,7 @@
 **Project:** VF Concept Store — Fashion Retail Reimagined
 **Document type:** UX Requirements
 **Status:** Draft
-**Last updated:** 2026-07-16
+**Last updated:** 2026-07-29
 
 ---
 
@@ -13,7 +13,7 @@
 4. [Feature Requirements](#4-feature-requirements)
    - [F-01 Store Entry & Authentication](#f-01-store-entry--authentication)
    - [F-02 Product Discovery & Personalization Browsing](#f-02-product-discovery--personalization-browsing)
-   - [F-03 Fashion Studio — Virtual Try-On & Preview](#f-03-fashion-studio--virtual-try-on--preview)
+   - [F-03 Fashion Studio — Garment Preview & Configuration](#f-03-fashion-studio--garment-preview--configuration)
    - [F-04 Garment Configuration & Checkout](#f-04-garment-configuration--checkout)
    - [F-05 Real-Time Order Progress](#f-05-real-time-order-progress)
    - [F-06 Notification & Vault Ready](#f-06-notification--vault-ready)
@@ -42,7 +42,7 @@ This document covers UX requirements for the **mobile app** only. In-store touch
 **In scope:**
 - Customer authentication and store entry
 - Product discovery and personalization selection
-- Fashion Studio virtual try-on within the app
+- Fashion Studio — garment preview, embroidery configuration, and magazine cover generation
 - Checkout and payment
 - Real-time order tracking
 - Push notifications and vault ready alerts
@@ -115,28 +115,27 @@ Customers browse the product catalog in-app, discover available garments, and ex
 
 ---
 
-### F-03 Fashion Studio — Virtual Try-On & Preview
+### F-03 Fashion Studio — Garment Preview & Configuration
 
 **Description:**
-Before committing to a design, customers preview their personalized garment via AR virtual try-on within the app, adjust thread colors and embroidery placement, and optionally request an AI Fashion Magazine Cover.
+Before committing to a design, customers preview their personalized garment on a static 3D model within the app, adjust thread colors and embroidery placement, and optionally generate an AI Fashion Magazine Cover. Virtual try-on is an in-store holographic experience (D-02 Proto Luma) — not an in-app feature.
 
 **User Stories:**
-- As a customer, I want to virtually try on a garment with my chosen design so I can confirm it looks right before paying.
+- As a customer, I want to see my chosen design previewed on a 3D garment model so I can confirm it looks right before paying.
 - As a customer, I want to adjust the embroidery placement and thread colors in real time so I can fine-tune my design.
 - As a customer, I want to generate a personalized magazine cover with my look so I can share it on social media.
 
 **Functional Requirements:**
-- FR-03.1: The app shall provide an AR virtual try-on view using the device camera.
-- FR-03.2: Embroidery placement (chest, back, sleeve) shall be selectable via an interactive garment diagram.
-- FR-03.3: Thread color options shall be displayed as swatches with real-time preview updates on the garment.
-- FR-03.4: The app shall support saving or sharing a screenshot of the try-on preview.
-- FR-03.5: The AI Fashion Magazine Cover generator shall produce a styled editorial image combining the customer's photo and chosen garment.
-- FR-03.6: Generated magazine cover images shall be downloadable and shareable directly from the app.
-- FR-03.7: The try-on experience shall fall back gracefully (static 3D model render) on devices that do not support AR.
+- FR-03.1: Embroidery placement (chest, back, sleeve) shall be selectable via an interactive garment diagram with real-time preview on a 3D model.
+- FR-03.2: Thread color options shall be displayed as swatches with real-time preview updates on the garment model.
+- FR-03.3: The app shall support saving or sharing a screenshot of the garment preview.
+- FR-03.4: The AI Fashion Magazine Cover generator shall produce a styled editorial image combining the customer's photo and chosen garment.
+- FR-03.5: Generated magazine cover images shall be downloadable and shareable directly from the app.
 
 **UX Notes:**
 - Thread color swatches should match real Pantone/thread color codes used by the Tajima embroidery machine to avoid expectation mismatch.
 - Magazine cover generation should set clear expectations on processing time (progress indicator + estimated wait).
+- Virtual try-on (AR) is handled by the Proto Luma in-store (D-02) — do not replicate that experience in-app.
 
 ---
 
@@ -303,7 +302,7 @@ The app surfaces loyalty points, rewards, and brand engagement moments throughou
 | ID | Category | Requirement |
 |----|----------|-------------|
 | NFR-01 | Performance | App launch to entry QR code displayed in ≤ 2 seconds on mid-range devices |
-| NFR-02 | Performance | Virtual try-on preview updates (thread color / placement changes) in ≤ 500 ms |
+| NFR-02 | Performance | Garment preview updates (thread color / placement changes) in ≤ 500 ms |
 | NFR-03 | Reliability | Real-time order progress shall degrade gracefully (polling fallback if WebSocket fails) |
 | NFR-04 | Accessibility | All screens shall meet WCAG 2.1 AA contrast and tap target size standards |
 | NFR-05 | Offline | Entry QR code must be cacheable for ≤ 5 minutes to handle brief connectivity loss in-store |
@@ -320,6 +319,7 @@ The following are explicitly **not** covered in this document:
 - In-store Digital Graffiti Wall interactive canvas (separate requirements document)
 - In-store AI Fashion Cover kiosk UI (separate requirements document)
 - Endless Aisle / AI styling in-store display (separate requirements document)
+- Virtual try-on — this is an in-store holographic experience via the Proto Luma (D-02), not a mobile app feature
 - SAP backend system architecture and API specifications
 - Robotic and RFID hardware integration specifications
 - Staff / admin-facing app or store management portal
