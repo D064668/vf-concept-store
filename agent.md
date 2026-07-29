@@ -33,6 +33,7 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 ## Always
 
 - Always run `python3 _build_dashboard.py` after any markdown file is created or changed
+- Always run the pre-push quality loop (Rule 5) before every `git push`
 - Always use `var(--token-name)` for every visual value — never raw hex, px, or inline styles
 - Always verify requirement claims against the PPTX; flag inferences explicitly ("inferred from slide X")
 - Always match brand tone: luxury, minimal, editorial, dark-first, no exclamation marks in UI copy
@@ -63,11 +64,11 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 ## Definition of Done
 
-**Requirement doc:** sourced from PPTX or confirmed by user; all inferences flagged; dashboard rebuilt; committed and pushed to GitHub.
+**Requirement doc:** sourced from PPTX or confirmed by user; all inferences flagged; dashboard rebuilt; pre-push checklist passed; committed and pushed to GitHub.
 
-**Prototype / HTML:** uses only token vars; brand tone applied; no hardcoded values; single-file deliverable.
+**Prototype / HTML:** uses only token vars; brand tone applied; no hardcoded values; pre-push checklist passed; single-file deliverable.
 
-**Any file change:** `_build_dashboard.py` run, `project-dashboard.html` committed in the same operation.
+**Any file change:** `_build_dashboard.py` run, `project-dashboard.html` committed in the same operation, pre-push checklist passed.
 
 ---
 
@@ -192,9 +193,38 @@ VFConcept_Store/
             └── component-rules.md
 ```
 
+New requirement docs go in the root. New skills go under `Skills/`. Reference materials from stakeholders go in `Reference/`.
+
 ---
 
-## Open Questions Registry
+### Rule 5: Pre-Push Quality Loop
+
+**Before every `git push`, run the following checklist in a loop until all checks pass. Do not push until every item is clean.**
+
+#### Current checks (no app codebase yet)
+
+| # | Check | How |
+|---|---|---|
+| 1 | Dashboard in sync | Run `python3 _build_dashboard.py` — output must match current file state |
+| 2 | No hardcoded values in HTML | `grep -rn "#[0-9a-fA-F]\{3,6\}\b" *.html` — flag any outside a token definition |
+| 3 | No broken markdown links | Scan requirement docs for `[text](path)` links — verify each path exists on disk |
+| 4 | No conflict markers | `grep -rn "<<<<<<\|>>>>>>\|=======" .` — must return empty |
+| 5 | `.gitignore` respected | `git status` — confirm no personal, binary, or build files are staged |
+| 6 | Commit message is descriptive | Format: `type(scope): description` (e.g. `fix(D-02): ...`, `docs(agent): ...`) |
+
+**Loop:** run all checks → fix any failures → repeat from check 1 → push only when all 6 pass.
+
+If a check cannot be resolved without user input, flag it and ask before proceeding.
+
+#### When an app codebase is added — extend with:
+- Lint: `[command TBD]`
+- Type check: `[command TBD]`
+- Tests: `[command TBD]`
+- Build: `[command TBD]`
+
+Update this rule in `agent.md` when those commands are established.
+
+---
 
 | ID | Source Doc | Question | Owner | Status |
 |---|---|---|---|---|
@@ -220,4 +250,7 @@ VFConcept_Store/
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-07-16 | Initial creation |
-| 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template — added Project, Stack, Commands, Always/Never, Where things live, Definition of Done, Naming, Good to know |
+| 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template — added quick-reference sections |
+| 2.1.0 | 2026-07-29 | Added Rule 5: Pre-Push Quality Loop |
+
+
