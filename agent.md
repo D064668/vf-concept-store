@@ -45,7 +45,7 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 - Never hardcode a color, spacing, radius, or shadow value
 - Never invent a design token — if one doesn't exist, stop and ask
-- Never present Proto Hologram as D-02 hardware (D-02 is a **standard touchscreen kiosk** — confirmed fix 2026-07-28)
+- Never describe D-02 as a standard kiosk — D-02 is a **Proto Luma Hologram** (confirmed 2026-07-29 with hardware image)
 - Never refactor, expand scope, or add features beyond the task at hand
 - Never push `_build_dashboard.py` — it is gitignored and local only
 
@@ -56,6 +56,7 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 - Design tokens: `Skills/o11-ux-design-system/references/design-tokens.md`
 - Component rules: `Skills/o11-ux-design-system/references/component-rules.md`
 - Motion patterns: `design-system/motion-guide.md` (read-only reference)
+- Evaluation loop: `design-system/evaluation-loop.md` (activate for rendered screens/prototypes)
 - Source deck: `Reference/VF_Concept_Store_V2_DRAFT.pptx`
 - Dashboard builder: `_build_dashboard.py` (gitignored, run locally)
 - Open questions: this file, Open Questions Registry section below
@@ -83,7 +84,7 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 ## Good to Know
 
-- **D-02 is not a hologram.** D-02 AI Fashion Cover Kiosk = standard touchscreen kiosk with integrated front-facing camera. Proto Hologram was incorrectly added in a prior session and corrected 2026-07-28. Never reintroduce it.
+- **D-02 IS a Proto Luma Hologram.** Confirmed 2026-07-29 with hardware image. Large cabinet display with top-mounted camera bar. Sessions prior to 2026-07-29 incorrectly described it as a standard kiosk — that is wrong. Never revert to standard kiosk description.
 - **The PPTX is 33 MB** — too large for standard `git push`. It lives in `Reference/` locally but is gitignored. Restore via OneDrive if lost.
 - **`_build_dashboard.py` is gitignored** — commit only the output `project-dashboard.html`.
 - **Inference rule:** when a requirement detail is inferred from PPTX language rather than explicitly stated, mark it in the doc. Example: "AI background removal — inferred from 'editorial-quality' language, confirmed by user."
@@ -110,6 +111,7 @@ Responsibilities:
 | Visual change (color, font, spacing, radius) | `o11-ux-design-system` | Runs the token-change confirmation workflow |
 | Build an HTML prototype or screen | `o11-ux-design-system` | Loads design tokens + component rules |
 | Choose a motion pattern or timing | `o11-ux-design-system` | References motion patterns |
+| Evaluate a rendered screen or prototype | `evaluation-loop` (`design-system/evaluation-loop.md`) | Blind adversarial critic panel — activate only when rendered screens exist |
 | Create/update a requirement document | Handle directly | Follow dashboard sync rule |
 | PowerPoint / presentation task | `sap-corporate-pptx` | SAP brand deck generation |
 | Research / current information | `web_search` directly | No skill needed |
@@ -140,6 +142,7 @@ The script reads all markdown files from disk and rebuilds `project-dashboard.ht
 | `handoff.md` | `md_handoff` |
 | `design-system/design-tokens.md` | `md_tokens` |
 | `design-system/component-rules.md` | `md_components` |
+| `design-system/evaluation-loop.md` | `md_evalloop` |
 
 To add a new markdown file: add it to the `files` dict in `_build_dashboard.py` and add a tree node entry, then rebuild.
 
@@ -182,7 +185,8 @@ VFConcept_Store/
 ├── design-system/
 │   ├── design-tokens.md
 │   ├── component-rules.md
-│   └── motion-guide.md                ← moved from root
+│   ├── motion-guide.md                ← moved from root
+│   └── evaluation-loop.md             ← blind adversarial eval process
 ├── Reference/
 │   └── VF_Concept_Store_V2_DRAFT.pptx    ← gitignored, local only
 └── Skills/
@@ -252,5 +256,4 @@ Update this rule in `agent.md` when those commands are established.
 | 1.0.0 | 2026-07-16 | Initial creation |
 | 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template — added quick-reference sections |
 | 2.1.0 | 2026-07-29 | Added Rule 5: Pre-Push Quality Loop |
-
-
+| 2.2.0 | 2026-07-29 | Fixed D-02 entries (Proto Luma Hologram confirmed); added evaluation-loop to Skill Routing |
