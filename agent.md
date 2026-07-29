@@ -54,7 +54,7 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 - Design tokens: `Skills/o11-ux-design-system/references/design-tokens.md`
 - Component rules: `Skills/o11-ux-design-system/references/component-rules.md`
-- Motion patterns: `motion-stack-guide.md` (read-only reference)
+- Motion patterns: `design-system/motion-guide.md` (read-only reference)
 - Source deck: `Reference/VF_Concept_Store_V2_DRAFT.pptx`
 - Dashboard builder: `_build_dashboard.py` (gitignored, run locally)
 - Open questions: this file, Open Questions Registry section below
@@ -135,7 +135,7 @@ The script reads all markdown files from disk and rebuilds `project-dashboard.ht
 | `in-store-displays-requirements.md` | `md_displays` |
 | `digital-product-passport-requirements.md` | `md_passport` |
 | `cross-cutting-requirements.md` | `md_crosscut` |
-| `motion-stack-guide.md` | `md_motion` |
+| `motion-stack-guide.md` (now `design-system/motion-guide.md`) | `md_motion` |
 | `handoff.md` | `md_handoff` |
 | `design-system/design-tokens.md` | `md_tokens` |
 | `design-system/component-rules.md` | `md_components` |
@@ -180,7 +180,8 @@ VFConcept_Store/
 ├── handoff.md
 ├── design-system/
 │   ├── design-tokens.md
-│   └── component-rules.md
+│   ├── component-rules.md
+│   └── motion-guide.md                ← moved from root
 ├── Reference/
 │   └── VF_Concept_Store_V2_DRAFT.pptx    ← gitignored, local only
 └── Skills/
