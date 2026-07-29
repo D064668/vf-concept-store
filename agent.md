@@ -17,23 +17,14 @@
 - **This is a UX/requirements project** — no application codebase
 - **Design system:** `Skills/o11-ux-design-system/` — tokens, component rules, motion patterns
 - **Prototyping:** Single-file HTML + CSS token vars
-- **Dashboard builder:** `_build_dashboard.py` (local only, gitignored)
 - **Source of truth:** `Reference/VF_Concept_Store_V2_DRAFT.pptx` — the original concept deck
-
----
-
-## Commands
-
-- **Rebuild dashboard:** `python3 _build_dashboard.py`
-
-Run after every markdown file is created or changed. Dashboard must stay in sync — this is Rule 1.
+- **File browsing:** VS Code (open the repo folder)
 
 ---
 
 ## Always
 
-- Always run `python3 _build_dashboard.py` after any markdown file is created or changed
-- Always run the pre-push quality loop (Rule 5) before every `git push`
+- Always run the pre-push quality loop (Rule 1) before every `git push`
 - Always use `var(--token-name)` for every visual value — never raw hex, px, or inline styles
 - Always verify requirement claims against the PPTX; flag inferences explicitly ("inferred from slide X")
 - Always match brand tone: luxury, minimal, editorial, dark-first, no exclamation marks in UI copy
@@ -47,7 +38,6 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 - Never invent a design token — if one doesn't exist, stop and ask
 - Never describe D-02 as a standard kiosk — D-02 is a **Proto Luma Hologram** (confirmed 2026-07-29 with hardware image)
 - Never refactor, expand scope, or add features beyond the task at hand
-- Never push `_build_dashboard.py` — it is gitignored and local only
 
 ---
 
@@ -58,18 +48,15 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 - Motion patterns: `design-system/motion-guide.md` (read-only reference)
 - Evaluation loop: `design-system/evaluation-loop.md` (activate for rendered screens/prototypes)
 - Source deck: `Reference/VF_Concept_Store_V2_DRAFT.pptx`
-- Dashboard builder: `_build_dashboard.py` (gitignored, run locally)
 - Open questions: this file, Open Questions Registry section below
 
 ---
 
 ## Definition of Done
 
-**Requirement doc:** sourced from PPTX or confirmed by user; all inferences flagged; dashboard rebuilt; pre-push checklist passed; committed and pushed to GitHub.
+**Requirement doc:** sourced from PPTX or confirmed by user; all inferences flagged; pre-push checklist passed; committed and pushed to GitHub.
 
 **Prototype / HTML:** uses only token vars; brand tone applied; no hardcoded values; pre-push checklist passed; single-file deliverable.
-
-**Any file change:** `_build_dashboard.py` run, `project-dashboard.html` committed in the same operation, pre-push checklist passed.
 
 ---
 
@@ -77,7 +64,6 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 - **Tokens:** `--category-role-variant` (e.g. `--color-brand-sage`, `--space-md`, `--shadow-gold`)
 - **Feature IDs:** `F-xx` mobile · `D-xx` displays · `P-xx` passport · `X-xx` cross-cutting
-- **Dashboard node IDs:** `md_` prefix + camelCase filename (e.g. `md_mobile`, `md_displays`)
 - **Files:** kebab-case, descriptive (e.g. `cross-cutting-requirements.md`)
 
 ---
@@ -86,9 +72,9 @@ Run after every markdown file is created or changed. Dashboard must stay in sync
 
 - **D-02 IS a Proto Luma Hologram.** Confirmed 2026-07-29 with hardware image. Large cabinet display with top-mounted camera bar. Sessions prior to 2026-07-29 incorrectly described it as a standard kiosk — that is wrong. Never revert to standard kiosk description.
 - **The PPTX is 33 MB** — too large for standard `git push`. It lives in `Reference/` locally but is gitignored. Restore via OneDrive if lost.
-- **`_build_dashboard.py` is gitignored** — commit only the output `project-dashboard.html`.
 - **Inference rule:** when a requirement detail is inferred from PPTX language rather than explicitly stated, mark it in the doc. Example: "AI background removal — inferred from 'editorial-quality' language, confirmed by user."
 - **Remote is SAP GitHub:** `https://github.tools.sap/D064668/VFConcept_Store` — not github.com.
+- **Workflow:** I (Joule) push via MCP. You `git pull --rebase origin main` to sync locally. No need to `git push` unless I ask.
 
 ---
 
@@ -112,7 +98,7 @@ Responsibilities:
 | Build an HTML prototype or screen | `o11-ux-design-system` | Loads design tokens + component rules |
 | Choose a motion pattern or timing | `o11-ux-design-system` | References motion patterns |
 | Evaluate a rendered screen or prototype | `evaluation-loop` (`design-system/evaluation-loop.md`) | Blind adversarial critic panel — activate only when rendered screens exist |
-| Create/update a requirement document | Handle directly | Follow dashboard sync rule |
+| Create/update a requirement document | Handle directly | No skill needed |
 | PowerPoint / presentation task | `sap-corporate-pptx` | SAP brand deck generation |
 | Research / current information | `web_search` directly | No skill needed |
 | Create or update a skill | `skill-creator` | Skill authoring workflow |
@@ -121,30 +107,22 @@ Responsibilities:
 
 ## Standing Rules (Detail)
 
-### Rule 1: Dashboard Sync
+### Rule 1: Pre-Push Quality Loop
 
-**Every time a markdown file is created or updated, run `python3 _build_dashboard.py` in the same operation.**
+**Before every `git push`, run the following checklist. Do not push until all pass.**
 
-The script reads all markdown files from disk and rebuilds `project-dashboard.html` automatically. No manual block editing required.
+| # | Check | How |
+|---|---|---|
+| 1 | No hardcoded values in HTML | `grep -rn "#[0-9a-fA-F]\{3,6\}\b" *.html` — flag any outside a token definition |
+| 2 | No broken markdown links | Scan requirement docs for `[text](path)` links — verify each path exists on disk |
+| 3 | No conflict markers | `grep -rn "<<<<<<\|>>>>>>\|=======" .` — must return empty |
+| 4 | `.gitignore` respected | `git status` — confirm no personal, binary, or build files are staged |
+| 5 | Commit message is descriptive | Format: `type(scope): description` (e.g. `fix(D-02): ...`, `docs(agent): ...`) |
 
-**File → Dashboard node ID mapping:**
+**Loop:** run all checks → fix failures → repeat → push only when all pass.
 
-| File | Node ID |
-|---|---|
-| `project-summary.md` | `md_summary` |
-| `agent.md` | `md_agent` |
-| `README.md` | `md_readme` |
-| `mobile-app-requirements.md` | `md_mobile` |
-| `in-store-displays-requirements.md` | `md_displays` |
-| `digital-product-passport-requirements.md` | `md_passport` |
-| `cross-cutting-requirements.md` | `md_crosscut` |
-| `motion-stack-guide.md` (now `design-system/motion-guide.md`) | `md_motion` |
-| `handoff.md` | `md_handoff` |
-| `design-system/design-tokens.md` | `md_tokens` |
-| `design-system/component-rules.md` | `md_components` |
-| `design-system/evaluation-loop.md` | `md_evalloop` |
-
-To add a new markdown file: add it to the `files` dict in `_build_dashboard.py` and add a tree node entry, then rebuild.
+#### When an app codebase is added — extend with:
+- Lint, type check, tests, build — update this rule when commands are established.
 
 ---
 
@@ -174,19 +152,17 @@ To add a new markdown file: add it to the `files` dict in `_build_dashboard.py` 
 VFConcept_Store/
 ├── agent.md                               ← this file
 ├── project-summary.md
-├── project-dashboard.html                 ← rebuilt by _build_dashboard.py
 ├── README.md
+├── handoff.md
 ├── mobile-app-requirements.md
 ├── in-store-displays-requirements.md
 ├── digital-product-passport-requirements.md
 ├── cross-cutting-requirements.md
-├── motion-stack-guide.md                  ← read-only reference
-├── handoff.md
 ├── design-system/
 │   ├── design-tokens.md
 │   ├── component-rules.md
-│   ├── motion-guide.md                ← moved from root
-│   └── evaluation-loop.md             ← blind adversarial eval process
+│   ├── motion-guide.md
+│   └── evaluation-loop.md
 ├── Reference/
 │   └── VF_Concept_Store_V2_DRAFT.pptx    ← gitignored, local only
 └── Skills/
@@ -197,38 +173,11 @@ VFConcept_Store/
             └── component-rules.md
 ```
 
-New requirement docs go in the root. New skills go under `Skills/`. Reference materials from stakeholders go in `Reference/`.
+New requirement docs go in the root. New skills go under `Skills/`. Reference materials go in `Reference/`.
 
 ---
 
-### Rule 5: Pre-Push Quality Loop
-
-**Before every `git push`, run the following checklist in a loop until all checks pass. Do not push until every item is clean.**
-
-#### Current checks (no app codebase yet)
-
-| # | Check | How |
-|---|---|---|
-| 1 | Dashboard in sync | Run `python3 _build_dashboard.py` — output must match current file state |
-| 2 | No hardcoded values in HTML | `grep -rn "#[0-9a-fA-F]\{3,6\}\b" *.html` — flag any outside a token definition |
-| 3 | No broken markdown links | Scan requirement docs for `[text](path)` links — verify each path exists on disk |
-| 4 | No conflict markers | `grep -rn "<<<<<<\|>>>>>>\|=======" .` — must return empty |
-| 5 | `.gitignore` respected | `git status` — confirm no personal, binary, or build files are staged |
-| 6 | Commit message is descriptive | Format: `type(scope): description` (e.g. `fix(D-02): ...`, `docs(agent): ...`) |
-
-**Loop:** run all checks → fix any failures → repeat from check 1 → push only when all 6 pass.
-
-If a check cannot be resolved without user input, flag it and ask before proceeding.
-
-#### When an app codebase is added — extend with:
-- Lint: `[command TBD]`
-- Type check: `[command TBD]`
-- Tests: `[command TBD]`
-- Build: `[command TBD]`
-
-Update this rule in `agent.md` when those commands are established.
-
----
+## Open Questions Registry
 
 | ID | Source Doc | Question | Owner | Status |
 |---|---|---|---|---|
@@ -254,6 +203,7 @@ Update this rule in `agent.md` when those commands are established.
 | Version | Date | Change |
 |---|---|---|
 | 1.0.0 | 2026-07-16 | Initial creation |
-| 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template — added quick-reference sections |
-| 2.1.0 | 2026-07-29 | Added Rule 5: Pre-Push Quality Loop |
-| 2.2.0 | 2026-07-29 | Fixed D-02 entries (Proto Luma Hologram confirmed); added evaluation-loop to Skill Routing |
+| 2.0.0 | 2026-07-29 | Restructured with CLAUDE.md template |
+| 2.1.0 | 2026-07-29 | Added pre-push quality loop |
+| 2.2.0 | 2026-07-29 | Fixed D-02 (Proto Luma confirmed); added evaluation-loop to Skill Routing |
+| 2.3.0 | 2026-07-29 | Removed HTML dashboard; VS Code replaces it; cleaned all dashboard refs |
