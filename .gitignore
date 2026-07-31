@@ -1,12 +1,11 @@
 # Scratch / temp files
-_build_dashboard.py
 *.tmp
 *.bak
 .DS_Store
 Thumbs.db
 
-# Personal / confidential files
-Q3_2026_Progress_Check_Hyun_Lee.html
+# Large binary / confidential files (local only — restore from OneDrive if missing)
+Reference/*.pptx
 
 # Node / Python artifacts (if any)
 node_modules/

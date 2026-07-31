@@ -8,7 +8,7 @@ This repository contains the UX design system, requirement specifications, and p
 
 ## Quick Start
 
-Open this repo in **VS Code** to browse all project files. Markdown files render with full preview (`Cmd+Shift+V`).
+Open this repository in **VS Code** to navigate all project files. Use the Explorer panel to browse specs and the built-in Markdown preview (`⌘K V`) to read them.
 
 ---
 
@@ -19,7 +19,7 @@ The O11 Concept Store is a 148 m² unmanned retail space that combines:
 - **AI art generation** — customer drawings converted to fashion-quality graphics
 - **Automated Fashion Vault** — premium product storage, pickup, and returns
 - **Digital Product Passport** — authenticity, craftsmanship video, sustainability data
-- **Holographic displays** — Proto Luma virtual try-on and magazine cover experience
+- **Holographic displays** — virtual try-on and celebrity interactions
 - **Full SAP backbone** — Commerce Cloud, Customer Data Cloud, S/4HANA, Business AI Platform
 
 ---
@@ -31,13 +31,11 @@ The O11 Concept Store is a 148 m² unmanned retail space that combines:
 ├── design-system/                           # Visual design system
 │   ├── design-tokens.md                     #   Color, typography, spacing, motion tokens
 │   ├── component-rules.md                   #   Per-component usage rules + motion patterns
-│   ├── motion-guide.md                      #   Motion/animation reference
-│   └── evaluation-loop.md                   #   Blind adversarial design eval process
-├── mobile-app-requirements.md               # Mobile app UX requirements (F-01–F-10)
-├── in-store-displays-requirements.md        # Interactive displays (D-01–D-03)
-├── digital-product-passport-requirements.md # Digital Product Passport (P-01–P-06)
+│   └── motion-guide.md                      #   Motion reference
+├── mobile-app-requirements.md               # Mobile app UX requirements (10 features)
+├── in-store-displays-requirements.md        # Interactive displays (Graffiti Wall, Kiosk, Endless Aisle)
+├── digital-product-passport-requirements.md # Digital Product Passport experience
 ├── cross-cutting-requirements.md            # Loyalty, tier differentiation, accessibility
-├── handoff.md                               # Session context for agent continuity
 └── Reference/
     └── VF_Concept_Store_V2_DRAFT.pptx       # Original concept deck (33 MB, gitignored)
 ```
@@ -65,7 +63,7 @@ All visual values are defined as CSS custom properties. No hardcoded values perm
 | Document | Covers |
 |---|---|
 | `mobile-app-requirements.md` | Store entry, product discovery, virtual try-on, checkout, order tracking, vault collection, Digital Product Passport, returns, loyalty |
-| `in-store-displays-requirements.md` | Digital Graffiti Wall canvas, AI Fashion Cover kiosk (Proto Luma), Endless Aisle styling screen |
+| `in-store-displays-requirements.md` | Digital Graffiti Wall canvas, AI Fashion Cover kiosk, Endless Aisle styling screen |
 | `digital-product-passport-requirements.md` | Passport structure, craftsmanship story, embroidery video, sustainability, public share |
 | `cross-cutting-requirements.md` | Loyalty touchpoints, premium vs. standard tiers, accessibility/error handling |
 
@@ -77,7 +75,7 @@ All visual values are defined as CSS custom properties. No hardcoded values perm
 |---|---|
 | **Robotics** | Universal Robots / KUKA, Tajima embroidery |
 | **RFID** | Nedap / Keonn |
-| **Holograms** | Proto Luma (D-02 AI Fashion Cover Kiosk) |
+| **Holograms** | Proto Luma / Samsung |
 | **SAP** | Commerce Cloud, Customer Data Cloud, S/4HANA Retail, Business AI Platform, Emarsys, Customer Data Platform |
 | **Payments** | SAP Customer Checkout / Payfree |
 
@@ -86,7 +84,7 @@ All visual values are defined as CSS custom properties. No hardcoded values perm
 ## Working with This Repo
 
 ### For designers
-Open in VS Code. Browse specs in the Explorer panel. Use `Cmd+Shift+V` for Markdown preview. Refer to `design-system/design-tokens.md` for exact token values when building screens.
+Browse specs directly in VS Code. Refer to `design-system/design-tokens.md` for exact token values when building screens.
 
 ### For developers
 The design tokens in `design-system/design-tokens.md` include a ready-to-paste CSS `:root {}` block. Copy it into your project's global stylesheet.
