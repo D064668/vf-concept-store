@@ -1,0 +1,119 @@
+/* S·Fashion Design Tokens — Source: S-Fashion-Design-Guidelines.html */
+:root {
+  /* Spacing Grid (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --gutter: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Corner Radii */
+  --radius-xs: 4px;
+  --radius-image-sm: 8px;
+  --radius-control: 12px;
+  --radius-message: 16px;
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  /* Sizing Constraints */
+  --touch-target: 44px;
+  --button-height: 52px;
+  --chip-height: 34px;
+  --border-width: 1px;
+  --canvas-width: 390px;
+  --canvas-narrow: 360px;
+  --canvas-wide: 430px;
+  --tablet: 768px;
+  --desktop: 1440px;
+  --grid-columns: 2;
+
+  /* Durations & Easing Curves */
+  --duration-instant: 100ms;
+  --duration-quick: 200ms;
+  --duration-standard: 300ms;
+  --duration-screen: 350ms;
+  --duration-editorial: 900ms;
+  --duration-hero: 1200ms;
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --distance-sm: 8px;
+  --distance-md: 16px;
+  --distance-lg: 24px;
+  --stagger-ui: 50ms;
+  --stagger-editorial: 120ms;
+
+  /* Typography */
+  --font-brand: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Brand Swatches (Immutable) */
+  --sage-900: #2D4A3E;
+  --sage-700: #3D6B5A;
+  --sage-500: #7A9A8A;
+  --sage-300: #A8C4B8;
+  --sage-100: #D4E4DC;
+  --black: #1A1A1A;
+  --pure-black: #0B0E0C;
+  --gold: #C4AF7E;
+  --gold-glow: rgba(196, 175, 126, 0.25);
+}
+
+/* Light Theme (Default S·Fashion Calm Aesthetic) */
+:root, [data-theme="light"] {
+  --canvas: #F4F7F5;
+  --surface: #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --surface-translucent: rgba(255, 255, 255, 0.85);
+  --stylist-surface: var(--sage-100);
+  --user-message: var(--sage-300);
+  --primary: var(--sage-700);
+  --on-primary: #FFFFFF;
+  --secondary: var(--sage-700);
+  --accent: var(--sage-500);
+  --ink: var(--black);
+  --ink-muted: #5B6B63;
+  --ink-subtle: #8A9A92;
+  --ink-label: var(--sage-700);
+  --border-subtle: var(--sage-100);
+  --border-control: #728F81;
+  --border-focus: var(--sage-700);
+  --success: #2D7A4F;
+  --warning: #C4933D;
+  --error: #B84040;
+  --image-fallback: #E9EFEC;
+  --focus-ring: var(--sage-700);
+  --shadow-soft: 0 4px 20px -2px rgba(45, 74, 62, 0.08);
+  --shadow-float: 0 12px 36px -4px rgba(45, 74, 62, 0.14);
+}
+
+/* Dark Theme (Velvet Atelier Mode) */
+[data-theme="dark"] {
+  --canvas: #121614;
+  --surface: #1A1F1C;
+  --surface-raised: #232B27;
+  --surface-translucent: rgba(26, 31, 28, 0.88);
+  --stylist-surface: #232B27;
+  --user-message: var(--sage-900);
+  --primary: var(--sage-300);
+  --on-primary: var(--black);
+  --secondary: var(--sage-300);
+  --accent: var(--sage-500);
+  --ink: #EEF2F0;
+  --ink-muted: #A3B1AA;
+  --ink-subtle: #6D7D75;
+  --ink-label: var(--sage-300);
+  --border-subtle: #2C3631;
+  --border-control: #6E7F76;
+  --border-focus: var(--sage-300);
+  --success: #6FC08F;
+  --warning: #D9AE5F;
+  --error: #E88080;
+  --image-fallback: #26302B;
+  --focus-ring: var(--sage-300);
+  --shadow-soft: 0 4px 24px -2px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 12px 40px -4px rgba(0, 0, 0, 0.65);
+}

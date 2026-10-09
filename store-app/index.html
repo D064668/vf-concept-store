@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>S·Fashion — Agent-Led Store Experience</title>
+  
+  <!-- Typography (SAP 72 fallback stack with Google Fonts Inter & Outfit for refined elegance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+
+  <!-- Outer Desktop Presentation Container -->
+  <div class="viewport-wrapper" id="viewport-wrapper">
+    
+    <!-- Presentation Toolbar for Review & Testing -->
+    <header class="presentation-bar">
+      <div class="presentation-label">S·Fashion Agent-Led Store App</div>
+      <button class="pres-btn" id="pres-btn-theme" title="Toggle Theme">🌓 Toggle Theme</button>
+      <button class="pres-btn" id="pres-btn-view" title="Toggle Device Frame">Full Viewport</button>
+    </header>
+
+    <!-- Mobile Device Frame (iPhone 16 Pro Style) -->
+    <div class="device-shell" id="device-shell">
+      
+      <!-- Dynamic Island -->
+      <div class="dynamic-island">
+        <span style="font-size: 9px; color: var(--gold);">S·FASHION</span>
+        <div class="island-camera"></div>
+      </div>
+
+      <!-- Mobile Status Bar -->
+      <div class="status-bar">
+        <span>09:41</span>
+        <div class="status-bar-icons">
+          <span>5G</span>
+          <span>􀙇</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <!-- App Header Bar -->
+      <header class="app-header">
+        <div class="brand-wrap">
+          <svg class="app-logo" role="img" aria-label="S·Fashion" viewBox="0 0 1052 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M941.857 178.383V52.3164H970.09V78.8203H970.551C976.312 64.416 987.836 49.8965 1011.92 49.8965C1039 49.8965 1051.1 68.334 1051.1 95.1836V178.383H1021.95V102.213C1021.95 85.2734 1016.07 75.0176 999.129 75.0176C981.729 75.0176 971.012 86.541 971.012 107.744V178.383H941.857Z" fill="currentColor"/>
+            <path d="M854.971 180.688C817.289 180.688 790.785 155.105 790.785 115.35C790.785 75.5938 817.289 49.8965 854.971 49.8965C892.652 49.8965 919.156 75.5938 919.156 115.35C919.156 155.105 892.652 180.688 854.971 180.688ZM821.322 115.35C821.322 142.43 835.381 157.064 854.971 157.064C874.561 157.064 888.619 142.43 888.619 115.35C888.619 88.1543 874.561 73.6348 854.971 73.6348C835.381 73.6348 821.322 88.1543 821.322 115.35Z" fill="currentColor"/>
+            <path d="M739.045 178.383V52.3164H768.199V178.383H739.045ZM736.164 17.1699C736.164 7.0293 743.424 0 753.564 0C763.705 0 771.08 7.0293 771.08 17.1699C771.08 27.3105 763.705 34.2246 753.564 34.2246C743.424 34.2246 736.164 27.3105 736.164 17.1699Z" fill="currentColor"/>
+            <path d="M600.072 178.383V6.56836H629.227V78.8203H629.803C634.758 63.3789 646.857 49.8965 670.135 49.8965C697.215 49.8965 709.314 68.334 709.314 95.1836V178.383H680.16V102.213C680.16 85.2734 674.283 75.0176 657.344 75.0176C639.943 75.0176 629.227 86.541 629.227 107.744V178.383H600.072Z" fill="currentColor"/>
+            <path d="M527.475 180.688C505.465 180.688 487.604 174.465 475.389 161.213L492.904 143.697C502.93 154.76 513.762 158.217 527.014 158.217C539.805 158.217 549.83 154.529 549.83 144.158C549.83 132.75 539.113 129.639 521.021 124.914C501.547 119.844 481.266 111.662 481.266 86.7715C481.266 63.3789 499.242 49.8965 529.088 49.8965C548.562 49.8965 564.58 55.8887 575.873 67.0664L558.818 84.1211C550.291 75.3633 539.805 72.1367 529.549 72.1367C517.449 72.1367 509.498 76.2852 509.498 85.5039C509.498 94.8379 519.754 97.834 536.809 102.328C556.744 107.398 578.178 114.312 578.178 142.084C578.178 166.514 558.473 180.688 527.475 180.688Z" fill="currentColor"/>
+            <path d="M388.387 180.688C366.377 180.688 350.705 167.551 350.705 144.043C350.705 116.963 372.83 104.287 405.557 104.287H428.373V97.0273C428.373 81.8164 420.998 73.5195 405.672 73.5195C391.383 73.5195 381.357 79.627 373.521 89.5371L356.121 72.252C367.76 59.5762 383.547 49.8965 408.783 49.8965C440.818 49.8965 457.412 66.6055 457.412 97.1426V178.383H429.295V154.99H428.604C420.883 172.621 408.207 180.688 388.387 180.688ZM379.744 141.277C379.744 151.764 386.889 158.217 398.758 158.217C417.541 158.217 428.373 144.043 428.373 129.178V120.996H410.512C393.803 120.996 379.744 125.49 379.744 141.277Z" fill="currentColor"/>
+            <path d="M229.939 178.383V16.0176H336.531V42.8672H260.592V87.002H333.881V113.621H260.592V178.383H229.939Z" fill="currentColor"/>
+            <path d="M172.558 112.726C179.372 112.726 184.897 107.202 184.897 100.387C184.897 93.5721 179.372 88.0476 172.558 88.0476C165.743 88.0476 160.218 93.5721 160.218 100.387C160.218 107.202 165.743 112.726 172.558 112.726Z" fill="currentColor"/>
+            <path d="M65.5104 96.7502C47.1515 91.8858 29.803 86.7131 29.803 67.8959C29.803 53.4527 39.3496 41.5502 62.238 41.5502C81.8217 41.5502 92.4082 49.1376 99.5374 57.1244L104.493 52.1689C97.0877 43.6621 84.727 34.8499 62.6051 34.8499C35.8922 34.8499 22.4005 48.9849 22.4005 68.0192C22.4005 92.3762 43.1152 98.5566 62.9723 103.544C82.9232 108.623 102.231 113.855 102.231 134.296C102.231 154.735 84.6063 164.008 64.2588 164.008C43.9112 164.008 31.3655 156.115 22.4621 145.344L17.3832 150.423C27.1121 162.51 41.9225 170.77 64.2293 170.77C88.983 170.77 109.574 159.144 109.574 134.143C109.574 109.143 86.9005 102.384 65.4514 96.844L65.5131 96.7529L65.5104 96.7502Z" fill="currentColor"/>
+            <path d="M68.9679 83.7137C55.4118 80.1331 48.9875 77.4717 45.9589 74.6254C45.9295 74.6254 45.8678 74.5637 45.8356 74.5343C45.7124 74.411 45.6212 74.2904 45.4685 74.1671C45.4068 74.1054 45.3452 74.0438 45.2541 73.9527C45.0396 73.6766 44.8252 73.4327 44.6108 73.1272C44.6108 73.1272 44.6108 73.0977 44.5813 73.0656C42.4694 69.8226 42.3166 64.406 45.5918 60.4287C45.6534 60.3671 45.715 60.276 45.7767 60.2143C46.0527 59.9088 46.3261 59.6032 46.6343 59.3272C46.6638 59.2977 46.7255 59.2655 46.7576 59.2039C48.8079 57.368 51.7453 55.9609 55.8138 55.5026H55.8754C57.7113 55.2266 59.8233 55.0738 62.2407 55.0738C62.7607 55.0738 63.2512 55.0738 63.7711 55.1033H63.9239C64.1999 55.1033 64.4733 55.1033 64.7493 55.1328C65.1165 55.1328 65.4837 55.1328 65.8214 55.1623C77.9999 55.8966 83.9043 59.6917 92.2877 68.4718C92.3494 68.5334 92.411 68.5951 92.4726 68.6862C94.523 70.8598 96.7877 73.43 99.2051 76.5497L122.367 53.388C116.248 44.3935 110.036 38.4248 106.884 35.7634C95.1608 26.2222 80.3209 21.3872 62.6026 21.3872C30.4758 21.3872 8.9034 40.1428 8.9034 68.0483C8.9034 103.941 41.9495 112.201 59.6651 116.639C83.0413 122.576 88.7339 126.033 88.7339 134.293C88.7339 145.065 80.5032 150.511 64.2857 150.511C51.1289 150.511 42.0406 146.901 34.3915 138.485C28.8222 132.12 26.008 127.655 24.1105 124.685L0 148.766C1.86537 151.918 7.58746 160.821 15.5743 167.798C28.2727 178.722 44.5813 184.229 64.2857 184.229C99.4732 184.229 123.125 164.096 123.125 134.111C123.125 97.7603 90.476 89.3152 68.9357 83.7459V83.6842L68.9652 83.7137H68.9679ZM64.3178 177.438C46.3877 177.438 31.5773 172.482 20.1037 162.721C14.0761 157.49 10.3132 151.797 8.87392 149.412L12.669 145.617L17.7478 140.538L22.9795 135.306L27.6911 141.028C36.9322 152.226 48.2236 157.214 64.2857 157.214C91.4569 157.214 95.4958 142.832 95.4958 134.266C95.4958 119.764 82.583 115.449 61.3483 110.062C43.1421 105.533 15.6654 98.6501 15.6654 68.0215C15.6654 43.7583 34.1154 28.1224 62.6026 28.1224C78.5735 28.1224 91.9473 32.4052 102.472 40.8825C108.591 46.0846 112.6 51.4074 113.517 52.6938L109.264 56.9472L104.308 61.9028L99.2588 66.9522L94.4854 61.6294C88.9483 55.4169 80.2888 48.3199 62.2032 48.3199C53.2677 48.3199 46.5057 50.3702 42.1612 54.2242C40.6013 55.6313 38.275 58.2632 37.1118 62.0582C36.8358 63.0686 36.5919 64.1085 36.4391 65.1779C36.0103 68.6648 36.4391 72.3982 38.1517 75.55L38.275 75.8261C38.275 75.8261 38.3045 75.9494 38.3661 75.9789C38.4572 76.1316 38.551 76.2549 38.6422 76.3755C42.4372 82.6175 51.4934 86.0749 67.1293 90.205C87.8735 95.5599 116.331 102.871 116.331 134.023C116.331 160.368 95.8925 177.411 64.2214 177.411L64.3125 177.441L64.3178 177.438Z" fill="currentColor"/>
+          </svg>
+          <div class="store-badge">
+            <span class="indicator-dot"></span>
+            <span>Walldorf Flagship</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button class="header-icon-btn" id="theme-toggle-btn" title="Toggle Light/Dark Theme">🌓</button>
+          <div class="store-badge" style="background:rgba(196,175,126,0.15);color:var(--gold);border-color:rgba(196,175,126,0.3);">
+            <span>VIP</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main App Container -->
+      <main class="app-container">
+        
+        <!-- ==============================================================
+             TOP LIVING ATELIER VISUAL STAGE
+             ============================================================== -->
+        <section class="atelier-stage" id="atelier-stage">
+          <div class="stage-ambient-glow"></div>
+          
+          <!-- Stage Top Labels -->
+          <div class="stage-top-labels">
+            <span class="stage-tag" id="stage-tag">Heavyweight Boxy Tee · Deep Forest Sage</span>
+            <button class="stage-pairing-badge" id="stage-pairing-badge">
+              <span>Pair Table 55" ↗</span>
+            </button>
+          </div>
+
+          <!-- Garment & Embroidery Viewport -->
+          <div class="garment-stage-viewport" id="garment-stage-viewport">
+            <svg class="garment-svg" id="stage-garment-svg" viewBox="0 0 210 210" fill="none">
+              <!-- Rendered via JS -->
+            </svg>
+
+            <!-- Dynamic Embroidery Layer -->
+            <div class="embroidery-layer" id="embroidery-layer" data-placement="chest-left">
+              <svg class="embroidery-svg-graphic" id="embroidery-svg" viewBox="0 0 56 56" fill="none">
+                <!-- Rendered via JS -->
+              </svg>
+            </div>
+          </div>
+
+          <!-- Stage Bottom Controls (Placement & Thread Palette) -->
+          <div class="stage-footer">
+            <div class="placement-selector-bar">
+              <button class="placement-chip active" data-placement="chest-left">Chest</button>
+              <button class="placement-chip" data-placement="center-chest">Center</button>
+              <button class="placement-chip" data-placement="sleeve-left">Sleeve</button>
+              <button class="placement-chip" data-placement="nape">Nape</button>
+            </div>
+
+            <div class="thread-swatches" id="thread-swatches">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Robotic Tajima Production Overlay -->
+          <div class="robot-production-overlay" id="robot-production-overlay">
+            <div class="robot-header">Live Production Feed</div>
+            <div class="robot-machine-id">Tajima 4-Head · Cell 01</div>
+            
+            <div class="robot-canvas-anim">
+              <div class="needle-arm"></div>
+              <div class="needle-sparkle"></div>
+              <svg width="60" height="60" viewBox="0 0 56 56" style="color:var(--gold);opacity:0.8;">
+                <circle cx="28" cy="28" r="24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,4" fill="none"/>
+              </svg>
+            </div>
+
+            <div class="robot-progress-box">
+              <div class="robot-progress-bar">
+                <div class="robot-progress-fill" id="robot-progress-fill"></div>
+              </div>
+              <div class="robot-status-text">
+                <span id="robot-percent-text">15%</span>
+                <span id="robot-time-text">12s remaining</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             CONCIERGE FEED (DIALOGUE & GENERATIVE MICRO-UIS)
+             ============================================================== -->
+        <section class="concierge-stream" id="concierge-stream">
+          <!-- Dynamic conversation & micro-cards injected here -->
+        </section>
+
+        <!-- ==============================================================
+             CONCIERGE FOOTER & COMPOSER
+             ============================================================== -->
+        <footer class="concierge-footer">
+          <!-- Suggested Intent Chips Carousel -->
+          <div class="chips-carousel" id="chips-carousel">
+            <!-- Rendered via JS -->
+          </div>
+
+          <!-- Composer Bar -->
+          <div class="composer-box">
+            <button class="composer-btn-voice" id="composer-voice-btn" title="Speak to your Atelier Concierge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="22"/>
+              </svg>
+            </button>
+            <input type="text" class="composer-input" id="composer-input" placeholder="Ask your concierge or direct a look..." />
+            <button class="composer-btn-send" id="composer-send-btn" title="Send message">↑</button>
+          </div>
+        </footer>
+
+      </main>
+
+      <!-- App Toast Notification -->
+      <aside class="app-toast" id="app-toast" role="status" aria-live="polite">
+        <span id="toast-message">Broadcast active: Tabletop 55" paired</span>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- Main JavaScript Application Module -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

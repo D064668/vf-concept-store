@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S·Fashion — Agent-Led Mobile Atelier Concept 01</title>
+  
+  <!-- Premium Editorial Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* -------------------------------------------------------------
+       THE "COOL LUXURY" DESIGN TOKENS (AVANT-GARDE ATELIER)
+       ------------------------------------------------------------- */
+    :root {
+      --bg-void: #080A09;
+      --bg-surface: #111513;
+      --bg-surface-raised: #181E1B;
+      --bg-card: rgba(22, 28, 25, 0.72);
+      
+      --glass-border: rgba(168, 196, 184, 0.14);
+      --glass-border-active: rgba(196, 175, 126, 0.45);
+      --glass-specular: rgba(255, 255, 255, 0.08);
+
+      --sage-deep: #1F362D;
+      --sage-primary: #3D6B5A;
+      --sage-glow: #689984;
+      --sage-pale: #D4E4DC;
+      --gold-accent: #C4AF7E;
+      --gold-glow: rgba(196, 175, 126, 0.35);
+
+      --text-hero: #F5F7F6;
+      --text-muted: #8E9F97;
+      --text-faint: #52635B;
+
+      --font-display: "Cormorant Garamond", serif;
+      --font-body: "Plus Jakarta Sans", sans-serif;
+      --font-mono: "Space Grotesk", monospace;
+
+      --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-void);
+      color: var(--text-hero);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 20px 10px;
+      perspective: 1200px;
+    }
+
+    /* Atmospheric Background Glows */
+    .ambient-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ambient-mesh::before {
+      content: "";
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(61, 107, 90, 0.22) 0%, transparent 70%);
+      top: -200px;
+      left: 15%;
+      filter: blur(100px);
+    }
+    .ambient-mesh::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196, 175, 126, 0.12) 0%, transparent 65%);
+      bottom: -150px;
+      right: 20%;
+      filter: blur(120px);
+    }
+
+    /* -------------------------------------------------------------
+       DIRECTOR CONTROL BAR (SWITCHES BETWEEN STATES LIVE)
+       ------------------------------------------------------------- */
+    .director-bar {
+      position: relative;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(18, 23, 20, 0.85);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+    .director-label {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--gold-accent);
+      padding: 0 10px 0 6px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .state-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-lux);
+      white-space: nowrap;
+    }
+    .state-btn:hover {
+      color: var(--text-hero);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .state-btn.active {
+      color: #080A09;
+      background: var(--gold-accent);
+      font-weight: 600;
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    /* -------------------------------------------------------------
+       THE IPHONE 16 PRO LUXURY FRAME
+       ------------------------------------------------------------- */
+    .phone-chassis {
+      position: relative;
+      z-index: 10;
+      width: 390px;
+      height: 844px;
+      background: var(--bg-surface);
+      border-radius: 54px;
+      border: 10px solid #1E2320;
+      box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 25px 80px -10px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(61, 107, 90, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Dynamic Island */
+    .island {
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 118px;
+      height: 29px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      transition: width 0.4s var(--ease-lux);
+    }
+    .island-pill {
+      font-size: 9px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      color: var(--gold-accent);
+      opacity: 0.85;
+    }
+    .island-lens {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #0C100E;
+      box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Status Bar */
+    .phone-status {
+      height: 46px;
+      padding: 12px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-hero);
+      z-index: 400;
+    }
+
+    /* App Luxury Nav */
+    .app-nav {
+      height: 50px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(17, 21, 19, 0.7);
+      backdrop-filter: blur(20px);
+      z-index: 300;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .brand-mark {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-hero);
+    }
+    .brand-dot {
+      color: var(--gold-accent);
+    }
+    .nav-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--sage-glow);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(61, 107, 90, 0.2);
+      border: 1px solid rgba(61, 107, 90, 0.4);
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .nav-vip-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--gold-accent);
+      background: rgba(196, 175, 126, 0.1);
+      border: 1px solid rgba(196, 175, 126, 0.3);
+      padding: 3px 9px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .vip-pulsar {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold-accent);
+      box-shadow: 0 0 8px var(--gold-accent);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    /* -------------------------------------------------------------
+       THE TOP 45%: THE LIVING VISUAL ATELIER STAGE
+       ------------------------------------------------------------- */
+    .atelier-stage {
+      height: 330px;
+      position: relative;
+      background: radial-gradient(circle at 50% 60%, #1A2420 0%, #0F1412 100%);
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: all 0.6s var(--ease-lux);
+    }
+
+    /* Atmospheric Studio Lighting on Garment */
+    .stage-light-cone {
+      position: absolute;
+      top: -80px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(104, 153, 132, 0.25) 0%, transparent 70%);
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    /* Telemetry Info at Stage Top */
+    .stage-telemetry {
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+    .garment-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-hero);
+    }
+    .table-beam-btn {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--gold-accent);
+      background: rgba(196, 175, 126, 0.12);
+      border: 1px solid rgba(196, 175, 126, 0.35);
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-lux);
+    }
+    .table-beam-btn:hover {
+      background: rgba(196, 175, 126, 0.25);
+      transform: translateY(-1px);
+    }
+
+    /* Garment Silhouette Viewport */
+    .garment-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s var(--ease-lux);
+    }
+
+    /* SVG Garment Art */
+    .garment-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.5));
+      transition: all 0.5s var(--ease-lux);
+    }
+
+    /* Specular Fabric Gradient */
+    .fabric-base {
+      fill: url(#pimaCottonShader);
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 1.2;
+    }
+
+    /* Dynamic Tactile Embroidery Layer */
+    .embroidery-module {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      z-index: 30;
+      transition: all 0.5s var(--ease-lux);
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+    }
+
+    /* Placement Positions */
+    .embroidery-module[data-pos="chest-left"] {
+      top: 74px;
+      left: 68px;
+    }
+    .embroidery-module[data-pos="center"] {
+      top: 86px;
+      left: 84px;
+    }
+    .embroidery-module[data-pos="sleeve"] {
+      top: 98px;
+      left: 32px;
+      transform: rotate(-14deg);
+    }
+    .embroidery-module[data-pos="nape"] {
+      top: 45px;
+      left: 84px;
+      transform: scale(0.85);
+    }
+
+    /* Raised Embroidery Stitch with Specular Thread Shader */
+    .embroidery-stitch-path {
+      stroke: var(--gold-accent);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#specularThread);
+      transition: stroke 0.4s var(--ease-lux);
+    }
+
+    /* Interactive Placement Pins on Garment */
+    .placement-node {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: all 0.3s var(--ease-lux);
+      z-index: 35;
+    }
+    .placement-node::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      transition: all 0.3s var(--ease-lux);
+    }
+    .placement-node:hover {
+      border-color: var(--gold-accent);
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+    .placement-node.active {
+      border-color: var(--gold-accent);
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+    .placement-node.active::after {
+      background: var(--gold-accent);
+      box-shadow: 0 0 6px var(--gold-accent);
+    }
+
+    /* Placement coordinates */
+    .node-chest { top: 100px; left: 94px; }
+    .node-center { top: 112px; left: 110px; }
+    .node-sleeve { top: 118px; left: 56px; }
+
+    /* Stage Bottom Bar (Thread Swatches & Placement Toggle) */
+    .stage-dock {
+      position: absolute;
+      bottom: 12px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 25;
+    }
+    .thread-palette {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .thread-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s var(--ease-lux);
+    }
+    .thread-dot:hover, .thread-dot.active {
+      transform: scale(1.25);
+      border-color: #FFFFFF;
+    }
+
+    .pos-pill-group {
+      display: flex;
+      gap: 3px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      padding: 3px;
+      border-radius: 999px;
+    }
+    .pos-chip {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pos-chip.active {
+      color: #080A09;
+      background: var(--text-hero);
+    }
+
+    /* -------------------------------------------------------------
+       THE BOTTOM 55%: CONCIERGE DIALOGUE & EDITORIAL DRAWER
+       ------------------------------------------------------------- */
+    .concierge-drawer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 16px 20px;
+      gap: 16px;
+      background: var(--bg-surface);
+      position: relative;
+    }
+    .concierge-drawer::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* The Living Concierge Voice Card */
+    .concierge-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .concierge-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--gold-accent), var(--sage-primary));
+    }
+
+    .agent-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* Harmonic Living Intelligence Waveform */
+    .agent-orb {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg at 50% 50%, #3D6B5A 0deg, #C4AF7E 180deg, #689984 360deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(104, 153, 132, 0.4);
+      animation: rotate-orb 6s linear infinite;
+    }
+    .agent-orb-inner {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #111513;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: var(--gold-accent);
+      font-weight: 700;
+    }
+    @keyframes rotate-orb {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .agent-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .agent-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+    }
+    .agent-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-hero);
+    }
+
+    .concierge-speech {
+      font-family: var(--font-display);
+      font-size: 19px;
+      line-height: 26px;
+      font-style: italic;
+      color: #E2E8E4;
+      letter-spacing: 0.01em;
+    }
+
+    /* Generative Micro-Card: Atelier Co-Creation */
+    .co-create-card {
+      background: rgba(26, 34, 30, 0.85);
+      border: 1px solid var(--glass-border-active);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--sage-glow);
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+    }
+    .motif-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .motif-cell {
+      background: rgba(14, 18, 16, 0.6);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-lux);
+    }
+    .motif-cell:hover {
+      border-color: var(--gold-accent);
+      transform: translateY(-2px);
+    }
+    .motif-cell.active {
+      background: rgba(196, 175, 126, 0.12);
+      border-color: var(--gold-accent);
+      box-shadow: 0 0 12px rgba(196, 175, 126, 0.2);
+    }
+    .motif-icon {
+      width: 28px;
+      height: 28px;
+      color: var(--gold-accent);
+    }
+    .motif-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-hero);
+    }
+
+    /* Prompt Input Capsule */
+    .prompt-capsule {
+      display: flex;
+      align-items: center;
+      background: rgba(10, 14, 12, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 4px 6px 4px 12px;
+      gap: 8px;
+    }
+    .prompt-input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      outline: 0;
+      color: var(--text-hero);
+      font-family: var(--font-body);
+      font-size: 12px;
+    }
+    .prompt-input::placeholder {
+      color: var(--text-faint);
+    }
+    .prompt-gen-btn {
+      background: var(--gold-accent);
+      color: #0A0E0C;
+      border: 0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .prompt-gen-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* -------------------------------------------------------------
+       STATE 3 OVERLAY: TAJIMA ROBOTIC TELEMETRY HUD
+       ------------------------------------------------------------- */
+    .robot-hud-card {
+      display: none;
+      background: linear-gradient(145deg, #131A16 0%, #0A0E0C 100%);
+      border: 1px solid var(--gold-accent);
+      border-radius: 20px;
+      padding: 18px;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 0 30px rgba(196, 175, 126, 0.15);
+      animation: fadeIn 0.4s var(--ease-lux);
+    }
+    .robot-hud-card.active {
+      display: flex;
+    }
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .telemetry-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gold-accent);
+      background: rgba(196, 175, 126, 0.15);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .stitch-pulse-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .stitch-pulse-fill {
+      width: 68%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--sage-primary), var(--gold-accent));
+      box-shadow: 0 0 10px var(--gold-accent);
+    }
+    .needle-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+    .metric-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-hero);
+    }
+    .metric-key {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* -------------------------------------------------------------
+       STATE 4 OVERLAY: HOLOGRAPHIC VAULT PASS
+       ------------------------------------------------------------- */
+    .vault-pass-card {
+      display: none;
+      background: radial-gradient(circle at 50% 20%, #1F2E26 0%, #0F1613 100%);
+      border: 1px solid var(--gold-accent);
+      border-radius: 20px;
+      padding: 22px 18px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(196, 175, 126, 0.2);
+    }
+    .vault-pass-card.active {
+      display: flex;
+    }
+    .vault-num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #FFFFFF;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+    .qr-frame {
+      background: #FFFFFF;
+      padding: 10px;
+      border-radius: 12px;
+      width: 110px;
+      height: 110px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .unlock-btn {
+      width: 100%;
+      height: 44px;
+      background: var(--gold-accent);
+      color: #0A0E0C;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--gold-glow);
+      transition: all 0.25s var(--ease-lux);
+    }
+    .unlock-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px var(--gold-accent);
+    }
+
+    /* -------------------------------------------------------------
+       PERSISTENT FOOTER & COMPOSER
+       ------------------------------------------------------------- */
+    .app-footer {
+      padding: 10px 18px 20px;
+      background: rgba(17, 21, 19, 0.85);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .intent-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .intent-strip::-webkit-scrollbar { display: none; }
+    
+    .intent-pill {
+      flex-shrink: 0;
+      background: rgba(61, 107, 90, 0.2);
+      border: 1px solid rgba(61, 107, 90, 0.35);
+      color: var(--sage-pale);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .intent-pill:hover {
+      background: var(--sage-primary);
+      color: #FFF;
+    }
+
+    .voice-composer {
+      display: flex;
+      align-items: center;
+      background: rgba(8, 10, 9, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      padding: 4px 6px 4px 14px;
+      gap: 8px;
+    }
+    .voice-composer input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      outline: 0;
+      color: var(--text-hero);
+      font-size: 13px;
+    }
+    .mic-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      color: var(--gold-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mic-btn:hover {
+      background: var(--gold-accent);
+      color: #000;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Beam Effect Ripple (When Table Synced) */
+    .beam-ripple {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+      box-shadow: 0 0 15px var(--gold-accent);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .beam-ripple.animating {
+      animation: beam-swipe 1.2s var(--ease-lux);
+    }
+    @keyframes beam-swipe {
+      0% { transform: translateY(-50px); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(350px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Ambient Mesh -->
+  <div class="ambient-mesh"></div>
+
+  <!-- DIRECTOR CONTROL BAR: Click to Jump Between the 4 State Markups -->
+  <nav class="director-bar">
+    <span class="director-label">Director State</span>
+    <button class="state-btn active" onclick="switchState('curate')">01 Curated Edit</button>
+    <button class="state-btn" onclick="switchState('atelier')">02 Co-Creation</button>
+    <button class="state-btn" onclick="switchState('robot')">03 Robotic Tajima Cell</button>
+    <button class="state-btn" onclick="switchState('vault')">04 Vault #04 Pass</button>
+  </nav>
+
+  <!-- IPHONE 16 PRO LUXURY FRAME -->
+  <main class="phone-chassis">
+    
+    <!-- Dynamic Island -->
+    <div class="island">
+      <span class="island-pill">S·FASHION</span>
+      <div class="island-lens"></div>
+    </div>
+
+    <!-- Phone Status -->
+    <div class="phone-status">
+      <span>09:41</span>
+      <div style="display:flex;gap:6px;font-size:12px;">
+        <span>5G</span>
+        <span>􀙇</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <!-- App Nav Header -->
+    <header class="app-nav">
+      <div class="nav-brand">
+        <span class="brand-mark">S<span class="brand-dot">·</span>FASHION</span>
+        <span class="nav-tag">Walldorf</span>
+      </div>
+      <div class="nav-vip-badge">
+        <span class="vip-pulsar"></span>
+        <span>VIP ATELIER</span>
+      </div>
+    </header>
+
+    <!-- ==============================================================
+         TOP 45%: THE LIVING VISUAL ATELIER STAGE
+         ============================================================== -->
+    <section class="atelier-stage">
+      <div class="stage-light-cone"></div>
+      <div class="beam-ripple" id="beamRipple"></div>
+
+      <!-- Top Telemetry -->
+      <div class="stage-telemetry">
+        <span class="garment-label" id="stageGarmentLabel">Heavyweight Boxy Tee · Deep Sage</span>
+        <button class="table-beam-btn" onclick="triggerTableBeam()">
+          <span>Beam 55" Table</span>
+          <span>↗</span>
+        </button>
+      </div>
+
+      <!-- SVG Filters for Specular Thread Sheen & Fabric Weave -->
+      <svg width="0" height="0" style="position:absolute;">
+        <defs>
+          <linearGradient id="pimaCottonShader" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2D4A3E" />
+            <stop offset="60%" stop-color="#233A31" />
+            <stop offset="100%" stop-color="#1B2B24" />
+          </linearGradient>
+
+          <!-- Specular Lighting for Metallic/Satin Thread Glow -->
+          <filter id="specularThread" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur"/>
+            <feSpecularLighting in="blur" surfaceScale="2" specularConstant="1.2" specularExponent="16" result="specOut">
+              <fePointLight x="-50" y="-80" z="180"/>
+            </feSpecularLighting>
+            <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+            <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.8" k4="0"/>
+          </filter>
+        </defs>
+      </svg>
+
+      <!-- Garment Silhouette Viewport -->
+      <div class="garment-container" id="garmentViewport">
+        
+        <!-- Architectural Boxy Tee SVG with Shadow Drapes -->
+        <svg class="garment-svg" viewBox="0 0 220 220" fill="none">
+          <path class="fabric-base" d="M72,38 C88,48 132,48 148,38 L202,70 L180,115 L158,104 L158,205 L62,205 L62,104 L40,115 L18,70 Z" />
+          <!-- Ribbed Collar Contour -->
+          <path d="M72,38 C88,52 132,52 148,38 C132,44 88,44 72,38 Z" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+          <!-- Subtle Crease Lines for Fabric Realism -->
+          <path d="M62,104 C78,124 76,175 66,205" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" fill="none" />
+          <path d="M158,104 C142,124 144,175 154,205" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" fill="none" />
+        </svg>
+
+        <!-- Interactive Placement Pin Indicators -->
+        <div class="placement-node node-chest active" onclick="setPlacement('chest-left')" title="Left Chest Placement"></div>
+        <div class="placement-node node-center" onclick="setPlacement('center')" title="Center Chest Placement"></div>
+        <div class="placement-node node-sleeve" onclick="setPlacement('sleeve')" title="Sleeve Placement"></div>
+
+        <!-- Dynamic Tonal Embroidery Layer (Satin Stitches) -->
+        <div class="embroidery-module" id="embroideryModule" data-pos="chest-left">
+          <svg viewBox="0 0 52 52" fill="none">
+            <!-- Organic Fern Motif in Satin Thread -->
+            <path class="embroidery-stitch-path" id="stitchPath1" d="M26,48 C24,36 26,20 35,6" />
+            <path class="embroidery-stitch-path" id="stitchPath2" d="M26,41 C18,39 12,36 8,39 C13,34 19,35 25,37" />
+            <path class="embroidery-stitch-path" id="stitchPath3" d="M26,31 C16,27 10,24 6,26 C12,22 19,24 25,27" />
+            <path class="embroidery-stitch-path" id="stitchPath4" d="M26,38 C34,36 41,35 44,38 C39,33 32,33 26,35" />
+            <path class="embroidery-stitch-path" id="stitchPath5" d="M27,28 C36,25 43,23 47,26 C41,21 34,22 27,25" />
+          </svg>
+        </div>
+
+      </div>
+
+      <!-- Stage Bottom Dock: Thread Palettes & Position Toggles -->
+      <div class="stage-dock">
+        <!-- Thread Colors -->
+        <div class="thread-palette">
+          <div class="thread-dot active" style="background:#C4AF7E;" onclick="setThread('#C4AF7E', this)" title="Liquid Sand Gold"></div>
+          <div class="thread-dot" style="background:#3D6B5A;" onclick="setThread('#3D6B5A', this)" title="Tonal Forest Sage"></div>
+          <div class="thread-dot" style="background:#A8C4B8;" onclick="setThread('#A8C4B8', this)" title="Frost Silver"></div>
+          <div class="thread-dot" style="background:#E2E8F0;" onclick="setThread('#E2E8F0', this)" title="Chalk White"></div>
+        </div>
+
+        <!-- Position Pills -->
+        <div class="pos-pill-group">
+          <button class="pos-chip active" id="chip-chest" onclick="setPlacement('chest-left')">Chest</button>
+          <button class="pos-chip" id="chip-center" onclick="setPlacement('center')">Center</button>
+          <button class="pos-chip" id="chip-sleeve" onclick="setPlacement('sleeve')">Sleeve</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         BOTTOM 55%: CONCIERGE DIALOGUE & EDITORIAL DRAWER
+         ============================================================== -->
+    <section class="concierge-drawer">
+      
+      <!-- Living Concierge Monologue Card -->
+      <article class="concierge-card" id="conciergeCard">
+        <div class="agent-header">
+          <div class="agent-orb">
+            <div class="agent-orb-inner">✳</div>
+          </div>
+          <div class="agent-meta">
+            <span class="agent-role">Private Atelier Concierge</span>
+            <span class="agent-name">Julian Vance</span>
+          </div>
+        </div>
+        <p class="concierge-speech" id="conciergeSpeech">
+          "Elena, for this afternoon’s Walldorf executive tour, I have curated our 280 GSM Boxy Tee in Deep Sage. It holds a crisp architectural drape, providing an ideal canvas for our tone-on-tone embroidery."
+        </p>
+      </article>
+
+      <!-- Micro-Card: Atelier Co-Creation Mode (State 1 & 2) -->
+      <div class="co-create-card" id="coCreateModule">
+        <div class="card-eyebrow">
+          <span>Personalization Engine</span>
+          <span style="color:var(--gold-accent);">Tajima 4-Head Ready</span>
+        </div>
+
+        <div class="motif-grid">
+          <div class="motif-cell active" onclick="setMotif('fern', this)">
+            <svg class="motif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22C12 14 16 6 22 2M12 16C7 14 3 10 2 6M12 10C8 7 5 4 4 2M12 18C17 17 21 15 22 12" />
+            </svg>
+            <span class="motif-title">Nordic Fern</span>
+          </div>
+          <div class="motif-cell" onclick="setMotif('ridge', this)">
+            <svg class="motif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 20L9 10L14 16L21 4" />
+            </svg>
+            <span class="motif-title">Alpine Ridge</span>
+          </div>
+          <div class="motif-cell" onclick="setMotif('o11', this)">
+            <svg class="motif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" stroke-dasharray="4 2"/>
+              <path d="M9 12H15M12 9V15"/>
+            </svg>
+            <span class="motif-title">O11 Monogram</span>
+          </div>
+        </div>
+
+        <!-- Generative Prompt Capsule -->
+        <div class="prompt-capsule">
+          <input type="text" class="prompt-input" id="promptField" value="Nordic botanical fern with satin stitch relief" placeholder="Describe aesthetic inspiration..." />
+          <button class="prompt-gen-btn" onclick="simulateAIStitch()">Refine ✨</button>
+        </div>
+      </div>
+
+      <!-- State 3: Tajima Robotic Cell Telemetry Card -->
+      <div class="robot-hud-card" id="robotHudModule">
+        <div class="telemetry-row">
+          <span class="telemetry-badge">Tajima 4-Head · Cell 01</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);" id="timeRemainingText">18s remaining</span>
+        </div>
+        
+        <div style="font-size:13px;font-weight:600;color:#FFF;">Robotic Needle #03 Stitching...</div>
+        
+        <div class="stitch-pulse-bar">
+          <div class="stitch-pulse-fill" id="robotProgressFill"></div>
+        </div>
+
+        <div class="needle-metrics">
+          <div>
+            <div class="metric-val">850</div>
+            <div class="metric-key">RPM Speed</div>
+          </div>
+          <div>
+            <div class="metric-val">120 cN</div>
+            <div class="metric-key">Tension</div>
+          </div>
+          <div>
+            <div class="metric-val">6,420</div>
+            <div class="metric-key">Stitches</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 4: Vault #04 Passcard -->
+      <div class="vault-pass-card" id="vaultPassModule">
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;color:var(--gold-accent);">
+          AUTOMATED FASHION VAULT
+        </div>
+        <div class="vault-num">COMPARTMENT #04</div>
+        <div class="qr-frame">
+          <!-- Stylized QR Vector -->
+          <svg viewBox="0 0 100 100" width="90" height="90">
+            <rect width="100" height="100" fill="#FFF"/>
+            <rect x="8" y="8" width="28" height="28" fill="#111"/>
+            <rect x="14" y="14" width="16" height="16" fill="#FFF"/>
+            <rect x="64" y="8" width="28" height="28" fill="#111"/>
+            <rect x="70" y="14" width="16" height="16" fill="#FFF"/>
+            <rect x="8" y="64" width="28" height="28" fill="#111"/>
+            <rect x="14" y="70" width="16" height="16" fill="#FFF"/>
+            <rect x="44" y="18" width="12" height="12" fill="#111"/>
+            <rect x="44" y="44" width="12" height="12" fill="#111"/>
+            <rect x="68" y="44" width="12" height="12" fill="#111"/>
+            <rect x="18" y="44" width="12" height="12" fill="#111"/>
+            <rect x="44" y="70" width="12" height="12" fill="#111"/>
+            <rect x="70" y="70" width="12" height="12" fill="#111"/>
+          </svg>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);">Approach Compartment #04 and tap below</p>
+        <button class="unlock-btn" onclick="unlockVaultDoor()">Unlock Vault Door</button>
+      </div>
+
+    </section>
+
+    <!-- App Persistent Footer -->
+    <footer class="app-footer">
+      <div class="intent-strip">
+        <button class="intent-pill" onclick="quickIntent('Autumn Palette')">🍂 Autumn Palette</button>
+        <button class="intent-pill" onclick="quickIntent('Gold Thread')">✨ Gold Accent</button>
+        <button class="intent-pill" onclick="quickIntent('Left Sleeve')">📍 Left Sleeve</button>
+        <button class="intent-pill" onclick="quickIntent('Linen Overshirt')">👔 Linen Overshirt</button>
+      </div>
+
+      <div class="voice-composer">
+        <input type="text" placeholder="Speak to Julian or refine silhouette..." id="composerInput" />
+        <button class="mic-btn" onclick="simulateVoice()" title="Tap to Speak">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </button>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // -------------------------------------------------------------
+    // INTERACTIVE LOGIC & STATE SWITCHER
+    // -------------------------------------------------------------
+    let currentThreadColor = "#C4AF7E";
+
+    function switchState(state) {
+      document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.state-btn')).find(b => b.textContent.toLowerCase().includes(state));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const speech = document.getElementById("conciergeSpeech");
+      const coCreate = document.getElementById("coCreateModule");
+      const robotHud = document.getElementById("robotHudModule");
+      const vaultPass = document.getElementById("vaultPassModule");
+      const garment = document.getElementById("garmentViewport");
+
+      // Reset card displays
+      coCreate.style.display = "flex";
+      robotHud.classList.remove("active");
+      vaultPass.classList.remove("active");
+      garment.style.transform = "scale(1)";
+
+      if (state === 'curate') {
+        speech.textContent = '"Elena, for this afternoon’s Walldorf executive tour, I have curated our 280 GSM Boxy Tee in Deep Sage. It holds a crisp architectural drape, providing an ideal canvas for our tone-on-tone embroidery."';
+        setPlacement('chest-left');
+      } else if (state === 'atelier') {
+        speech.textContent = '"Our tonal satin stitches read through angle and specular relief rather than garish contrast. Feel free to touch the placement nodes or beam this session to the 55\\" table."';
+        triggerTableBeam();
+      } else if (state === 'robot') {
+        speech.textContent = '"Order dispatched to S/4HANA. RFID robot retrieved Tee #M-0492. Tajima 4-head machine is actively stitching your design. Telemetry is streaming live below."';
+        coCreate.style.display = "none";
+        robotHud.classList.add("active");
+        simulateRobotProgress();
+      } else if (state === 'vault') {
+        speech.textContent = '"Your piece has been inspected, folded, and sealed in Automated Fashion Vault Compartment #04. Tap below to command release."';
+        coCreate.style.display = "none";
+        vaultPass.classList.add("active");
+        garment.style.transform = "scale(0.85)";
+      }
+    }
+
+    function setPlacement(pos) {
+      const mod = document.getElementById("embroideryModule");
+      mod.setAttribute("data-pos", pos);
+
+      // Update chips
+      document.querySelectorAll('.pos-chip').forEach(c => c.classList.remove('active'));
+      const targetChip = document.getElementById("chip-" + pos.replace("-left", ""));
+      if (targetChip) targetChip.classList.add('active');
+
+      // Update nodes
+      document.querySelectorAll('.placement-node').forEach(n => n.classList.remove('active'));
+      const activeNode = document.querySelector('.node-' + pos.replace("-left", ""));
+      if (activeNode) activeNode.classList.add('active');
+    }
+
+    function setThread(color, el) {
+      currentThreadColor = color;
+      document.querySelectorAll('.thread-dot').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+
+      document.querySelectorAll('.embroidery-stitch-path').forEach(p => {
+        p.style.stroke = color;
+      });
+    }
+
+    function setMotif(type, el) {
+      document.querySelectorAll('.motif-cell').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      const input = document.getElementById("promptField");
+
+      if (type === 'fern') {
+        input.value = "Nordic botanical fern with satin stitch relief";
+      } else if (type === 'ridge') {
+        input.value = "Minimalist alpine topographic contour line";
+      } else {
+        input.value = "Walldorf O11 archival monogram";
+      }
+      simulateAIStitch();
+    }
+
+    function simulateAIStitch() {
+      const stitches = document.querySelectorAll('.embroidery-stitch-path');
+      stitches.forEach(s => {
+        s.style.opacity = '0.2';
+        s.style.strokeDasharray = '200';
+        s.style.strokeDashoffset = '200';
+      });
+
+      setTimeout(() => {
+        stitches.forEach((s, idx) => {
+          setTimeout(() => {
+            s.style.transition = 'stroke-dashoffset 0.8s ease, opacity 0.4s ease';
+            s.style.opacity = '1';
+            s.style.strokeDashoffset = '0';
+          }, idx * 100);
+        });
+      }, 200);
+    }
+
+    function triggerTableBeam() {
+      const ripple = document.getElementById("beamRipple");
+      ripple.classList.remove("animating");
+      void ripple.offsetWidth;
+      ripple.classList.add("animating");
+
+      const speech = document.getElementById("conciergeSpeech");
+      speech.innerHTML = '<span style="color:var(--gold-accent);">✦ Beamed to Table 01:</span> Ideum 55" canvas is live on SAP store Wi-Fi (28ms). You may now sketch with both hands on the table surface.';
+    }
+
+    function simulateRobotProgress() {
+      let progress = 30;
+      const fill = document.getElementById("robotProgressFill");
+      const text = document.getElementById("timeRemainingText");
+      
+      const interval = setInterval(() => {
+        progress += 15;
+        if (progress > 100) {
+          clearInterval(interval);
+          setTimeout(() => switchState('vault'), 1000);
+        } else {
+          fill.style.width = progress + "%";
+          text.textContent = Math.ceil((100 - progress) * 0.25) + "s remaining";
+        }
+      }, 500);
+    }
+
+    function unlockVaultDoor() {
+      alert("✨ Signal dispatched to Fashion Vault: Compartment #04 unlocked. Please collect your bespoke garment!");
+    }
+
+    function quickIntent(label) {
+      if (label.includes("Gold")) {
+        const goldDot = document.querySelector('.thread-dot[style*="C4AF7E"]');
+        if (goldDot) setThread("#C4AF7E", goldDot);
+      } else if (label.includes("Sleeve")) {
+        setPlacement("sleeve");
+      } else if (label.includes("Linen")) {
+        document.getElementById("stageGarmentLabel").textContent = "Atelier Linen Overshirt · Belgian Flax";
+        document.getElementById("conciergeSpeech").textContent = '"Switched to the Belgian Linen Overshirt. Relaxed workwear cut with natural slub texture."';
+      }
+    }
+
+    function simulateVoice() {
+      const input = document.getElementById("composerInput");
+      input.placeholder = "Listening...";
+      setTimeout(() => {
+        input.value = "Shift embroidery to the left sleeve with gold satin thread";
+        setPlacement("sleeve");
+        const goldDot = document.querySelector('.thread-dot[style*="C4AF7E"]');
+        if (goldDot) setThread("#C4AF7E", goldDot);
+        document.getElementById("conciergeSpeech").textContent = '"Understood. Moved motif to the left sleeve with Walldorf Gold satin thread."';
+        input.value = "";
+        input.placeholder = "Speak to Julian or refine silhouette...";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

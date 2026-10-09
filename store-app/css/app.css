@@ -1,0 +1,1262 @@
+/* S·Fashion Store App — Primary Stylesheet */
+@import "./tokens.css";
+
+/* Reset & Base Setup */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* Outer Desktop Frame for Presentation */
+.viewport-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at 50% 20%, rgba(61, 107, 90, 0.12) 0%, rgba(18, 22, 20, 0.95) 100%), #0D100E;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient glow accents */
+.viewport-wrapper::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(122, 154, 138, 0.15) 0%, transparent 70%);
+  top: -150px;
+  left: 20%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+/* Presentation Toolbar (Desktop only) */
+.presentation-bar {
+  position: fixed;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(26, 31, 28, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.presentation-label {
+  font-size: 12px;
+  color: var(--sage-300);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.presentation-label::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6FC08F;
+  box-shadow: 0 0 8px #6FC08F;
+}
+
+.pres-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #EEF2F0;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.pres-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.pres-btn.active {
+  background: var(--sage-700);
+  color: #FFFFFF;
+  border-color: var(--sage-500);
+}
+
+/* Device Shell (iPhone 16 Pro Style) */
+.device-shell {
+  width: var(--canvas-width);
+  height: 844px;
+  max-height: 94vh;
+  background: var(--canvas);
+  border-radius: 50px;
+  box-shadow: 0 0 0 12px #262D29, 0 0 0 14px #1A1F1C, 0 25px 70px rgba(0, 0, 0, 0.65);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--duration-standard) var(--ease-brand);
+}
+
+/* Fullscreen / Raw Mobile Mode */
+.viewport-wrapper.fullscreen-mode {
+  background: var(--canvas);
+}
+
+.viewport-wrapper.fullscreen-mode .device-shell {
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 28px;
+  background: #000000;
+  border-radius: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.island-camera {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #111;
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Status Bar */
+.status-bar {
+  height: 48px;
+  padding: 12px 24px 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  z-index: 900;
+  user-select: none;
+}
+
+.status-bar-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+/* App Header */
+.app-header {
+  height: 52px;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-translucent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 800;
+  flex-shrink: 0;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.app-logo {
+  height: 22px;
+  width: auto;
+  color: var(--primary);
+  display: block;
+}
+
+.store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--stylist-surface);
+  color: var(--ink-label);
+  border: 1px solid var(--border-subtle);
+}
+
+.store-badge .indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.header-icon-btn:hover {
+  background: var(--stylist-surface);
+  border-color: var(--border-control);
+}
+
+/* MAIN APP CONTAINER */
+.app-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ==========================================================================
+   TOP STAGE: THE LIVING ATELIER VISUAL CANVAS
+   ========================================================================== */
+.atelier-stage {
+  height: 290px;
+  position: relative;
+  background: linear-gradient(180deg, var(--canvas) 0%, var(--surface) 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: all var(--duration-editorial) var(--ease-brand);
+}
+
+.stage-ambient-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--sage-300) 0%, transparent 70%);
+  opacity: 0.35;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.stage-top-labels {
+  position: absolute;
+  top: 12px;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.stage-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--ink-label);
+  background: var(--stylist-surface);
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.stage-pairing-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold);
+  background: rgba(196, 175, 126, 0.12);
+  border: 1px solid rgba(196, 175, 126, 0.3);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.stage-pairing-badge:hover {
+  background: rgba(196, 175, 126, 0.22);
+}
+
+/* Garment Display Area */
+.garment-stage-viewport {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--duration-standard) var(--ease-brand);
+}
+
+.garment-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.12));
+  transition: filter var(--duration-standard) var(--ease-brand);
+}
+
+/* Live Embroidery Overlay on Garment */
+.embroidery-layer {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all var(--duration-standard) var(--ease-brand);
+  z-index: 20;
+}
+
+/* Placement variants */
+.embroidery-layer[data-placement="chest-left"] {
+  top: 72px;
+  left: 64px;
+}
+
+.embroidery-layer[data-placement="center-chest"] {
+  top: 86px;
+  left: 76px;
+}
+
+.embroidery-layer[data-placement="sleeve-left"] {
+  top: 96px;
+  left: 28px;
+  transform: rotate(-15deg);
+}
+
+.embroidery-layer[data-placement="nape"] {
+  top: 42px;
+  left: 76px;
+  transform: scale(0.85);
+}
+
+.embroidery-svg-graphic {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+/* Stitch Simulation Stroke Animation */
+.stitch-path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 0;
+  transition: stroke var(--duration-quick) var(--ease-brand);
+}
+
+.stitch-path.animating {
+  animation: stitch-draw 1.8s var(--ease-brand) forwards;
+}
+
+@keyframes stitch-draw {
+  from { stroke-dashoffset: 400; opacity: 0.2; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* Placement Pin Indicator */
+.placement-pin {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 10px var(--gold-glow);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #1A1A1A;
+  z-index: 30;
+  transition: transform var(--duration-quick) var(--ease-brand);
+}
+
+.placement-pin:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Stage Bottom Controls */
+.stage-footer {
+  position: absolute;
+  bottom: 8px;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.placement-selector-bar {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+}
+
+[data-theme="dark"] .placement-selector-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.placement-chip {
+  border: 0;
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.placement-chip.active {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.thread-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.thread-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  transition: transform var(--duration-quick) var(--ease-brand);
+}
+
+.thread-swatch:hover, .thread-swatch.active {
+  transform: scale(1.2);
+  border-color: var(--ink);
+}
+
+/* ==========================================================================
+   ROBOTIC TAJIMA CELL PRODUCTION VIEW (When Stitching)
+   ========================================================================== */
+.robot-production-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 22, 20, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  color: #FFFFFF;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-standard) var(--ease-brand);
+}
+
+.robot-production-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.robot-header {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.robot-machine-id {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+  color: #EEF2F0;
+}
+
+.robot-canvas-anim {
+  width: 140px;
+  height: 90px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.needle-arm {
+  position: absolute;
+  top: 10px;
+  width: 3px;
+  height: 40px;
+  background: linear-gradient(180deg, #C4AF7E 0%, #FFFFFF 100%);
+  animation: needle-stitch 0.15s infinite alternate ease-in-out;
+}
+
+@keyframes needle-stitch {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(16px); }
+}
+
+.needle-sparkle {
+  position: absolute;
+  bottom: 30px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FFF;
+  box-shadow: 0 0 12px var(--gold);
+}
+
+.robot-progress-box {
+  width: 100%;
+  max-width: 220px;
+  margin-top: var(--space-3);
+}
+
+.robot-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.robot-progress-fill {
+  height: 100%;
+  width: 15%;
+  background: var(--gold);
+  transition: width 0.4s ease;
+}
+
+.robot-status-text {
+  font-size: 11px;
+  color: var(--sage-300);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ==========================================================================
+   CONCIERGE STREAM (CHAT + GENERATIVE MICRO-UIS)
+   ========================================================================== */
+.concierge-stream {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-4) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Scrollbar polish */
+.concierge-stream::-webkit-scrollbar {
+  width: 4px;
+}
+
+.concierge-stream::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: var(--radius-pill);
+}
+
+/* Message Item Structure */
+.stream-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  animation: fade-slide-up var(--duration-standard) var(--ease-brand) both;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.agent-msg-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.agent-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.agent-bubble {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-message);
+  padding: var(--space-3) var(--space-4);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 22px;
+  box-shadow: var(--shadow-soft);
+  max-width: 88%;
+}
+
+.agent-bubble p {
+  margin: 0;
+}
+
+.agent-bubble .agent-meta {
+  font-size: 11px;
+  color: var(--ink-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+/* User Message Bubble */
+.user-msg-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-bubble {
+  background: var(--user-message);
+  color: var(--ink);
+  border-radius: var(--radius-message);
+  padding: var(--space-3) var(--space-4);
+  font-size: 15px;
+  line-height: 22px;
+  max-width: 82%;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ==========================================================================
+   GENERATIVE MICRO-UI CARDS
+   ========================================================================== */
+
+/* 1. Curated Garment Card */
+.micro-card-garment {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+  margin-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  overflow: hidden;
+}
+
+.micro-card-garment::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sage-700), var(--sage-300));
+}
+
+.garment-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.garment-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.garment-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.garment-specs {
+  font-size: 12px;
+  color: var(--ink-muted);
+  line-height: 18px;
+}
+
+.size-pill-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.size-pill {
+  flex: 1;
+  height: 36px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.size-pill:hover {
+  border-color: var(--primary);
+}
+
+.size-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+/* 2. Atelier Co-Creation Card */
+.micro-card-atelier {
+  background: var(--stylist-surface);
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+  margin-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.atelier-prompt-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.atelier-input {
+  flex: 1;
+  height: 42px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border-control);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0 var(--space-3);
+  font-size: 14px;
+}
+
+.atelier-input:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.atelier-btn-ai {
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 0;
+  border-radius: var(--radius-control);
+  padding: 0 var(--space-3);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.atelier-btn-ai:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Design Variations Carousel */
+.variants-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.variant-tile {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-image-sm);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.variant-tile:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.variant-tile.active {
+  border-color: var(--gold);
+  background: rgba(196, 175, 126, 0.1);
+  box-shadow: 0 0 10px rgba(196, 175, 126, 0.25);
+}
+
+.variant-thumb {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.variant-thumb svg {
+  width: 100%;
+  height: 100%;
+}
+
+.variant-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* Tabletop Sync Action Bar */
+.tabletop-sync-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: var(--radius-control);
+  padding: 10px var(--space-3);
+  border: 1px solid var(--border-subtle);
+}
+
+.sync-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sync-dot-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse-dot 1.5s infinite;
+}
+
+.btn-sync-table {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.btn-sync-table:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* 3. Frictionless Checkout Card */
+.micro-card-checkout {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+  margin-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.checkout-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.checkout-summary-row.total-row {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  border-top: 1px dashed var(--border-subtle);
+  padding-top: var(--space-2);
+}
+
+.btn-apple-pay {
+  background: #000000;
+  color: #FFFFFF;
+  border: 0;
+  border-radius: var(--radius-control);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--duration-quick) var(--ease-brand);
+}
+
+.btn-apple-pay:hover {
+  opacity: 0.9;
+}
+
+/* 4. Vault Keycard Card */
+.micro-card-vault {
+  background: linear-gradient(135deg, #1A231F 0%, #121815 100%);
+  border: 1px solid rgba(196, 175, 126, 0.4);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  color: #FFFFFF;
+  margin-left: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(196, 175, 126, 0.15);
+}
+
+.vault-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.vault-compartment-num {
+  font-size: 32px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.vault-qr-wrapper {
+  background: #FFFFFF;
+  padding: 10px;
+  border-radius: var(--radius-image-sm);
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-open-vault {
+  width: 100%;
+  height: 44px;
+  background: var(--gold);
+  color: #1A1A1A;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.btn-open-vault:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(196, 175, 126, 0.4);
+}
+
+/* 5. Digital Product Passport Card */
+.micro-card-passport {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  margin-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.passport-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sage-700);
+}
+
+.passport-cert-row {
+  font-size: 12px;
+  font-family: monospace;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   CONCIERGE INPUT BAR & SUGGESTED INTENT CHIPS
+   ========================================================================== */
+.concierge-footer {
+  padding: var(--space-2) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-translucent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: 700;
+}
+
+/* Suggested Intent Chips Carousel */
+.chips-carousel {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.chips-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.intent-chip {
+  flex-shrink: 0;
+  height: var(--chip-height);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--stylist-surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.intent-chip:hover {
+  background: var(--user-message);
+  border-color: var(--secondary);
+  transform: translateY(-1px);
+}
+
+.intent-chip:active {
+  transform: scale(0.97);
+}
+
+/* Composer Field */
+.composer-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--border-control);
+  border-radius: var(--radius-control);
+  padding: 0 var(--space-2) 0 var(--space-3);
+  min-height: 48px;
+  box-shadow: var(--shadow-soft);
+  transition: border-color var(--duration-quick) var(--ease-brand);
+}
+
+.composer-box:focus-within {
+  border-color: var(--focus-ring);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.composer-input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.composer-input::placeholder {
+  color: var(--ink-muted);
+}
+
+/* Voice & Send Buttons */
+.composer-btn-voice {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-quick) var(--ease-brand);
+}
+
+.composer-btn-voice:hover {
+  background: var(--stylist-surface);
+  color: var(--primary);
+}
+
+.composer-btn-voice.recording {
+  background: var(--error);
+  color: #FFFFFF;
+  animation: pulse-voice 1s infinite alternate;
+}
+
+@keyframes pulse-voice {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.composer-btn-send {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--duration-quick) var(--ease-brand);
+}
+
+.composer-btn-send:hover {
+  transform: scale(1.06);
+}
+
+.composer-btn-send:active {
+  transform: scale(0.96);
+}
+
+/* Ambient Toast Notification */
+.app-toast {
+  position: absolute;
+  top: 60px;
+  left: var(--gutter);
+  right: var(--gutter);
+  background: var(--ink);
+  color: var(--surface);
+  padding: 10px 16px;
+  border-radius: var(--radius-control);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-float);
+  transform: translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--duration-standard) var(--ease-brand);
+  z-index: 1200;
+}
+
+.app-toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast-link {
+  color: var(--gold);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
