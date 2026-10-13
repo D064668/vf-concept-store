@@ -10,11 +10,10 @@ This repository contains the design system, master implementation plan, creative
 
 The S·Fashion store experience is driven by an agent-led architecture across three physical/digital touchpoints:
 
-1. **Store App (Mobile PWA / Web App):**
-   * Instant turnstile QR entry for SAP employees and the general public.
-   * Private Atelier Creative Director (Joule AI) delivering bold 1-garment curations.
-   * Tactile co-creation studio for custom Tajima embroidery.
-   * Live vault locker pickup key (#04).
+1. **Store App (Downloadable Mobile App for iOS & Android):**
+   * **Audience:** Exclusively for **SAP employees only** at the moment (internal corporate flagship, not for general public).
+   * **Enterprise Security:** Downloaded to employee mobile devices under **SAP Mobile Device Management (MDM) / Intune** and authenticated via **SAP Corporate SSO**.
+   * Turnstile NFC / QR entry, Private Atelier Creative Director (Joule AI), custom Tajima embroidery co-creation, and vault locker pickup key (#04).
 2. **Tabletop Interaction App:**
    * 55" Ideum multi-touch table in the store center for shared co-design and fabric exploration.
 3. **Proto Luma Hologram & AI Fashion Cover Kiosk:**
@@ -43,8 +42,9 @@ All visual styling strictly adheres to the official design tokens and component 
 
 ## 🛠️ Architecture & Technical Stack
 
-* **Canvas:** Strict mobile-first 390px logical canvas (`min-width: 360px`, `max-width: 430px`).
-* **Runtime:** Zero-build vanilla web stack (HTML5 + CSS Custom Properties + Modular ES6+ JS), transitioning to Next.js App Router.
+* **Platform Target:** Downloadable native/hybrid app for **iOS & Android**, packaged with corporate security wrappers (MDM / SAP Cloud Identity Services).
+* **Canvas Discipline:** Strict mobile-first 390px logical canvas (`min-width: 360px`, `max-width: 430px`).
+* **Runtime Core:** Zero-build vanilla web stack (HTML5 + CSS Custom Properties + Modular ES6+ JS), transitioning to Next.js App Router and native container packaging.
 * **Motion Engine:** Lenis smooth momentum scroll + GSAP 3 / ScrollTrigger with S·Fashion brand curve (`cubic-bezier(0.22, 1, 0.36, 1)`).
 * **Shell & State:** `nav.js` injecting shared bottom navigation, Joule AI button, and Lenis initialization; `localStorage` for cross-page persistence.
 * **Forms:** `16px` font size to enforce the iOS Safari zoom lock.

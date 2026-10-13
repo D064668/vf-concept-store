@@ -34,7 +34,8 @@ graph TD
 
 ## 2. Touchpoint 1: Store App (Mobile) — Confirmed Blueprint
 
-* **Role:** The customer's personal, authenticated concierge device.
+* **Audience & Distribution:** **SAP Employees Only** (internal corporate flagship, not for public). The companion **must be downloaded as an installed app on iOS or Android**, governed by **SAP Mobile Device Management (MDM) / Microsoft Intune** and authenticated via **SAP Corporate SSO**.
+* **Role:** The employee's personal, authenticated concierge device with secure cryptographic store pass.
 * **Layout:** **Hybrid Living Visual Stage**
   * **Top 45% (Visual Stage):** High-fidelity garment drape (Pima Boxy Tee, Belgian Linen Overshirt), dynamic tactile embroidery layer with simulated thread sheen, placement selector pins (Left Chest, Center, Sleeve, Nape), and live camera feed during robotic fulfillment.
   * **Bottom 55% (Concierge Drawer):** Conversational dialogue stream, interactive micro-cards (Size selector, Atelier prompt card, 1-tap Apple Pay checkout, Vault pass).

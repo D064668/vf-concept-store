@@ -2,6 +2,8 @@
 
 > **Client:** SAP × VF Corporation  
 > **Project:** S·Fashion Concept Store (Walldorf Flagship — 148 m² Unmanned Luxury Experience)  
+> **Target Audience:** **SAP Employees Only** (Internal Corporate Flagship — Not for General Public)  
+> **Platform & Distribution:** **Downloadable Native/Hybrid App for iOS & Android** (Governed by SAP Corporate Security & MDM)  
 > **Purpose:** Design brief for AI agents / designers to create competing visual markups of the agent-led mobile experience. The winning design language will establish the master design DNA across the **55" Ideum Tabletop** and **Proto Luma Hologram**.  
 > **Target Deliverable:** Interactive Visual UI Markup (Single-file HTML/CSS/SVG or structured visual component markup).
 
@@ -9,16 +11,23 @@
 
 ## 1. Executive Summary & Creative Vision
 
-S·Fashion is **not** a traditional shopping app. It is the digital companion to an autonomous, unmanned luxury retail environment in Walldorf, Germany. 
+S·Fashion is **not** a traditional shopping app. It is the digital companion to an autonomous, unmanned luxury retail environment in Walldorf, Germany, designed **exclusively for SAP employees**.
+
+### The Enterprise Security & Downloadable Mobile App Mandate:
+Because this store is located on the SAP corporate campus and restricted to SAP employees, access is **not a public website**. For corporate security, authentication, and compliance:
+* The mobile companion **must be downloaded and installed as an app** on the employee's mobile device (**iOS or Android**).
+* It is distributed and governed through **SAP Mobile Device Management (MDM) / Microsoft Intune / SAP Enterprise App Store**.
+* It authenticates via **SAP Corporate SSO (SAP Cloud Identity Services)** with biometric verification (Face ID / Fingerprint).
+* It maintains secure sandboxed storage for the employee's cart, digital product passports, and cryptographic store entry pass.
 
 ### The Problem with Traditional Retail Apps:
 Standard eCommerce apps force the customer to do all the labor: browsing category trees, scrolling grids of 40 identical items, toggling filters, and reading static product descriptions.
 
 ### The S·Fashion Imperative:
 In this store, the experience is **100% Agent-Led**. The app behaves like a **Private Atelier Creative Director** at a bespoke fashion house. The agent:
-* Understands intent, ambient context, and in-store inventory.
+* Understands intent, employee calendar context, and in-store inventory.
 * Immediately curates **1 or 2 tailored garments** with styling rationale, eliminating decision fatigue.
-* Collaborates with the shopper on custom embroidery (prompting, sketching, thread selection).
+* Collaborates with the employee on custom embroidery (prompting, sketching, thread selection).
 * Hands off seamlessly to the **55" multi-touch table** and the **Proto Luma Hologram**.
 * Dispatches the order to the **Tajima embroidery robotics cell** and issues the **Automated Fashion Vault** unlock key.
 
@@ -47,7 +56,7 @@ Every competing markup must strictly respect the foundational tokens and compone
 
 ### B. Structural Stack Architecture (Technical Baseline)
 * **Canvas Discipline:** Strict mobile-first **390px logical canvas** (`min-width: 360px`, `max-width: 430px`).
-* **Technology:** Zero-build vanilla web stack (HTML5 + CSS Custom Properties + Modular ES6+ JS), architected for future transition to Next.js App Router.
+* **Packaging & Platform:** Downloadable **iOS & Android** application, utilizing a zero-build vanilla web stack core (HTML5 + CSS Custom Properties + Modular ES6+ JS), architected for future transition to Next.js App Router and native container wrapping.
 * **Development Server:** Standard dev command: `npx serve . -p 3000`.
 * **Global Shell Injection:** `nav.js` dynamically injects the shared bottom navigation (`.sf-nav`), Joule AI floating button, and Lenis smooth scroll initialization.
 * **Cross-Page State:** `localStorage` for persistence (`s_fashion_cart`, user state, station pairing).
@@ -105,17 +114,17 @@ The mobile screen must implement the **Hybrid Stage** architecture:
 
 Each competing agent must represent these 4 critical states in their markup:
 
-### State 1: The Store Handshake (Arrival)
-* Shopper enters via mobile QR / NFC turnstile passcard.
+### State 1: The Store Handshake (Arrival & Access)
+* SAP Employee opens their installed mobile app and taps their corporate turnstile passcard (NFC / QR).
 * The agent delivers its opening bold curation: proposes 1 specific hero piece (e.g. *Relaxed Studio Overshirt in Botanical Sage*) tailored to the occasion.
-* Shows near-square size selector pills (`[ S ] [ M ] [ L ] [ XL ]`) and ambient store status (*"Store Wi-Fi Connected · Tabletop Station 01 Nearby"*).
+* Shows official S·Fashion size selector tiles (`.sf-sizes` / `.sf-size` 12px radius) and ambient store status (*"SAP Walldorf Connected · Tabletop Station 01 Nearby"*).
 
 ### State 2: The Atelier Co-Creation (Embroidery Design)
-* Shopper explores custom embroidery.
+* Employee explores custom embroidery.
 * Visual stage shows the tactile stitch motif on the garment fabric.
 * The agent presents the **Co-Creation Card**:
-  * Monogram / motif input (Archivo Narrow 700, 16px iOS lock, borderless with `2px solid var(--tan)`).
-  * Luxury thread spool selector (*Champagne Gold, Raw Ecru, Botanical Forest, Obsidian*).
+  * Monogram / motif input (`.sf-field` with 16px iOS zoom lock and official focus ring).
+  * Luxury thread spool selector (*Walldorf Gold, Raw Ecru, Botanical Forest, Obsidian*).
   * Prominent **"Pair with Tabletop 55\""** action button to beam the design to the table.
 
 ### State 3: Robotic Fulfillment (Tajima Cell)

@@ -2,34 +2,40 @@
 
 > **Client:** SAP × VF Corporation  
 > **Project:** S·Fashion Concept Store (Walldorf Flagship — 148 m² Unmanned Luxury Retail Experience)  
+> **Target Audience:** **SAP Employees Only** (Internal Corporate Flagship — Not for General Public)  
+> **Platform & Distribution:** **Downloadable Native/Hybrid App for iOS & Android** (Enterprise MDM / SAP Mobile Services)  
 > **Design Single Source of Truth:** `S-Fashion-Design-Guidelines.html` (All visual styles, colors, radii, components, and typography)  
 > **Structural Stack Baseline:** Modern Web Architecture (Mobile-first 390px, zero-build vanilla ES6+ stack, `npx serve . -p 3000`, Lenis + GSAP 3 motion, modular `nav.js` shell)  
-> **Document Version:** 3.0 (Strict Alignment with S·Fashion Design Guidelines)
+> **Document Version:** 4.0 (SAP Employee Security & Downloadable Mobile App Blueprint)
 
 ---
 
-## 1. System Architecture & Foundation (Structural Stack Guidance)
+## 1. System Architecture & Platform Strategy
 
-The technical foundation borrows the proven structural stack from modern web architecture without overriding S·Fashion's visual design guidelines:
-
-### 1.1 Canvas & Viewport Architecture
-* **Canvas Discipline:** Strict **Mobile-First 390px logical canvas** (`var(--canvas-width: 390px)`, with narrow support down to `360px` and wide support up to `430px`, centered with subtle neutral backing on larger review viewports).
-* **Stack Lifecycle:**
-  * **Phase 1 (Atelier Prototyping & Visual Markups):** Zero-build vanilla web stack (HTML5 + CSS Custom Properties + Modular ES6+ JS).
-  * **Phase 2 (Production Flagship Deployment):** Transition to **Next.js App Router** (React Server Components, modular route handlers, and shared token packages).
+### 1.1 Target Audience, Corporate Security & App Distribution
+* **Audience Scope:** The store application is strictly for **SAP employees only** at this stage (not accessible to the general public).
+* **Enterprise Security Rationale:** Because access is exclusive to SAP employees within the Walldorf corporate campus, security and identity governance require a dedicated **downloadable mobile application** rather than a public web portal:
+  * **Platform Targets:** Native / Hybrid application downloaded and installed on **iOS (Apple App Store / TestFlight / Intune MDM)** and **Android (Google Play Enterprise / Managed Google Play)**.
+  * **Corporate Authentication:** Zero-trust authentication via **SAP Corporate SSO (SAP Cloud Identity Services / Azure AD)** with biometric unlock (Face ID / Touch ID / Fingerprint).
+  * **Device & Data Integrity:** Sandboxed local storage for cart, digital product passports, and cryptographic store entry tokens, managed under SAP corporate device compliance.
+* **Canvas Discipline:** Strict **Mobile-First 390px logical canvas** (`var(--canvas-width: 390px)`, with responsive adaptation for 360px–430px mobile screens).
+* **Engineering Lifecycle:**
+  * **Phase 1 (Atelier Prototyping & Visual Markups):** Zero-build vanilla web stack (HTML5 + CSS Custom Properties + Modular ES6+ JS), packaged with a lightweight native runtime (Capacitor / SAP Mobile Services).
+  * **Phase 2 (Production Flagship Deployment):** Transition to **Next.js App Router** with native mobile app wrapping (Capacitor / React Native / SAP BTP Mobile Services SDK).
 * **Development Server:**
-  * Standard dev command: `npx serve . -p 3000` (zero-configuration, instant local testing, matching production staging).
+  * Standard dev command: `npx serve . -p 3000` (zero-configuration, instant local testing).
 
 ```
 Project Architecture Flow:
 ┌────────────────────────────────────────────────────────┐
-│  Mobile Web App / PWA (390px Canvas)                   │
+│  Downloadable Mobile App — iOS & Android (390px)       │
+│  • SAP Employee SSO & Corporate MDM Integration        │
 │  • HTML5 + CSS Tokens (S-Fashion-Design-Guidelines)    │
 │  • Zero-Build Local Runtime (`npx serve . -p 3000`)    │
 ├────────────────────────────────────────────────────────┤
 │  Core Shell & Motion Services                          │
 │  • nav.js (Shell injection, Joule AI button, Lenis)    │
-│  • state.js (localStorage sync for cart & presence)    │
+│  • state.js (localStorage / Secure Enclave sync)       │
 │  • motion.js (Lenis + GSAP 3 / ScrollTrigger engine)   │
 ├────────────────────────────────────────────────────────┤
 │  Cross-Touchpoint Spatial Web API Layer                │
@@ -215,9 +221,9 @@ A dedicated `nav.js` module dynamically initializes and injects the global appli
    * Seamlessly binds to the root viewport upon load.
 
 ### 4.2 State Management & Persistence
-* Single source of truth via modular ES6 store backed by `localStorage`:
+* Single source of truth via modular ES6 store backed by `localStorage` / Secure Enclave:
   * `s_fashion_cart` (Selected garments, sizes, custom embroidery monogram, thread color).
-  * `s_fashion_user` (Shopper identity, SAP employee vs public guest, RF pass state).
+  * `s_fashion_user` (SAP Employee identity, corporate SSO profile, cryptographic turnstile pass token).
   * `s_fashion_spatial` (Paired Ideum 55" Tabletop Station ID, Proto Luma queue status).
 * Event-driven broadcast (`window.dispatchEvent(new CustomEvent('sfashion:statechange'))`) ensures live UI synchronization without heavy framework overhead.
 
@@ -227,10 +233,10 @@ A dedicated `nav.js` module dynamically initializes and injects the global appli
 
 Each state implements standard `sf-*` components from the design guidelines:
 
-### State 1: Arrival & Zero-Friction Turnstile Pass
+### State 1: Arrival & Corporate Turnstile Pass (SAP Employee Access)
 * **UI Elements:**
-  * Top bar (`.sf-topbar`) with S·Fashion wordmark and store connection status (`.sf-meta`).
-  * Turnstile NFC / QR pass card using `.sf-editorial` with `.sf-editorial-band`.
+  * Top bar (`.sf-topbar`) with S·Fashion wordmark and authenticated employee status (`.sf-meta`: *"SAP Walldorf · Active"*).
+  * In-App Corporate Turnstile NFC / QR pass card using `.sf-editorial` with `.sf-editorial-band` (authenticated employee access key).
   * Bold Opening Editorial Curation (1 hero garment: *Relaxed Studio Overshirt in Botanical Sage*).
   * Filter chip rail (`.sf-chip`).
 
