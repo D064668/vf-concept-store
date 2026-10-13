@@ -69,8 +69,6 @@ All visual styling strictly adheres to the official design tokens and component 
 │   └── assets/                        # High-resolution studio & editorial imagery
 │
 ├── assets/                            # Editorial campaign assets
-├── mobile-markup-concept-01.html      # Concept exploration 01
-├── mobile-markup-concept-02.html      # Concept exploration 02 (Editorial Lookbook)
 └── Reference/                         # Architectural floorplans (SVG, PDF)
 ```
 
@@ -88,7 +86,7 @@ npx serve . -p 3000
 python3 -m http.server 3000
 ```
 
-Open `http://localhost:3000/store-app/index.html` or `http://localhost:3000/mobile-markup-concept-02.html` in your browser.
+Open `http://localhost:3000/store-app/index.html` in your browser.
 
 ---
 
