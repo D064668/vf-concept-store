@@ -24,8 +24,7 @@ Open it in a desktop browser (you'll see the app at phone width) or on your phon
 
 | File | What it is |
 |---|---|
-| `HANDOFF.md` | The original spec: concept, decisions, every screen. |
-| `BUILD-NOTES.md` | What's built, build by build, with iOS notes for each feature. **Newer decisions here win over HANDOFF.** |
+| `BUILD-NOTES.md` | What's built, build by build, with iOS notes for each feature. **The record of every decision.** (Code comments that say "HANDOFF §…" point to the original spec, which is in the git history: `git show c670a0a:HANDOFF.md`.) |
 | `DESIGN.md` | The design system as built: colour, type, spacing, motion. |
 | `design-system/tokens.json` | Design tokens. `ios/SFTokens.swift` is the same tokens for Swift. |
 
