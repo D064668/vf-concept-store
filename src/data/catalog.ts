@@ -624,29 +624,32 @@ export const cleanMonogram = (v: string) =>
 /** The photo for a small thumbnail: the product on its own (packshot) when there is one */
 export const thumbFor = (p: Product) => p.photos.find((ph) => ph.packshot) ?? p.photos[0];
 
-/** "Product details" (the accordion on a look's page): the material and tech of each piece.
- *  SAMPLE data written from the photos and product names. In the real app every row comes
- *  from SAP's product master (material composition, technology, care, product ID, SKU). */
+/** The tech of each piece, shown in the "Product details" accordion under "About this piece"
+ *  on a product's sheet: Type · Material · Technology · Fit · Care · Colour · Product ID · SKU.
+ *  (legacyId and barcode are kept for SAP but not shown.)
+ *  SAMPLE values; in the real app they come from SAP's product master. */
 export interface Tech {
-  type: string;
   material: string;
   technology: string;
   fit: string;
   care: string;
+  type: string;
   productId: string;
+  legacyId: string;
+  barcode: string;
   sku: string;
 }
 export const TECH: Record<string, Tech> = {
-  'tnf-mountain': { type: 'Jacket', material: '100% recycled nylon face, polyester lining', technology: 'Waterproof, breathable 2-layer shell; taped seams', fit: 'Relaxed, room for a layer', care: 'Machine wash 30°C, re-proof after washing', productId: '100000001', sku: 'TNF-MTJ-TAUPEGRN-M' },
-  'napapijri-puffer': { type: 'Jacket', material: '100% recycled polyester shell, recycled fill', technology: 'Insulated, quilted baffles; water-repellent finish', fit: 'Boxy', care: 'Machine wash 30°C, tumble dry low', productId: '100000002', sku: 'NAP-HPJ-BLACK-M' },
-  'icebreaker-tee': { type: 'T-shirt', material: '100% merino wool, 150 g/m²', technology: 'Breathable, odour-resistant, temperature-regulating', fit: 'Regular', care: 'Machine wash 30°C, dry flat', productId: '100000003', sku: 'ICB-MGT-RUST-M' },
-  'smartwool-crew': { type: 'Base layer', material: '100% merino wool, 250 g/m²', technology: 'Warm when wet, quick-drying, odour-resistant', fit: 'Slim, made to layer', care: 'Machine wash 30°C, dry flat', productId: '100000004', sku: 'SMW-MBC-BERRY-M' },
-  'altra-trail': { type: 'Trail shoe', material: 'Engineered mesh upper, rubber outsole', technology: 'Wide toe box, cushioned midsole, lugged grip', fit: 'True to size (EU)', care: 'Hand wash, air dry', productId: '100000005', sku: 'ALT-TRS-BLKORG-42' },
-  'timberland-boot': { type: 'Boot', material: 'Waterproof full-grain leather, rubber lug sole', technology: 'Seam-sealed waterproof build, padded collar', fit: 'True to size (EU)', care: 'Brush clean, leather balm', productId: '100000006', sku: 'TBL-6IN-DKBRN-42' },
-  'vans-oldskool': { type: 'Sneaker', material: 'Canvas and suede upper, rubber waffle sole', technology: 'Vulcanised construction, padded collar', fit: 'True to size (EU)', care: 'Spot clean', productId: '100000007', sku: 'VNS-OSK-BLKWHT-42' },
-  'eastpak-day': { type: 'Backpack', material: 'Recycled polyester', technology: 'Padded laptop sleeve (15"), water-repellent coating', fit: '24 L', care: 'Spot clean', productId: '100000008', sku: 'EPK-DAY-BLACK-OS' },
-  'jansport-superbreak': { type: 'Backpack', material: '100% recycled polyester', technology: 'Large main compartment, side bottle pocket', fit: '26 L', care: 'Spot clean', productId: '100000009', sku: 'JSP-SBK-MOSS-OS' },
-  'kipling-art': { type: 'Tote', material: 'Recycled nylon', technology: 'Zip-top, folds flat, light (0.6 kg)', fit: '26 L', care: 'Spot clean', productId: '100000010', sku: 'KPL-ART-OLIVE-OS' },
+  'tnf-mountain': { material: '100% recycled nylon face, polyester lining', technology: 'Waterproof, breathable 2-layer shell with taped seams', fit: 'Relaxed, with room for a warm layer underneath', care: 'Machine wash at 30°C; re-proof after washing', type: 'Jackets', productId: '100000001', legacyId: '100000001', barcode: '196575412233', sku: 'NF0A5IG6_TAUPEGREEN_M' },
+  'napapijri-puffer': { material: '100% recycled polyester shell and fill', technology: 'Quilted insulation with a water-repellent finish', fit: 'Boxy', care: 'Machine wash at 30°C; tumble dry low', type: 'Jackets', productId: '100000002', legacyId: '100000002', barcode: '196247851406', sku: 'NP0A4H8N_BLACK_M' },
+  'icebreaker-tee': { material: '100% merino wool, 150 g/m²', technology: 'Breathable, odour-resistant and temperature-regulating', fit: 'Regular', care: 'Machine wash at 30°C; dry flat', type: 'T-Shirts', productId: '100000003', legacyId: '100000003', barcode: '194155873119', sku: 'IB0A56Z2_RUST_M' },
+  'smartwool-crew': { material: '100% merino wool, 250 g/m²', technology: 'Stays warm when wet, dries quickly, resists odour', fit: 'Slim, made to layer', care: 'Machine wash at 30°C; dry flat', type: 'Base Layers', productId: '100000004', legacyId: '100000004', barcode: '193390125874', sku: 'SW016321_BERRY_M' },
+  'altra-trail': { material: 'Engineered mesh upper, rubber outsole', technology: 'Foot-shaped toe box, cushioned midsole, lugged grip', fit: 'True to size (EU)', care: 'Hand wash; air dry', type: 'Trail Shoes', productId: '100000005', legacyId: '100000005', barcode: '195751632408', sku: 'AL0A7R6S_BLACKORANGE_42' },
+  'timberland-boot': { material: 'Waterproof full-grain leather, rubber lug sole', technology: 'Seam-sealed waterproof build, padded collar', fit: 'True to size (EU)', care: 'Brush clean; treat with leather balm', type: 'Boots', productId: '100000006', legacyId: '100000006', barcode: '888658314529', sku: 'TB010061_DARKBROWN_42' },
+  'vans-oldskool': { material: 'Canvas and suede upper, rubber waffle sole', technology: 'Vulcanised build for grip and board feel', fit: 'True to size (EU)', care: 'Spot clean', type: 'Sneakers', productId: '100000007', legacyId: '100000007', barcode: '700053811946', sku: 'VN000D3H_BLACKWHITE_42' },
+  'eastpak-day': { material: 'Recycled polyester', technology: 'Padded 15" laptop sleeve, water-repellent coating', fit: '24 L', care: 'Spot clean', type: 'Backpacks', productId: '100000008', legacyId: '100000008', barcode: '196011634582', sku: 'EK0A5BG4_BLACK_OS' },
+  'jansport-superbreak': { material: '100% recycled polyester', technology: 'One large compartment, side bottle pocket', fit: '26 L', care: 'Spot clean', type: 'Backpacks', productId: '100000009', legacyId: '100000009', barcode: '196011102937', sku: 'JS0A4QUE_MOSSGREEN_OS' },
+  'kipling-art': { material: 'Recycled nylon', technology: 'Zip top, folds flat, light (0.6 kg)', fit: '26 L', care: 'Spot clean', type: 'Totes', productId: '100000010', legacyId: '100000010', barcode: '885001431287', sku: 'KI2522_OLIVE_OS' },
 };
 
 /** "About this piece" in the product detail. SAMPLE copy written from the photos:

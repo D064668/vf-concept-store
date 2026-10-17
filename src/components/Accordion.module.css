@@ -1,7 +1,7 @@
 /* Accordion.module.css — a closed section that slides open */
 
 .accordion {
-  margin: 0 var(--gutter);
+  margin: 0; /* side spacing comes from the page it sits in */
   border-top: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
   border-bottom: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
 }
@@ -96,7 +96,8 @@
   margin: 0;
   font: 400 14px/20px var(--font-brand);
   color: var(--ink);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; /* IDs and codes line up */
+  overflow-wrap: anywhere; /* long SKUs wrap instead of running off */
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -369,3 +369,10 @@
     0 0 0 3.5px var(--ink);
 }
 .angle { cursor: zoom-in; }
+
+/* Product details accordion: the sheet already has side padding, so no extra margin;
+   it sits right under About, sharing its top line feel */
+.content > .details {
+  margin-top: -4px;
+}
+

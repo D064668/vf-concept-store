@@ -3,6 +3,7 @@
 // Order of the sheet: stage (real photos) → why it suits you → brand + piece + size →
 // Add to bag (the one main button) / Personalise → hand it to a store screen → composer.
 import { useEffect, useRef, useState } from 'react';
+import { Accordion, SpecTable } from '@/components/Accordion';
 import { BrandLogo } from '@/components/BrandLogo';
 import { Icon } from '@/components/Icon';
 import { ExpandHint, useLightbox } from '@/components/Lightbox';
@@ -10,7 +11,7 @@ import { PhotoSlot } from '@/components/PhotoSlot';
 import { BottomSheet } from '@/components/Sheet';
 import { Button, Composer, SizeRail, StylistAvatar, StylistMessage } from '@/components/ui';
 import { ProductCard } from '@/components/ProductCard';
-import { ABOUT, byId, GOES_WITH, PRODUCTS, fitFor, isPersonalisable, noteFor } from '@/data/catalog';
+import { ABOUT, byId, GOES_WITH, PRODUCTS, fitFor, isPersonalisable, noteFor, TECH } from '@/data/catalog';
 import { DEVICES, handoffSheet, sizeFor, useStore, useStylist } from '@/state/store';
 import { PIECE_HINTS, piecePills } from '@/data/stylist';
 import { useAutoplay } from './useAutoplay';
@@ -231,6 +232,25 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
           </section>
         )}
 
+        {/* Product details (Hyun): closed under "About this piece"; tap + to slide open the
+            material and tech: Type · Material · Technology · Fit · Care · Colour · Product ID · SKU,
+            like a spec sheet. Closes again when you open another piece. */}
+        {TECH[p.id] && (
+          <Accordion key={p.id} title="Product details" className={s.details}>
+            <SpecTable
+              rows={[
+                ['Type', TECH[p.id].type],
+                ['Material', TECH[p.id].material],
+                ['Technology', TECH[p.id].technology],
+                ['Fit', TECH[p.id].fit],
+                ['Care', TECH[p.id].care],
+                ['Colour', p.colorName],
+                ['Product ID', TECH[p.id].productId],
+                ['SKU', TECH[p.id].sku],
+              ]}
+            />
+          </Accordion>
+        )}
       </div>
 
       {/* Other options for you: the same thumbnails as the Shop (tap = open it here, + Add = quick add) */}
