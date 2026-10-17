@@ -44,7 +44,7 @@ export function LookScreen({ id }: { id: string }) {
 
   useEffect(() => {
     const el = scroller.current!;
-    el.scrollTo({ top: 0 }); // a new look always starts at the top
+    // (where the page starts — top for a new look, your old spot after Back — is handled by useScrollMemory)
     const on = () => setScrolled(el.scrollTop > 8);
     el.addEventListener('scroll', on, { passive: true });
     return () => el.removeEventListener('scroll', on);

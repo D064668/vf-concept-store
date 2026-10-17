@@ -18,6 +18,7 @@ import { AtelierSheet } from '@/screens/AtelierSheet';
 import { BagScreen, CheckoutScreen, OrderScreen } from '@/screens/Checkout';
 import { MoreSheet, Visit } from '@/screens/Placeholders';
 import { Wardrobe } from '@/screens/Wardrobe';
+import { useScrollMemory } from './useScrollMemory';
 import { FilterSheet } from '@/screens/FilterSheet';
 import { LookScreen } from '@/screens/Look';
 import { BrandScreen } from '@/screens/Brand';
@@ -170,9 +171,12 @@ function App() {
   });
   const top = state.stack[state.stack.length - 1];
   const sheet = state.sheet;
+  // Back returns to where you were on every page (not only Home and Shop); new pages start at the top
+  const main = useRef<HTMLElement>(null);
+  useScrollMemory(main, state.tab, state.stack);
   return (
     <>
-      <main className={s.screens}>
+      <main className={s.screens} ref={main}>
         {/* tabs stay mounted so each keeps its scroll position, like iOS */}
         <div hidden={!!top || state.tab !== 'home'} className={s.pane} ref={(el) => void (panes.current.home = el)}>
           <Home />
@@ -192,7 +196,6 @@ function App() {
       <TabBar />
       <LivePill />
       {/* the stylist button: one for the whole app */}
-      {/* gold dot on the stylist button until its arrival question is answered */}
       <StylistFab />
       <Toast />
       {sheet?.kind === 'pick' && <PickSheet key="stylist" productId={sheet.productId} back={sheet.back} />}
