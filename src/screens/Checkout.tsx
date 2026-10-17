@@ -113,7 +113,9 @@ export function BagScreen() {
                       {emb && (
                         <span className={s.emb}>
                           <Icon name="needle" size={15} />
-                          {emb}
+                          <span>
+                            {emb} · <b className="num">+ {eur(PERSONALISATION_PRICE * qty)}</b>
+                          </span>
                         </span>
                       )}
                       <div className={s.itemFoot}>
@@ -147,6 +149,19 @@ export function BagScreen() {
               })}
             </ul>
 
+            {/* with personalisation, show where the total comes from (Hyun: the €25 wasn't visible) */}
+            {sums(state.bag).stitching > 0 && (
+              <dl className={s.breakdown}>
+                <div>
+                  <dt>Pieces</dt>
+                  <dd className="num">{eur(sums(state.bag).pieces)}</dd>
+                </div>
+                <div>
+                  <dt>Personalisation</dt>
+                  <dd className="num">{eur(sums(state.bag).stitching)}</dd>
+                </div>
+              </dl>
+            )}
             <div className={s.subtotal}>
               <span>Subtotal</span>
               <span className="num">{eur(sums(state.bag).total)}</span>
@@ -251,7 +266,8 @@ export function CheckoutScreen() {
 
           <dl className={s.sums}>
             <div>
-              <dt>Subtotal</dt>
+              {/* "Pieces" when personalisation is listed under it (same words as the bag) */}
+              <dt>{anyEmbroidery ? 'Pieces' : 'Subtotal'}</dt>
               <dd className="num">{eur(sums(state.bag).pieces)}</dd>
             </div>
             {anyEmbroidery && (
