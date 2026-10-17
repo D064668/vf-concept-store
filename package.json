@@ -1,0 +1,31 @@
+{
+  "name": "s-fashion-app",
+  "version": "0.7.0",
+  "private": true,
+  "description": "S·Fashion (SAP × VF Corporation) — agent-led store app. Web prototype for iOS handoff.",
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "predev": "node scripts/build-tokens.mjs",
+    "dev": "next dev -p 3300",
+    "dev:review": "NEXT_PUBLIC_REVIEW=1 next dev -p 3300",
+    "prebuild": "node scripts/build-tokens.mjs",
+    "build": "next build",
+    "start": "next start -p 3300"
+  },
+  "dependencies": {
+    "@fontsource/archivo-narrow": "5.3.0",
+    "@fontsource/poppins": "5.3.0",
+    "next": "15.5.28",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.7.5",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

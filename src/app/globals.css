@@ -1,0 +1,170 @@
+/* globals.css — base rules every screen shares.
+   Colours, sizes and motion come from tokens.css (generated). */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+input {
+  font: inherit;
+  color: inherit;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* The parts the browser draws still carry the brand */
+::selection {
+  background: var(--sage-100);
+  color: var(--black);
+}
+input {
+  caret-color: var(--primary);
+}
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* View Transitions: the garment travelling between screens (signature move).
+   iOS equivalent: matchedGeometryEffect with the brand curve. */
+::view-transition-group(*) {
+  animation-duration: var(--duration-screen);
+  animation-timing-function: var(--ease-brand);
+}
+::view-transition-group(piece) {
+  animation-duration: 520ms;
+  z-index: 50;
+}
+::view-transition-old(piece),
+::view-transition-new(piece) {
+  height: 100%;
+  object-fit: cover;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 240ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Editorial scroll reveals (src/components/Reveal.tsx) ----------
+   Blocks fade up 16px; headline words slide up out of their line, 80ms apart.
+   900ms on the brand curve. Animates once, when it first scrolls into view. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--distance-md));
+  transition:
+    opacity var(--duration-editorial) var(--ease-brand),
+    transform var(--duration-editorial) var(--ease-brand);
+  transition-delay: calc(var(--i, 0) * var(--stagger-editorial));
+}
+[data-reveal][data-in] {
+  opacity: 1;
+  transform: none;
+}
+[data-words] .rw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* a little room so descenders (g, y, p) aren't clipped */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+[data-words] .rw > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform var(--duration-editorial) var(--ease-brand);
+}
+[data-words][data-in] .rw > span {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-words] .rw > span {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Home video veil strength (Home.module.css .veil). Light: a light touch, so the
+   video stays clear. Dark: deeper, the dark stone carries the white text. */
+:root {
+  --veil-top: 16%;
+  --veil-clear: 36%;
+  --veil-mid: 30%;
+  --veil-low: 52%;
+  --veil-solid: 88%;
+}
+:root[data-theme='dark'] {
+  --veil-top: 42%;
+  --veil-clear: 34%;
+  --veil-mid: 46%;
+  --veil-low: 66%;
+  --veil-solid: 86%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --veil-top: 42%;
+    --veil-clear: 34%;
+    --veil-mid: 46%;
+    --veil-low: 66%;
+    --veil-solid: 86%;
+  }
+}

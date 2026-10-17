@@ -1,0 +1,33 @@
+# installed packages and build output (everyone makes their own with npm install / npm run build)
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+
+# old files waiting to be deleted (not part of the project)
+_to_delete/
+
+# computer and editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# secrets (none in this project today; keep it that way)
+.env
+.env.*
+
+# ------------------------------------------------------------------
+# Kept on Hyun's computer only (not for colleagues):
+# originals and working files. Copies the app actually uses live in public/.
+# ------------------------------------------------------------------
+/photos/
+/video/
+/brands/
+/assets/
+/mockups/
+/mockups-source/
+/guidelines/
+/.impeccable/
+/PRODUCT.md

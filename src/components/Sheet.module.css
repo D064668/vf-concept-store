@@ -1,0 +1,129 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--scrim) 38%, transparent);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  animation: fade var(--duration-standard) var(--ease-brand);
+}
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: calc(100% - var(--safe-top) - 10px);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background: var(--sheet-bg);
+  -webkit-backdrop-filter: var(--sheet-filter);
+  backdrop-filter: var(--sheet-filter);
+  box-shadow: 0 -24px 60px -28px color-mix(in oklab, var(--shadow-c) 60%, transparent);
+  outline: none;
+  animation: up 420ms var(--ease-brand);
+  transition: transform var(--duration-standard) var(--ease-brand);
+}
+/* the chat: always tall, so the conversation has room and the sheet doesn't grow as it fills */
+.tall {
+  height: calc(100% - var(--safe-top) - 10px);
+}
+.closing .panel {
+  animation: down 220ms var(--ease-exit) forwards;
+}
+.closing .scrim {
+  animation: fade 220ms var(--ease-exit) reverse forwards;
+}
+@keyframes up {
+  from {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+}
+@keyframes down {
+  to {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.head {
+  flex: none;
+  padding: 8px 12px 10px 20px;
+  touch-action: none;
+  cursor: grab;
+}
+.grabber {
+  display: block;
+  width: 38px;
+  height: 5px;
+  margin: 0 auto 8px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 18%, transparent);
+}
+.headRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+.headRow > .round:first-child {
+  margin-left: -8px;
+}
+.titles {
+  flex: 1;
+  min-width: 0;
+}
+.title {
+  font: 700 18px/24px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.round {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--ink);
+  transition: transform var(--duration-instant) var(--ease-brand);
+}
+.round:active {
+  transform: scale(0.94);
+}
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.body::-webkit-scrollbar {
+  display: none;
+}
+.foot {
+  flex: none;
+  padding: 10px var(--gutter) calc(var(--safe-bottom) + 12px);
+  background: linear-gradient(to bottom, transparent, var(--sheet-bg) 30%);
+}

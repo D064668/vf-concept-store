@@ -1,0 +1,555 @@
+/* ui.module.css — styles for the shared building blocks.
+   Rule of the "Soft Studio" look (D8): no outline strokes. Surfaces are
+   separated by tone, frosted glass and soft sage-tinted shadows. */
+
+/* ---------- Buttons ---------- */
+.btn {
+  position: relative;
+  height: var(--button-height);
+  padding: 0 20px;
+  border-radius: var(--radius-control);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: 600 16px/20px var(--font-brand);
+  white-space: nowrap;
+  transition:
+    transform var(--duration-instant) var(--ease-brand),
+    background-color var(--duration-quick) var(--ease-brand),
+    box-shadow var(--duration-quick) var(--ease-brand),
+    opacity var(--duration-quick);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+.full {
+  width: 100%;
+}
+.btnLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-primary);
+}
+.primary:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 90%, var(--black));
+}
+.secondary {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-chip);
+}
+.secondary .btnLead {
+  color: var(--accent-gold);
+}
+/* secondary placed ON a white card: drop to the stone ground so it still reads */
+.quiet {
+  background: var(--canvas);
+  color: var(--ink);
+}
+.quiet .btnLead {
+  color: var(--accent-gold);
+}
+.onDark {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.6);
+}
+
+.glassBtn {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-control);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+  font: 600 13px/16px var(--font-brand);
+  /* the brand's gold for "Curated picks" (gold-700 in light, gold-500 in dark, both readable on the glass) */
+  color: var(--accent-gold);
+  white-space: nowrap;
+  transition: transform var(--duration-instant) var(--ease-brand);
+  /* 40px visual, 44px tap area */
+  position: relative;
+}
+.glassBtn::after,
+.iconBtn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+}
+.glassBtn:active {
+  transform: scale(0.97);
+}
+
+.iconBtn {
+  position: relative;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  flex: none;
+  transition: transform var(--duration-instant) var(--ease-brand), background-color var(--duration-quick);
+}
+.iconBtn:active {
+  transform: scale(0.94);
+}
+.ib-glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+}
+.ib-surface {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+}
+.ib-well {
+  background: var(--stylist-surface);
+}
+
+/* ---------- Chips ---------- */
+.suggest {
+  height: 40px;
+  padding: 0 16px 0 13px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 13px/16px var(--font-brand);
+  white-space: nowrap;
+  flex: none;
+}
+.suggest svg {
+  color: var(--accent-gold);
+}
+.filter {
+  height: 38px;
+  padding: 0 15px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 13px/16px var(--font-brand);
+  color: var(--ink);
+  white-space: nowrap;
+  flex: none;
+  transition:
+    background-color var(--duration-quick) var(--ease-brand),
+    color var(--duration-quick) var(--ease-brand),
+    box-shadow var(--duration-quick) var(--ease-brand);
+}
+.filterCount {
+  font: 500 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+  transition: color var(--duration-quick);
+}
+.filterOn {
+  background: var(--ink);
+  color: var(--canvas);
+  box-shadow: none;
+}
+.filterOn .filterCount {
+  color: color-mix(in oklab, var(--canvas) 72%, transparent);
+}
+
+/* ---------- Tags ---------- */
+.tag {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 12px/16px var(--font-brand);
+  white-space: nowrap;
+}
+.tagPick {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.tagSpark {
+  width: 13px;
+  height: 13px;
+}
+.tagGlass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  color: var(--ink);
+}
+
+/* ---------- Stylist ---------- */
+.avatar {
+  flex: none;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--stylist-surface);
+  color: var(--primary);
+}
+.msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.bubble {
+  background: var(--stylist-surface);
+  color: var(--ink);
+  padding: 11px 14px;
+  border-radius: 6px var(--radius-message) var(--radius-message) var(--radius-message);
+  font: 400 15px/22px var(--font-brand);
+  /* fills the row, so its right edge lines up with everything below it */
+  flex: 1;
+  min-width: 0;
+}
+.bubble b {
+  font-weight: 600;
+}
+
+/* ---------- Sizes ---------- */
+.sizes {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.size {
+  position: relative;
+  height: var(--touch-target);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  /* a fine outline, so every size reads as a button in light and dark mode */
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 16%, transparent);
+  font: 500 14px/20px var(--font-brand);
+  display: grid;
+  place-items: center;
+  transition:
+    background-color var(--duration-quick) var(--ease-brand),
+    color var(--duration-quick) var(--ease-brand),
+    transform var(--duration-instant) var(--ease-brand);
+}
+.size:active:not(:disabled) {
+  transform: scale(0.96);
+}
+.sizeOn {
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+}
+/* sold out: no fill, faint and struck through, can't be tapped */
+.size:disabled {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 12%, transparent);
+  color: color-mix(in oklab, var(--ink) 35%, transparent);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+.fitDot {
+  position: absolute;
+  bottom: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold-500);
+}
+
+/* "Size  Your fit is M ......... Size guide →" */
+.sizeWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sizeHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.sizeTitle {
+  font: 600 15px/20px var(--font-brand);
+  color: var(--ink);
+}
+.sizeTitle span {
+  margin-left: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.guideLink {
+  min-height: 44px;
+  margin: -12px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: 500 14px/20px var(--font-brand);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in oklab, var(--ink) 30%, transparent);
+}
+/* the availability line under the sizes */
+.sizeLegend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink);
+}
+.available {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.availDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.soldNote {
+  margin-left: -8px; /* cancel the flex gap so it reads "Available in M · XL sold out" */
+  color: var(--ink-muted);
+  white-space: pre;
+}
+/* ---------- Composer ---------- */
+.composer {
+  height: 60px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 7px 0 2px;
+  transition: box-shadow var(--duration-quick) var(--ease-brand);
+}
+/* shorter field for sheets, so the suggestion pills and the field both fit */
+.compact {
+  height: 52px;
+}
+.compact .plus,
+.compact .mic,
+.compact .send {
+  height: 40px;
+}
+.compact .mic,
+.compact .send {
+  width: 40px;
+}
+.composerWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* suggested questions, one row you can swipe sideways */
+.askPills {
+  display: flex;
+  gap: 8px;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.askPills::-webkit-scrollbar {
+  display: none;
+}
+.askPill {
+  flex: none;
+  height: 36px;
+  padding: 0 14px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--radius-pill);
+  font: 500 13px/18px var(--font-brand);
+  color: var(--ink);
+  background: var(--stylist-surface);
+  white-space: nowrap;
+  transition: transform var(--duration-instant) var(--ease-brand);
+}
+/* 44px tap area around the 36px pill */
+.askPill {
+  position: relative;
+}
+.askPill::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+}
+.askPill:active {
+  transform: scale(0.96);
+}
+.askSpark {
+  width: 14px;
+  height: 14px;
+  color: var(--primary);
+}
+.fieldWrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.fieldWrap .field {
+  width: 100%;
+}
+.hint {
+  position: absolute;
+  left: 0;
+  right: 4px;
+  top: 50%;
+  translate: 0 -50%;
+  font: 400 15px/20px var(--font-brand);
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  animation: hintIn 420ms var(--ease-brand);
+}
+@keyframes hintIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    animation: none;
+  }
+}
+.composer:focus-within {
+  box-shadow: 0 0 0 2px var(--focus-ring), var(--shadow-soft);
+}
+.plus {
+  width: 44px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  flex: none;
+  border-radius: var(--radius-control);
+}
+.field {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font: 400 16px/24px var(--font-brand); /* 16px stops iOS Safari zooming in */
+  color: var(--ink);
+}
+.field {
+  text-overflow: ellipsis;
+}
+/* the input stays 16px (no iOS zoom); the hint can be a touch smaller so it fits */
+.field::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+  font-size: 15px;
+  text-overflow: ellipsis;
+}
+@container (max-width: 375px) {
+  .field::placeholder {
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .plus {
+    width: 38px;
+  }
+  .mic,
+  .send {
+    width: 40px;
+  }
+}
+.mic,
+.send {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-image-sm);
+}
+.mic {
+  background: var(--stylist-surface);
+  color: var(--ink);
+}
+.send {
+  background: var(--primary);
+  color: var(--on-primary);
+  animation: pop var(--duration-quick) var(--ease-brand);
+}
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* ---------- Toast ---------- */
+.toastLane {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(var(--tabbar-bottom) + var(--tabbar-height) + 12px);
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  min-height: 48px;
+  max-width: 100%;
+  padding: 6px 8px 6px 16px;
+  border-radius: var(--radius-control);
+  background: var(--ink);
+  color: var(--canvas);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 14px/20px var(--font-brand);
+  animation: toastIn var(--duration-standard) var(--ease-brand);
+}
+.toast:not(:has(.toastAction)) {
+  padding-right: 16px;
+}
+.toastIcon {
+  color: var(--sage-300);
+  flex: none;
+}
+.toastAction {
+  height: 36px;
+  padding: 0 10px;
+  margin-left: 4px;
+  border-radius: var(--radius-image-sm);
+  color: var(--gold-500);
+  font: 600 14px/20px var(--font-brand);
+  white-space: nowrap;
+}
+@keyframes toastIn {
+  from {
+    transform: translateY(var(--distance-sm));
+    opacity: 0;
+  }
+}

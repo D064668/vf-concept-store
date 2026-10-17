@@ -1,0 +1,153 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: rise var(--duration-standard) var(--ease-brand) both;
+  animation-delay: calc(var(--i) * var(--stagger-ui));
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+/* the whole card is one big tap target; the heart sits above it */
+.hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius-control);
+}
+.hit:active ~ .media {
+  transform: scale(0.985);
+}
+.media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  transition: transform var(--duration-instant) var(--ease-brand);
+}
+.badge {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+}
+.heart {
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  right: 2px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.heartDisc {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  transition: transform var(--duration-quick) var(--ease-brand), color var(--duration-quick);
+}
+.heart:active .heartDisc {
+  transform: scale(0.88);
+}
+.on {
+  color: var(--primary);
+}
+.on .heartDisc {
+  animation: beat 360ms var(--ease-brand);
+}
+@keyframes beat {
+  40% {
+    transform: scale(1.18);
+  }
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 4px;
+}
+/* product name first, then the brand, then the price */
+.name {
+  font: 500 14px/19px var(--font-brand);
+  color: var(--ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.brand {
+  font: 500 11px/16px var(--font-brand);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.price {
+  font: 600 13px/18px var(--font-brand);
+  margin-top: 2px;
+}
+
+/* the category pill: tiny, frosted, bottom left of the photo */
+.cat {
+  position: absolute;
+  z-index: 1;
+  left: 8px;
+  bottom: 15px; /* lines up with the middle of the "+ Add" pill */
+  height: 22px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  font: 500 11px/1 var(--font-brand);
+  color: var(--ink);
+  pointer-events: none;
+}
+
+/* Quick add: the "+ Add" pill at the bottom right of the photo (44px tap area) */
+.plus {
+  position: absolute;
+  z-index: 2;
+  right: 4px;
+  bottom: 4px;
+  min-height: var(--touch-target);
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.plusPill {
+  height: 32px;
+  padding: 0 11px 0 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-pill);
+  font: 600 11px/16px var(--font-brand);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+  transition: transform var(--duration-quick) var(--ease-brand), background-color var(--duration-quick);
+}
+.plus:active .plusPill {
+  transform: scale(0.94);
+}
+/* already in the bag: a filled sage pill with a tick */
+.plusDone .plusPill {
+  color: var(--on-primary);
+  background: var(--primary);
+}

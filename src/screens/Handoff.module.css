@@ -1,0 +1,679 @@
+/* Handoff.module.css — pairing with a store screen, sending a piece to it, and the live pill */
+
+/* round icon in the sheet header (where the stylist avatar usually sits) */
+.lead {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  color: var(--on-primary);
+  background: var(--primary);
+}
+
+/* ---------------- 1 · Pair ---------------- */
+.pair {
+  padding: 4px var(--gutter) 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* segmented control: Scan code | Enter code */
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--tile);
+}
+.seg button {
+  height: 40px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 500 14px/20px var(--font-brand);
+  color: var(--ink-muted);
+  transition: background-color var(--duration-quick), color var(--duration-quick);
+}
+.seg button[aria-selected='true'] {
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+}
+.hash {
+  font: 700 10px/1 var(--font-brand);
+  letter-spacing: 0.02em;
+  padding: 3px 4px;
+  border: 1.5px solid currentColor;
+  border-radius: 5px;
+}
+
+/* the camera view */
+.scanWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.viewfinder {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #0d110f;
+  isolation: isolate;
+}
+/* what the "camera" sees: a store screen, slightly soft and drifting like a hand-held phone */
+.cameraScene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 80% at 50% 110%, #2b332e 0%, transparent 60%),
+    linear-gradient(160deg, #1d2420, #0d110f);
+  animation: drift 4s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  to {
+    transform: translate(4px, -3px) rotate(-1.2deg) scale(1.02);
+  }
+}
+.screenGlow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 16px 12px;
+  border-radius: 14px;
+  background: #f4f3ef;
+  box-shadow: 0 0 60px rgb(255 255 255 / 0.18);
+  transform: perspective(500px) rotateX(14deg);
+}
+.qr {
+  width: 112px;
+  height: 112px;
+  display: block;
+}
+.screenLabel {
+  font: 600 9px/12px var(--font-brand);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #2d4a3e;
+}
+/* the four corner brackets */
+.corners i {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 3px solid #fff;
+  transition: border-color var(--duration-standard), inset var(--duration-standard) var(--ease-brand);
+}
+.corners i:nth-child(1) {
+  top: 18%;
+  left: 18%;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 12px;
+}
+.corners i:nth-child(2) {
+  top: 18%;
+  right: 18%;
+  border-left: 0;
+  border-bottom: 0;
+  border-top-right-radius: 12px;
+}
+.corners i:nth-child(3) {
+  bottom: 18%;
+  left: 18%;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-left-radius: 12px;
+}
+.corners i:nth-child(4) {
+  bottom: 18%;
+  right: 18%;
+  border-left: 0;
+  border-top: 0;
+  border-bottom-right-radius: 12px;
+}
+.found .corners i {
+  border-color: var(--gold-500);
+}
+.found .corners i:nth-child(1),
+.found .corners i:nth-child(2) {
+  top: 22%;
+}
+.found .corners i:nth-child(3),
+.found .corners i:nth-child(4) {
+  bottom: 22%;
+}
+.found .corners i:nth-child(odd) {
+  left: 22%;
+}
+.found .corners i:nth-child(even) {
+  right: 22%;
+}
+/* the moving scan line */
+.scanLine {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 22%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold-500);
+  box-shadow: 0 0 14px 2px color-mix(in oklab, var(--gold-500) 70%, transparent);
+  animation: scan 1.6s ease-in-out infinite alternate;
+}
+@keyframes scan {
+  to {
+    top: 78%;
+  }
+}
+.foundTick {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #1a1a1a;
+  background: var(--gold-500);
+  animation: pop 420ms var(--ease-brand) both;
+}
+@keyframes pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+.help {
+  max-width: 300px;
+  text-align: center;
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+.helpWrong {
+  color: var(--error);
+}
+
+/* the six code boxes */
+.codeWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+.codeLabel {
+  font: 500 15px/22px var(--font-brand);
+  text-align: center;
+}
+.cells {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  width: min(100%, 320px);
+}
+/* the real input covers the boxes but can't be seen: typing, paste and autofill all work */
+.codeInput {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  font-size: 16px; /* 16px stops iOS zooming in */
+  caret-color: transparent;
+}
+.cell {
+  height: 56px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font: 600 24px/1 var(--font-brand);
+  background: var(--tile);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+  transition: box-shadow var(--duration-quick);
+}
+/* the box you're about to type in (shows only while the field has focus) */
+.codeInput:focus ~ .cellNow {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+.codeInput:focus ~ .cellNow::after {
+  content: '';
+  width: 2px;
+  height: 24px;
+  background: var(--primary);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.cellWrong {
+  box-shadow: inset 0 0 0 2px var(--error);
+}
+.shake {
+  animation: shake 360ms var(--ease-brand);
+}
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+.demo {
+  min-height: var(--touch-target);
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  font: 500 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border-control);
+  text-underline-offset: 3px;
+}
+
+/* connected: the big tick */
+.connected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 48px 0 40px;
+  text-align: center;
+}
+.connected b {
+  margin-top: 12px;
+  font: 600 18px/24px var(--font-brand);
+}
+.connected span:last-child {
+  font: 400 14px/20px var(--font-brand);
+  color: var(--ink-muted);
+}
+.bigTick {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--on-primary);
+  background: var(--primary);
+  animation: pop 480ms var(--ease-brand) both;
+}
+
+/* ---------------- 2 · Hand off ---------------- */
+.handoff {
+  padding: 4px var(--gutter) 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.liveDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--success) 60%, transparent);
+  animation: ping 2.4s ease-out infinite;
+}
+@keyframes ping {
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+/* the store screen, drawn as a dark device */
+.device {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0d110f;
+  box-shadow: var(--shadow-soft);
+}
+.tabletop {
+  aspect-ratio: 16 / 10;
+}
+.hologram {
+  aspect-ratio: 4 / 5;
+}
+/* while sending, the stage is dim; when live it lights up */
+.device > :first-child {
+  transition: opacity var(--duration-editorial) var(--ease-brand), filter var(--duration-editorial) var(--ease-brand);
+  opacity: 0.35;
+  filter: blur(6px);
+}
+.isLive > :first-child {
+  opacity: 1;
+  filter: none;
+}
+.sending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #fff;
+}
+.beam {
+  display: flex;
+  gap: 6px;
+}
+.beam i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  animation: beam 1s ease-in-out infinite;
+}
+.beam i:nth-child(2) {
+  animation-delay: 160ms;
+}
+.beam i:nth-child(3) {
+  animation-delay: 320ms;
+}
+@keyframes beam {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* hologram stage: the model in a column of light */
+.holo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #2a2f2c;
+}
+/* the store photo fills the frame, kept on the Hologram and the person (Hyun) */
+.holoPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 40%;
+  -webkit-user-drag: none;
+}
+.holoFigure {
+  position: absolute;
+  inset: 6% 18% 10%;
+  /* fade the photo's studio background into the dark */
+  -webkit-mask-image: radial-gradient(closest-side at 50% 46%, #000 52%, transparent 92%);
+  mask-image: radial-gradient(closest-side at 50% 46%, #000 52%, transparent 92%);
+  filter: saturate(0.92) brightness(1.04) contrast(1.04);
+  animation: float 5s ease-in-out infinite alternate;
+}
+.holoFigure > * {
+  border-radius: 0 !important;
+  height: 100%;
+}
+@keyframes float {
+  to {
+    transform: translateY(-4px);
+  }
+}
+/* fine horizontal light lines over the figure */
+.holoLines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 4px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.holoSide .holoFigure {
+  inset: 16% -4% 4% 40%;
+}
+.holoSide .holoCompact .holoFigure {
+  inset: 8% 14% 12%;
+}
+
+/* tabletop stage: the piece laid flat, with tools and the monogram */
+.table {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #1c2420, #121714);
+}
+.tablePiece {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 50%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.tablePiece > * {
+  height: 100%;
+}
+.tableTools {
+  position: absolute;
+  left: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.08);
+}
+.tableTools i {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2);
+}
+.tableTools .toolOn {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.tableMono {
+  position: absolute;
+  right: 6%;
+  bottom: 8%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font: 400 18px/1 var(--font-monogram);
+  letter-spacing: 0.08em;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px dashed rgb(255 255 255 / 0.35);
+}
+
+.what {
+  text-align: center;
+}
+.whatName {
+  font: 700 18px/24px var(--font-brand);
+}
+.whatMeta {
+  margin-top: 2px;
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+  border-radius: var(--radius-control);
+  background: var(--tile);
+}
+.steps li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  align-items: start;
+  font: 400 14px/20px var(--font-brand);
+}
+.stepNo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 600 12px/1 var(--font-brand);
+  color: var(--on-primary);
+  background: var(--primary);
+}
+
+.actions {
+  display: grid;
+  gap: 4px;
+}
+.note {
+  margin-top: -8px;
+  text-align: center;
+  font: 400 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+/* ---------------- 3 · Live pill (above the tab bar, left of the stylist button) ---------------- */
+.pill {
+  position: absolute;
+  z-index: 41;
+  left: 16px;
+  bottom: calc(var(--tabbar-bottom) + var(--tabbar-height) + 12px);
+  max-width: calc(100% - 112px);
+  min-height: 48px;
+  padding: 6px 12px 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius-pill);
+  text-align: left;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: var(--shadow-bar);
+  animation: pillIn var(--duration-standard) var(--ease-brand) both;
+}
+@keyframes pillIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+.pill:active {
+  transform: scale(0.97);
+}
+.pillText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.pillText b {
+  font: 600 13px/18px var(--font-brand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pillText span {
+  font: 400 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cameraScene,
+  .scanLine,
+  .holoFigure,
+  .beam i,
+  .liveDot {
+    animation: none;
+  }
+}
+
+/* Hologram: waiting for "Send to my phone", then the piece that came back */
+.waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: var(--radius-control);
+  font: 500 14px/20px var(--font-brand);
+  color: var(--ink);
+  background: var(--tile);
+}
+.demoSend {
+  min-height: var(--touch-target);
+  font: 500 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--border-control);
+  text-underline-offset: 3px;
+}
+.back {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-control);
+  background: var(--stylist-surface);
+  animation: backIn var(--duration-standard) var(--ease-brand) both;
+}
+@keyframes backIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+.backLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 11px/16px var(--font-brand);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.backRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.backThumb {
+  flex: none;
+  width: 56px;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.backText {
+  display: flex;
+  flex-direction: column;
+}
+.backText b {
+  font: 600 15px/20px var(--font-brand);
+}
+.backText span {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}

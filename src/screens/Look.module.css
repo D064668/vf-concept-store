@@ -1,0 +1,361 @@
+/* Look.module.css — a curated look, piece by piece */
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--canvas);
+  animation: push var(--duration-screen) var(--ease-brand);
+}
+@keyframes push {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+
+/* back bar: same as Curated picks; frosts once content scrolls under it */
+.bar {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: calc(var(--safe-top) + 8px) var(--gutter) 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  isolation: isolate;
+}
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bar-bg);
+  -webkit-backdrop-filter: var(--bar-filter);
+  backdrop-filter: var(--bar-filter);
+  opacity: 0;
+  transition: opacity var(--duration-standard) var(--ease-brand);
+}
+.barSolid::before {
+  opacity: 1;
+}
+.back {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+}
+.back:active {
+  transform: scale(0.94);
+}
+.barTitle {
+  font: 600 18px/24px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+
+.scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+  /* the photo starts below the back bar; the bottom clears the sticky button + tab bar */
+  padding: calc(var(--safe-top) + 64px) 0 calc(var(--tabbar-bottom) + var(--tabbar-height) + 40px);
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 1 · hero: full width (hero rule) */
+.hero {
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+.heroTag {
+  position: absolute;
+  left: var(--gutter);
+  top: 14px;
+}
+
+/* 2 · intro */
+.intro {
+  padding: 22px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.title {
+  font: 700 28px/34px var(--font-brand);
+  letter-spacing: -0.015em;
+}
+.eyebrow {
+  font: 700 12px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+.note {
+  margin-top: 16px;
+}
+.desc {
+  margin-top: 6px;
+  font: 400 15px/23px var(--font-brand);
+  color: var(--ink-muted);
+}
+.desc b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.brands {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  color: var(--ink);
+}
+.brands li {
+  display: grid;
+  place-items: center;
+  height: 26px;
+}
+.brands svg {
+  height: calc(14px * var(--logo-k, 1));
+  width: auto;
+}
+
+/* 3 · pieces */
+.section {
+  margin-top: 36px;
+}
+.head {
+  padding: 0 var(--gutter) 14px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.head h2 {
+  font: 700 22px/28px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.head p {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 12px;
+  padding: 0 var(--gutter);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 20px var(--gutter) 0;
+}
+
+/* 4 · more looks: a sideways rail */
+.rail {
+  display: flex;
+  gap: 12px;
+  padding: 0 var(--gutter) 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--gutter);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.railItem {
+  flex: 0 0 62%;
+  scroll-snap-align: start;
+}
+
+/* look card (rails and 2-column grids) */
+.lookCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lookHit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius-control);
+}
+.lookHit:active ~ .lookMedia {
+  transform: scale(0.985);
+}
+.lookMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  transition: transform var(--duration-instant) var(--ease-brand);
+}
+/* "+ Add": quick add for the whole look, bottom right of the photo */
+.addPill {
+  position: absolute;
+  z-index: 2;
+  right: 8px;
+  bottom: 8px;
+  min-height: 36px;
+  padding: 0 12px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-pill);
+  font: 600 12px/16px var(--font-brand);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+}
+/* a 44px tap area around the 36px pill */
+.addPill::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+.addPill:active {
+  transform: scale(0.95);
+}
+.lookText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.lookText b {
+  font: 600 15px/20px var(--font-brand);
+}
+.lookText span {
+  font: 400 12px/17px var(--font-brand);
+  color: var(--ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 5 · the sticky "Add the whole look" button, floating above the tab bar */
+.cta {
+  position: absolute;
+  z-index: 30;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--tabbar-bottom) + var(--tabbar-height) + 12px);
+  animation: ctaIn var(--duration-standard) var(--ease-brand) 200ms both;
+}
+@keyframes ctaIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen,
+  .cta {
+    animation: none;
+  }
+}
+.hero { cursor: zoom-in; }
+
+/* Add complete look (main) + Try on with Hologram (secondary), stacked, full width */
+.ctas {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+/* the heart on a look card, top right (same as product cards) */
+.lookHeart {
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  right: 2px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.lookHeart span {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  transition: transform var(--duration-quick) var(--ease-brand);
+}
+.lookHeart:active span {
+  transform: scale(0.88);
+}
+.lookHeartOn {
+  color: var(--primary);
+}
+/* the interest tag on a look card, top left of the photo (Curated picks) */
+.lookBadge {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+  pointer-events: none;
+}
+
+/* ---------- How to wear it: a short editorial under the pieces ---------- */
+/* one more photo of the look, full width (hero rule), tap = lightbox */
+.storyPhoto {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.story {
+  list-style: none;
+  margin: 0;
+  padding: 8px var(--gutter) 0;
+}
+.story li {
+  padding: 20px 0;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  column-gap: 8px;
+}
+.story li + li {
+  border-top: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
+}
+/* the gold number: 01, 02, 03 */
+.storyNum {
+  grid-row: span 2;
+  font: 600 13px/24px var(--font-brand);
+  letter-spacing: 0.06em;
+  color: var(--accent-gold);
+}
+.story h3 {
+  font: 600 17px/24px var(--font-brand);
+  color: var(--ink);
+}
+.story p {
+  margin-top: 4px;
+  font: 400 15px/23px var(--font-brand);
+  color: var(--ink-muted);
+}

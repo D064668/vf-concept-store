@@ -1,0 +1,49 @@
+/* PoweredBy.module.css — "Powered by" on top, the SAP & VF Corporation lockup under it */
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.center {
+  align-items: center;
+}
+.label {
+  font: 500 12px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* quieter than the lockup; a screen can set --pb-label to choose the colour */
+  color: var(--pb-label, currentColor);
+  opacity: var(--pb-label-opacity, 0.7);
+}
+.lockup {
+  display: block;
+  width: auto;
+}
+/* sizes: lg = Home footer, md = More menu, sm = under the chat field */
+.lg .lockup {
+  height: 24px;
+}
+.md .lockup {
+  height: 20px;
+}
+.sm {
+  gap: 6px;
+}
+.sm .label {
+  font-size: 10px;
+  line-height: 14px;
+}
+.sm .lockup {
+  height: 13px;
+}
+
+/* one row: label and lockup side by side, centred on each other */
+.row {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.row.sm .lockup {
+  height: 16px;
+}

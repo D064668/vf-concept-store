@@ -1,0 +1,98 @@
+/* SizeGuideSheet.module.css */
+.body {
+  padding: 4px var(--gutter) calc(var(--safe-bottom) + 28px);
+}
+.note {
+  font: 400 15px/22px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+/* the table runs the full width of the sheet; the first and last columns
+   keep the page margin inside, so the text lines up with everything else */
+.table {
+  width: calc(100% + 2 * var(--gutter));
+  margin: 20px calc(var(--gutter) * -1) 0;
+  border-collapse: collapse;
+  font: 400 15px/20px var(--font-brand);
+  color: var(--ink);
+}
+.table th:first-child,
+.table td:first-child {
+  padding-left: var(--gutter);
+}
+.table th:last-child,
+.table td:last-child {
+  padding-right: var(--gutter);
+}
+.table thead th {
+  padding-top: 0;
+  padding-bottom: 10px;
+  text-align: left;
+  font: 600 11px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.table tbody th,
+.table td {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  text-align: left;
+  border-top: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
+}
+.table tbody th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+/* your fit row: a soft sage band across the full width, with a gold "Your fit" tag */
+.table .yours th,
+.table .yours td {
+  background: color-mix(in oklab, var(--primary) 12%, transparent);
+}
+.yourTag {
+  margin-left: 8px;
+  font: 600 11px/16px var(--font-brand);
+  letter-spacing: 0.04em;
+  color: var(--accent-gold);
+}
+.unit {
+  margin-top: 10px;
+  font: 400 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+.howTitle {
+  margin-top: 28px;
+  font: 600 11px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.how {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.how li {
+  position: relative;
+  padding-left: 16px;
+  font: 400 15px/22px var(--font-brand);
+  color: var(--ink);
+}
+/* a small gold bullet */
+.how li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-500);
+}
+.how b {
+  font-weight: 600;
+}

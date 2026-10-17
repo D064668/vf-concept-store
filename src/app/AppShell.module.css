@@ -1,0 +1,180 @@
+.boot {
+  min-height: 100dvh;
+  background: var(--canvas);
+}
+
+/* ---------- On a phone: the app is the whole screen ---------- */
+.desk {
+  min-height: 100dvh;
+}
+.device {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-bottom: max(14px, calc(var(--safe-bottom) - 6px));
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  container-type: size;
+  background: var(--canvas);
+}
+.panel,
+.status,
+.homeBar {
+  display: none;
+}
+.screens {
+  position: absolute;
+  inset: 0;
+}
+.pane {
+  position: absolute;
+  inset: 0;
+}
+.pane[hidden] {
+  display: none;
+}
+
+/* ---------- On a computer, plain (the default): just the app, phone width, centred ---------- */
+@media (min-width: 720px) {
+  .desk:not([data-review]) {
+    display: flex;
+    justify-content: center;
+    background: var(--backdrop-bottom);
+  }
+  .desk:not([data-review]) .device {
+    width: 430px;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+}
+
+/* ---------- Review mode (?review=1, prototype only): iPhone frame + review panel ---------- */
+@media (min-width: 720px) and (min-height: 700px) {
+  .desk[data-review] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    padding: 32px;
+    background:
+      radial-gradient(60% 50% at 70% 30%, color-mix(in oklab, var(--sage-100) 40%, transparent), transparent 70%),
+      var(--backdrop-bottom);
+  }
+  [data-review] .device {
+    --safe-top: 50px;
+    --safe-bottom: 34px;
+    width: var(--w);
+    height: var(--h);
+    flex: none;
+    border-radius: 54px;
+    box-shadow:
+      0 0 0 11px #1b1f1d,
+      0 0 0 12.5px #3a403d,
+      0 40px 90px -30px rgb(20 30 25 / 0.55);
+    transform-origin: center;
+  }
+  .status {
+    position: absolute;
+    z-index: 90;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    padding: 4px 30px 0 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font: 600 16px/1 var(--font-brand);
+    color: var(--ink);
+    pointer-events: none;
+  }
+  .island {
+    position: absolute;
+    left: 50%;
+    top: 11px;
+    translate: -50% 0;
+    width: 124px;
+    height: 36px;
+    border-radius: 20px;
+    background: #000;
+  }
+  .homeBar {
+    display: block;
+    position: absolute;
+    z-index: 90;
+    left: 50%;
+    bottom: 8px;
+    translate: -50% 0;
+    width: 136px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 220px;
+    color: var(--ink);
+  }
+}
+@media (min-width: 720px) and (max-height: 960px) and (min-height: 700px) {
+  [data-review] .device {
+    zoom: 0.86;
+  }
+}
+
+.panelTitle {
+  font: 700 16px/22px var(--font-brand);
+}
+.panelSub {
+  margin-top: -14px;
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+.seg,
+.jump {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.seg legend,
+.jump legend {
+  width: 100%;
+  margin-bottom: 8px;
+  font: 500 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+}
+.seg button,
+.jump button {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  font: 500 13px/16px var(--font-brand);
+}
+.seg button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--canvas);
+  box-shadow: none;
+}
+.jump {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.jump button {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  height: 30px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--ink) 25%, transparent);
+  text-underline-offset: 4px;
+}

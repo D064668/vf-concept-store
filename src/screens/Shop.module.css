@@ -1,0 +1,321 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--canvas);
+}
+.scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Curated slider ----------
+   The slides start just BELOW the top bar (logo + search), so a photo never
+   sits underneath the bar, and run full width, edge to edge (hero rule). */
+.carousel {
+  --bar-h: calc(var(--safe-top) + 120px); /* height of the top bar with its search row */
+  position: relative;
+  height: calc(var(--bar-h) + 460px);
+}
+.track {
+  height: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  color: var(--ink);
+}
+/* the picture: full width, from just under the bar to the bottom of the slide */
+.slideMedia,
+.slide::after {
+  position: absolute;
+  top: var(--bar-h);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+.slide::after {
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--canvas) 0%,
+    color-mix(in oklab, var(--canvas) 80%, transparent) 22%,
+    transparent 52%
+  );
+}
+.slide[data-tone='dark'] {
+  color: #fff;
+}
+.slide[data-tone='dark']::after {
+  background: linear-gradient(to top, rgb(14 19 17 / 0.8) 0%, rgb(14 19 17 / 0.3) 34%, transparent 56%);
+}
+/* placeholder caption sits high on the slide, away from the text */
+.slideMedia :global([role='img']) > span {
+  top: calc(var(--safe-top) + 129px);
+  bottom: auto;
+  left: auto;
+  right: var(--gutter);
+  translate: none;
+}
+.slideText {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  right: 84px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.slideTag {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  top: calc(var(--bar-h) + 14px);
+}
+.slideTitle {
+  font: 700 28px/34px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.slideSub {
+  margin-top: 2px;
+  font: 400 15px/22px var(--font-brand);
+  color: color-mix(in oklab, currentColor 76%, transparent);
+}
+.explore {
+  margin-top: 6px;
+  margin-left: -2px;
+  height: 44px;
+  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 12px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+.slide[data-tone='dark'] .explore {
+  color: var(--gold-500);
+}
+.dots {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  bottom: 20px;
+  display: flex;
+  color: var(--ink);
+}
+.dots[data-tone='dark'] {
+  color: #fff;
+}
+.dots button {
+  height: 36px;
+  min-width: 22px;
+  display: grid;
+  place-items: center;
+}
+.dot,
+.dotOn {
+  display: block;
+  height: 6px;
+  width: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  opacity: 0.32;
+  transition: width var(--duration-standard) var(--ease-brand), opacity var(--duration-standard);
+}
+.dotOn {
+  width: 18px;
+  opacity: 1;
+}
+
+/* ---------- Catalogue ---------- */
+.catalogue {
+  padding: 28px 0 calc(var(--tabbar-bottom) + var(--tabbar-height) + 56px);
+}
+.head {
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.head h2 {
+  font: 700 22px/28px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.head p {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+/* the chip row sticks under the top bar while the grid scrolls */
+.rail {
+  position: sticky;
+  z-index: 10;
+  /* sits right under the header: logo + search (116px), or search only when tucked (72px) */
+  top: calc(var(--safe-top) + 116px);
+  transition: top var(--duration-standard) var(--ease-brand);
+  margin-top: 10px;
+  padding: 8px 0 10px;
+  background: var(--bar-bg);
+  -webkit-backdrop-filter: var(--bar-filter);
+  backdrop-filter: var(--bar-filter);
+}
+.chips {
+  display: flex;
+  gap: 8px;
+  padding: 4px var(--gutter) 12px;
+  margin-bottom: -8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* soft fade where chips run off the right edge */
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.helper {
+  padding: 4px var(--gutter) 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 400 12px/16px var(--font-brand);
+  color: var(--ink-muted);
+}
+.fit svg {
+  color: var(--success);
+}
+.sortWrap {
+  position: relative;
+}
+.sort {
+  height: 44px;
+  margin-right: -6px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 500 13px/16px var(--font-brand);
+}
+.menuScrim {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+}
+.menu {
+  position: absolute;
+  z-index: 12;
+  right: -8px;
+  top: 44px;
+  min-width: 190px;
+  padding: 6px;
+  border-radius: var(--radius-control);
+  background: var(--sheet-bg);
+  -webkit-backdrop-filter: var(--sheet-filter);
+  backdrop-filter: var(--sheet-filter);
+  box-shadow: var(--shadow-soft);
+  animation: menuIn var(--duration-quick) var(--ease-brand);
+  transform-origin: top right;
+}
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+.menuItem {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-image-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 500 14px/20px var(--font-brand);
+}
+.menuItem:hover {
+  background: color-mix(in oklab, var(--stylist-surface) 70%, transparent);
+}
+.menuItem svg {
+  color: var(--primary);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 12px;
+  row-gap: 22px;
+  padding: 0 var(--gutter);
+}
+.empty {
+  margin: 8px var(--gutter);
+  padding: 32px 20px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  text-align: center;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+/* ---------- Collapse on scroll ----------
+   As the page scrolls, the slide's words fade and lift away (gone by 220px),
+   and the image drifts a little slower than the page. Nothing readable ever
+   passes under the top bar. iOS: a scroll-offset driven opacity/offset. */
+.slideTag {
+  /* the tag sits closest to the bar, so it leaves first */
+  opacity: calc(1 - var(--c, 0) * 4);
+  transform: translateY(calc(var(--c, 0) * -18px));
+}
+.slideText,
+.dots {
+  opacity: calc(1 - var(--c, 0) * 1.4);
+  transform: translateY(calc(var(--c, 0) * -18px));
+}
+/* the picture drifts slowly inside its card (the card itself stays put) */
+.slideMedia > * {
+  transform: translateY(calc(var(--c, 0) * 40px)) scale(calc(1 + var(--c, 0) * 0.04));
+  transform-origin: 50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slideText,
+  .slideTag,
+  .dots,
+  .slideMedia > * {
+    transform: none;
+  }
+}
+
+.screen[data-collapsed] .rail {
+  top: calc(var(--safe-top) + 72px);
+}
+.clearLink {
+  margin-left: 2px;
+  height: 32px;
+  font: 600 12px/16px var(--font-brand);
+  color: var(--accent-gold);
+}
+
+.slideMedia { cursor: pointer; }

@@ -1,0 +1,48 @@
+/* SplitReveal.module.css — line-by-line mask reveal */
+
+/* the measuring copy and the visible lines sit in the same spot */
+.wrap {
+  display: grid;
+}
+.measure,
+.lines {
+  grid-area: 1 / 1;
+}
+.measure {
+  visibility: hidden;
+}
+.lines {
+  display: flex;
+  flex-direction: column;
+}
+
+/* each line's window: the line hides just below it until it's time.
+   A little room at the bottom, so letters like g and y are never cut off */
+.mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.line {
+  display: block;
+  white-space: nowrap; /* the line was measured; keep it exactly as it was */
+  transform: translateY(110%) rotate(2deg);
+  transform-origin: 0 100%;
+  opacity: 0;
+  transition:
+    transform 1300ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.in .line {
+  transform: none;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}

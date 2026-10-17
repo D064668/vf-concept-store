@@ -1,0 +1,142 @@
+/* Lightbox.module.css — the full-screen photo gallery */
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 120; /* above sheets (60) and the tab bar */
+  display: flex;
+  flex-direction: column;
+  background: #0b0d0c;
+  color: #fff;
+  animation: fadeIn var(--duration-standard) var(--ease-brand);
+}
+.closing {
+  animation: fadeOut 200ms var(--ease-exit) forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+.top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--safe-top) + 6px) 12px 8px var(--gutter);
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  font: 600 15px/20px var(--font-brand);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.close {
+  flex: none;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgb(255 255 255 / 0.14);
+}
+.close:active {
+  transform: scale(0.94);
+}
+.track {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: grid;
+  place-items: center;
+  padding: 8px 0;
+}
+/* the whole photo, never cropped; pinch-zoom allowed on phones */
+.img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  touch-action: pan-x pinch-zoom;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.foot {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 calc(var(--safe-bottom) + 18px);
+}
+.count {
+  font: 500 13px/18px var(--font-brand);
+  color: rgb(255 255 255 / 0.75);
+}
+.dots {
+  display: flex;
+  gap: 6px;
+}
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.35);
+  transition: width var(--duration-standard) var(--ease-brand), background-color var(--duration-standard);
+}
+.dots .on {
+  width: 18px;
+  background: #fff;
+}
+
+/* the ⤢ hint on hero images: small frosted disc, 44px tap area */
+.hint {
+  position: absolute;
+  z-index: 3;
+  top: 8px;
+  right: 8px;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.hint::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+}
+.hint:active {
+  transform: scale(0.92);
+}
+@media (prefers-reduced-motion: reduce) {
+  .layer,
+  .closing {
+    animation: none;
+  }
+}

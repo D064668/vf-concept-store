@@ -1,0 +1,361 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--backdrop-top), var(--canvas) 40%);
+  animation: push var(--duration-screen) var(--ease-brand);
+}
+@keyframes push {
+  from {
+    opacity: 0;
+    transform: translateY(var(--distance-sm));
+  }
+}
+.bar {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: calc(var(--safe-top) + 8px) var(--gutter) 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  isolation: isolate;
+}
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--bar-bg);
+  -webkit-backdrop-filter: var(--bar-filter);
+  backdrop-filter: var(--bar-filter);
+  opacity: 0;
+  transition: opacity var(--duration-standard) var(--ease-brand);
+}
+.barSolid::before {
+  opacity: 1;
+}
+.back {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--shadow-chip);
+}
+.back:active {
+  transform: scale(0.94);
+}
+.barTitle {
+  font: 600 18px/24px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: calc(var(--safe-top) + 68px) 0 calc(var(--tabbar-bottom) + var(--tabbar-height) + 64px);
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.intro {
+  padding: 16px var(--gutter) 8px;
+}
+.mark {
+  width: 34px;
+  height: 34px;
+  color: var(--primary);
+  margin-bottom: 14px;
+}
+.hello {
+  font: 300 30px/36px var(--font-brand);
+  letter-spacing: -0.02em;
+}
+.hello b {
+  font-weight: 700;
+}
+.why {
+  margin-top: 6px;
+  font: 400 16px/24px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+.section {
+  margin-top: 36px;
+}
+.head {
+  padding: 0 var(--gutter) 14px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.head h2 {
+  font: 700 22px/28px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.head p {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+
+/* hero rule: a hero photo always runs full width, edge to edge */
+.hero {
+  overflow: hidden;
+}
+.heroMedia {
+  position: relative;
+  aspect-ratio: 5 / 4;
+}
+.heroTag {
+  position: absolute;
+  left: var(--gutter);
+  top: 14px;
+}
+.heroBody {
+  padding: 18px var(--gutter) 4px;
+}
+.heroTitle {
+  font: 700 20px/26px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.heroMeta {
+  margin-top: 2px;
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+.reason {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-message);
+  background: var(--stylist-surface);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font: 400 15px/22px var(--font-brand);
+  color: var(--ink);
+}
+.reason svg {
+  flex: none;
+  color: var(--primary);
+  margin-top: 1px;
+}
+.actions {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 8px;
+}
+.actions > button {
+  padding: 0 14px;
+}
+
+.rail {
+  display: flex;
+  gap: 12px;
+  padding: 0 var(--gutter) 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 var(--gutter);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.railItem {
+  flex: 0 0 156px;
+  scroll-snap-align: start;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 12px;
+  row-gap: 22px;
+  padding: 0 var(--gutter);
+}
+
+/* brand logo above the hero title */
+.heroLogo {
+  display: block;
+  height: calc(15px * var(--logo-k, 1));
+  width: auto;
+  max-width: 140px;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+/* Curated looks rail (cards from Look.tsx) */
+.looksRail {
+  margin-top: 32px;
+}
+.looksHead {
+  padding: 0 var(--gutter) 14px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.looksHead h2 {
+  font: 700 22px/28px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.looksHead p {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+.looksTrack {
+  display: flex;
+  gap: 12px;
+  padding: 0 var(--gutter) 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--gutter);
+  scrollbar-width: none;
+}
+.looksTrack::-webkit-scrollbar {
+  display: none;
+}
+.looksItem {
+  flex: 0 0 58%;
+  scroll-snap-align: start;
+}
+
+/* ---------- Featured looks: full-width hero slider (hero rule) ---------- */
+.hero {
+  position: relative;
+  margin: 20px 0 36px;
+  height: 500px;
+  overflow: visible; /* the dots sit just under the photo */
+}
+.track {
+  height: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  color: #fff;
+}
+.slideMedia {
+  position: absolute;
+  inset: 0;
+}
+/* a dark fade at the bottom so the white words read on any photo */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(14 19 17 / 0.82) 0%, rgb(14 19 17 / 0.4) 38%, transparent 62%);
+}
+.slideTag {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  top: 14px;
+}
+.slideText {
+  position: absolute;
+  z-index: 1;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.slideEyebrow {
+  font: 700 11px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.85);
+}
+.slideTitle {
+  margin-top: 4px;
+  font: 700 28px/34px var(--font-brand);
+  letter-spacing: -0.01em;
+}
+.slideSub {
+  margin-top: 2px;
+  font: 400 14px/20px var(--font-brand);
+  color: rgb(255 255 255 / 0.8);
+}
+.explore {
+  margin-top: 6px;
+  margin-left: -2px;
+  height: 44px;
+  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 12px/16px var(--font-brand);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+}
+.dots {
+  /* under the photo, centred: the stylist button lives bottom-right */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: -36px;
+  display: flex;
+  justify-content: center;
+  color: var(--ink);
+}
+.dots button {
+  height: 36px;
+  min-width: 22px;
+  display: grid;
+  place-items: center;
+}
+.dot,
+.dotOn {
+  display: block;
+  height: 6px;
+  width: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  opacity: 0.4;
+  transition: width var(--duration-standard) var(--ease-brand), opacity var(--duration-standard);
+}
+.dotOn {
+  width: 18px;
+  opacity: 1;
+}
+.slideMedia { cursor: pointer; }
+/* "More for hiking"…: a row of look cards you swipe sideways */
+.rail {
+  display: flex;
+  gap: 12px;
+  padding: 0 var(--gutter) 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 var(--gutter);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+/* a bit over half the width, so the next card peeks in and says "swipe" */
+.railItem {
+  flex: 0 0 58%;
+  scroll-snap-align: start;
+}
