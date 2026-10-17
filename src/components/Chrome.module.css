@@ -110,6 +110,17 @@
   backdrop-filter: var(--glass-filter);
   box-shadow: var(--shadow-chip);
 }
+.bagRound {
+  /* same as a sheet's round header buttons (the close ⌄ next to it) */
+  flex: none;
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--ink);
+  transition: transform var(--duration-instant) var(--ease-brand);
+}
+.bagRound:active {
+  transform: scale(0.94);
+}
 .badge {
   position: absolute;
   top: 5px;

@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Accordion, SpecTable } from '@/components/Accordion';
 import { BrandLogo } from '@/components/BrandLogo';
+import { BagButton } from '@/components/Chrome';
 import { Icon } from '@/components/Icon';
 import { ExpandHint, useLightbox } from '@/components/Lightbox';
 import { PhotoSlot } from '@/components/PhotoSlot';
@@ -67,6 +68,8 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
         </>
       }
       leading={<StylistAvatar size={40} />}
+      // the bag, next to the close button (Hyun): see what's in it without leaving the piece first
+      actions={<BagButton round />}
       // no Back arrow on a sheet: sliding it down returns you to the chat if you came from there
       onClose={() => go({ type: 'sheet', sheet: back === 'chat' ? { kind: 'chat' } : null })}
       // the message field: suggested questions above it, example questions taking turns inside it
