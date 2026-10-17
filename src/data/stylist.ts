@@ -10,6 +10,9 @@ import { GOES_WITH, PRODUCTS, type Plan, type Product } from './catalog';
 /** Starter questions shown when the search opens */
 export const ASK_PILLS = ['What should I wear on Saturday?', 'Something warmer', 'What’s new today?', 'Show me boots'];
 
+/** Suggested questions in the chat, right above the message field, until the stylist offers its own follow-ups */
+export const CHAT_STARTERS = ['What’s new today?', 'Style a look for Saturday', 'Something warmer', 'Try on with Hologram'];
+
 /** Example questions that take turns inside the chat's message field */
 export const CHAT_HINTS = ['Tell me what you’re after…', 'Try “A jacket for the rain”', 'Try “I’ve got a wedding next week”', 'Try “Show me boots”'];
 

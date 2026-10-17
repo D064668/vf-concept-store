@@ -22,7 +22,7 @@ import { BottomSheet } from '@/components/Sheet';
 import { Composer, StylistAvatar, StylistMessage } from '@/components/ui';
 import { PhotoSlot } from '@/components/PhotoSlot';
 import { byId, lookById, lookForPlan, lookHero, PLAN_IDEAS, planTag, type Look, type Plan } from '@/data/catalog';
-import { CHAT_HINTS } from '@/data/stylist';
+import { CHAT_HINTS, CHAT_STARTERS } from '@/data/stylist';
 import { arrivalQuestion, DEVICES, handoffSheet, SHOW_PICKS, useStore, useStylist, type ChatLine } from '@/state/store';
 import s from './ChatSheet.module.css';
 
@@ -53,7 +53,9 @@ export function ChatSheet() {
 
   // the follow-up questions under the stylist's last answer sit right above the field
   const lastReply = [...thread].reverse().find((l) => l.role === 'stylist');
-  const followUps = thread.length && !thinking ? lastReply?.followUps : undefined;
+  // the suggestion pills above the message field: the stylist's follow-ups after it answers,
+  // otherwise (a fresh chat) the starter questions. Hidden while the stylist is typing.
+  const followUps = thinking ? undefined : (lastReply?.followUps ?? CHAT_STARTERS);
 
   return (
     <BottomSheet

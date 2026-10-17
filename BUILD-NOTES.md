@@ -282,6 +282,8 @@ One field to type in, talk to or ask (`src/components/Search.tsx`).
 
 **Clearing the chat starts it the same way (Hyun).** The old "Ask me anything / Hi Hyun, what are you looking for today?" screen with starter questions is gone. After **Clear → Yes, clear**, the stylist asks again: "Hi Hyun. Anything **coming up I should dress you for**?" (no "You're checked in", because you already are), with the same answer buttons. Your plans and picks stay; only the conversation is cleared (`clearChat` action, `arrivalQuestion()` in `store.tsx`). If you answer **Nothing planned** but told it a plan earlier, it says "No problem. Your picks are still ready for your mountain weekend on Saturday."
 
+**Suggestion pills are always there (Hyun).** Right above the message field (and its rotating hint), one swipeable row: in a fresh or cleared chat the starter questions (What's new today? · Style a look for Saturday · Something warmer · Try on with Hologram, `CHAT_STARTERS` in `stylist.ts`); once the stylist answers, its own follow-ups replace them. They hide while the stylist is typing.
+
 **Curation on the fly (Hyun).** When you name a plan, the stylist answers "Got it: wedding next week. I've put a look together for it…", followed by a **link card to that look** (photo, "For your wedding next week", the look's title, Shop the look →), then the look's pieces, then the follow-up **Show my curated picks**. At the same moment:
 - Curated picks: the look moves to the front of the slider with the tag "For your wedding next week", and the intro says "Ready for your wedding next week, plus looks for what you love."
 - Shop slider: the same order.

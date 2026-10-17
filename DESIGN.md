@@ -433,7 +433,7 @@ A 32px sage-100 avatar with the primary sparkle beside a stylist-surface bubble 
 - **Your messages:** right-aligned sage-700 bubbles with white text. **The stylist's:** the stylist message bubble, left.
 - **Pieces it suggests:** a swipeable row of product cards under the reply.
 - **Look link card:** when the stylist builds a look, a white card (8px radius, 1px inset hairline) under the reply: a 72 × 88 photo, a muted 12px line ("For your ski trip on Saturday"), the look title (600 16/22), and a primary "Shop the look →" text link. Tap → the look page.
-- **Follow-ups:** suggestion chips in one swipeable row above the composer; "Show my curated picks" and "Try on with Hologram" are actions, not questions.
+- **Follow-ups:** suggestion chips in one swipeable row right above the composer, always present: the starter questions in a fresh chat, the stylist's own follow-ups after it answers; "Show my curated picks" and "Try on with Hologram" are actions, not questions.
 
 ### Toast
 48px min height, ink fill, canvas text 500 14/20, sage-300 icon, gold-500 action text; rises 8px over 300ms. It sits above the tab bar.
