@@ -293,7 +293,7 @@ Warm architectural stone, five botanical sage steps, a champagne gold splash, an
 - **Soft Sage 300**: primary in dark mode, toast icon, and the "Powered by" line on the deep sage band.
 
 ### Tertiary
-- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, the monogram field's 1px underline, the bag total rule, the FAB's thin ring, and "Explore look" on dark photos.
+- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, the monogram field's 1px underline, the FAB's thin ring, and "Explore look" on dark photos.
 - **Deep Gold 700** (accent-gold, light; gold 500 in dark): gold text on light grounds: "Explore look", bag text links, leading icons in secondary buttons and suggestion chips, the spec dot, and the dashed pin-to-loupe measurement leader.
 
 ### Neutral
@@ -309,7 +309,7 @@ Product colours (Botanical Sage, Raw Ecru, Obsidian, Stone grey, Forest, Soft Sa
 ### Named Rules
 **The One Sage Button Rule.** Every screen or open sheet has at most one sage-700 filled button. In the bag, the platform Apple Pay button (black in light, white in dark; PKPaymentButton on iOS) takes that place. No other non-sage button carries primary weight.
 
-**The Gold Splash Rule.** Gold appears as text links, live dots, badges and thin rules (1px underline, total rule, dashed leader). It is never a button fill or a surface.
+**The Gold Splash Rule.** Gold appears as text links, live dots, badges and thin rules (1px underline, dashed leader). The line above a total is ink, not gold. It is never a button fill or a surface.
 
 **The Stylist's Voice Rule.** Sage-100 belongs to the stylist and to selection wells. Ordinary cards are white.
 
@@ -393,7 +393,7 @@ Calm, full-weight, pressed with a small scale.
 
 ### Cards / Containers
 - **Corner Style:** 8px.
-- **Background:** white surface. The bag summary uses stylist-surface, with a 1px gold rule above the total.
+- **Background:** white surface. The bag summary uses stylist-surface, with a 1px rule in the text colour (ink; white in dark mode) above the total, not gold, so it never reads as a field line.
 - **Shadow Strategy:** chip shadow for list and bag cards; soft shadow for the board and composer.
 - **Border:** none.
 - **Internal Padding:** 12–16px.

@@ -382,11 +382,12 @@
 .sums dd {
   margin: 0;
 }
-/* the total sits under a thin gold rule */
+/* the total sits under a thin rule in the text colour (white in dark mode, ink in light).
+   Not gold: next to the gold promo-code underline it looked like another field (Hyun) */
 .sums .total {
   margin-top: 4px;
   padding-top: 12px;
-  background: linear-gradient(var(--gold-500), var(--gold-500)) top / 100% 1px no-repeat;
+  background: linear-gradient(var(--ink), var(--ink)) top / 100% 1px no-repeat;
   font: 700 17px/24px var(--font-brand);
   color: var(--ink);
 }
