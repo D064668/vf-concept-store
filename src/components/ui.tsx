@@ -91,11 +91,13 @@ export function StylistAvatar({ size = 32 }: { size?: number }) {
   );
 }
 
-export function StylistMessage({ children }: { children: ReactNode }) {
+/** A line from the stylist. `avatar={false}` hides the small stylist icon — used where the
+ *  sheet's top bar already says "Your stylist", so the icon isn't shown twice (Hyun). */
+export function StylistMessage({ children, avatar = true }: { children: ReactNode; avatar?: boolean }) {
   const stylist = useStylist();
   return (
     <div className={s.msg}>
-      <StylistAvatar />
+      {avatar && <StylistAvatar />}
       <p className={s.bubble}>
         <span className="sr-only">{stylist.title}: </span>
         {children}

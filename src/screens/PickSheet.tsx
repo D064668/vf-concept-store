@@ -116,7 +116,8 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
       </div>
 
       <div className={s.content}>
-        <StylistMessage>
+        {/* the top bar already shows "Your stylist", so no second icon here */}
+        <StylistMessage avatar={false}>
           {note.lead}
           <b>{note.bold}</b>
           {note.tail}
