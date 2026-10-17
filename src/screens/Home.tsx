@@ -142,7 +142,8 @@ export function Home() {
         {/* 2 · Statement ---------------------------------------------- */}
         <section className={s.statement} aria-label="Today’s visit">
           {/* the sentence rises in line by line, each line from behind its own mask */}
-          <SplitReveal key={statement} className={s.words} text={statement} />
+          {/* highlight: the words light up grey → ink as you scroll (Hyun: back, but starting later) */}
+          <SplitReveal key={statement} className={s.words} text={statement} highlight />
           <Reveal as="p" className={s.sign}>
             <Sparkle className={s.signMark} />
             {stylist.title}

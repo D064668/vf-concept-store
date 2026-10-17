@@ -293,7 +293,7 @@ Warm architectural stone, five botanical sage steps, a champagne gold splash, an
 - **Soft Sage 300**: primary in dark mode, toast icon, and the "Powered by" line on the deep sage band.
 
 ### Tertiary
-- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, the monogram field's 1px underline, the bag total rule, the FAB's thin ring and news dot, and "Explore look" on dark photos.
+- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, the monogram field's 1px underline, the bag total rule, the FAB's thin ring, and "Explore look" on dark photos.
 - **Deep Gold 700** (accent-gold, light; gold 500 in dark): gold text on light grounds: "Explore look", bag text links, leading icons in secondary buttons and suggestion chips, the spec dot, and the dashed pin-to-loupe measurement leader.
 
 ### Neutral
@@ -321,7 +321,7 @@ Product colours (Botanical Sage, Raw Ecru, Obsidian, Stone grey, Forest, Soft Sa
 **Character:** Whisper-light 300 openings and statements set against crisp 700 headings; condensed Archivo Narrow appears only where a monogram is being stitched.
 
 ### Hierarchy
-- **Statement** (300, 28/38px, -0.01em): Home's one-sentence visit statement, in full ink; it rises in line by line from behind per-line masks (1.3s, 200ms apart, brand ease) once it is well into view (top at ~60% of the screen).
+- **Statement** (300, 28/38px, -0.01em): Home's one-sentence visit statement; it rises in line by line from behind per-line masks (1.3s, 200ms apart, brand ease) once it is well into view, in soft grey (ink @ 24%), then **lights up word by word to full ink as you scroll** (none lit while its top is below mid-screen, all lit once its top reaches 15% from the top) (top at ~60% of the screen).
 - **Lead** (300, 20/28px): the stylist's welcome line ("I'm your personal stylist today."); also the 30px Curated picks lead.
 - **Headline** (700, 26/32px; 28/34px on Shop slides): look titles, the closing band, Shop slide titles.
 - **Title** (700, 22/28px): section heads ("Your stylist's picks", "In the store today") and the pick name.
@@ -388,7 +388,7 @@ Calm, full-weight, pressed with a small scale.
 
 ### Chips
 - **Filter (Shop):** 38px pill, white, chip shadow, 500 13/16, with a muted count. **Selected:** ink fill, canvas text, count at 72% canvas, no shadow; changes over 200ms; `aria-pressed`.
-- **Suggestion (sheets):** 40px pill, white, chip shadow, with a gold leading icon.
+- **Suggestion (sheets):** text-only pills above the message field (36px, stylist-surface fill, 500 13/18, 44px tap area). No icon (Hyun, build 0.7).
 - **Tags:** 26px pills on images: "Your pick" (primary with the sparkle) or glass ("New", "Curated for you · 1 of 3").
 
 ### Cards / Containers
@@ -414,7 +414,7 @@ An honest stand-in, labelled with `role="img"` and "Photo placeholder: …". It 
 ### Navigation
 - **Tab bar (D2):** 68px pill, surface @ 92% glass, bar shadow, five tabs (Home · Shop · My Visit · Wardrobe · More). Inactive tabs are muted. The active tab is ink 600 with its 22px icon in primary on a 48 × 30 stylist-surface pill. `aria-current="page"`.
 - **Top bar:** solid-S logo, a bag button (on every screen) with an 18px gold count badge (black text, 2px canvas ring) that bumps on add, and the Curated picks glass button (gold text).
-- **Stylist FAB:** 60px circle, 18px from the right, 16px above the tab bar. The brand sparkle mark (30px, twinkling) in primary on neutral frosted glass (surface @ 55%), ringed by a **1.5px gold-500 inset ring**, with a 14px gold news dot until the arrival question is answered. It opens the stylist chat. It hides while you scroll down and returns on scroll up or 700ms after scrolling stops, popping in (520ms, slight overshoot). On Home it appears only once "Talk to your stylist" has scrolled out of view.
+- **Stylist FAB:** 60px circle, 18px from the right, 16px above the tab bar. The brand sparkle mark (30px, twinkling) in primary on neutral frosted glass (surface @ 55%), ringed by a **1.5px gold-500 inset ring**. No notification dot. It opens the stylist chat. It hides while you scroll down and returns on scroll up or 700ms after scrolling stops, popping in (520ms, slight overshoot). On Home it appears only once "Talk to your stylist" has scrolled out of view.
 - **Bottom sheet:** no Back arrow: closing or dragging down returns you to where you came from (in-sheet steps keep Back). A sage-900 scrim @ 38% with a 2px blur, sheet glass, 12px top corners, a 38 × 5 grabber, a 700 18/24 title with a muted subtitle, and 44px round white buttons. Enter rises 60px over 420ms on the brand ease; exit is 220ms on the exit ease.
 
 ### Personalise board (signature)

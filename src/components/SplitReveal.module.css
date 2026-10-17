@@ -3,6 +3,9 @@
 /* the measuring copy and the visible lines sit in the same spot */
 .wrap {
   display: grid;
+  /* one column exactly as wide as the paragraph: the long unsplit line can never
+     stretch it, so the hidden copy always wraps at the real width */
+  grid-template-columns: minmax(0, 1fr);
 }
 .measure,
 .lines {
@@ -37,6 +40,16 @@
 .in .line {
   transform: none;
   opacity: 1;
+}
+
+/* highlight: words wait in soft grey, then light up to full ink as you scroll */
+.dim {
+  color: color-mix(in oklab, currentColor 24%, transparent);
+  transition: color 450ms var(--ease-brand);
+}
+.lit {
+  color: currentColor;
+  transition: color 450ms var(--ease-brand);
 }
 
 @media (prefers-reduced-motion: reduce) {

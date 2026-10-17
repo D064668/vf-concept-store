@@ -234,7 +234,6 @@ export function Composer({
         <div className={s.askPills} role="group" aria-label="Suggested questions">
           {pills.map((q) => (
             <button key={q} type="button" className={s.askPill} onClick={() => (linked ? dispatch({ type: 'ask', text: q }) : ask(q))}>
-              <Sparkle className={s.askSpark} />
               {q}
             </button>
           ))}

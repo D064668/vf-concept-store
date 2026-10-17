@@ -263,16 +263,6 @@
     opacity: 0;
   }
 }
-.fabDot {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--gold-500);
-  box-shadow: 0 0 0 3px var(--surface);
-}
 
 /* dark mode: a light frosted disc, so the primary-sage sparkle stays clear */
 :global([data-theme='dark']) .fab {

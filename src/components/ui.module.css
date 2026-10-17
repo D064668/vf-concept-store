@@ -372,7 +372,7 @@
 .askPill {
   flex: none;
   height: 36px;
-  padding: 0 14px 0 10px;
+  padding: 0 14px; /* text only, no icon (Hyun) */
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -394,11 +394,6 @@
 }
 .askPill:active {
   transform: scale(0.96);
-}
-.askSpark {
-  width: 14px;
-  height: 14px;
-  color: var(--primary);
 }
 .fieldWrap {
   position: relative;

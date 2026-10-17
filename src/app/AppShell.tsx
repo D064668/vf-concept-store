@@ -193,7 +193,7 @@ function App() {
       <LivePill />
       {/* the stylist button: one for the whole app */}
       {/* gold dot on the stylist button until its arrival question is answered */}
-      <StylistFab news={!state.plansAsked} />
+      <StylistFab />
       <Toast />
       {sheet?.kind === 'pick' && <PickSheet key="stylist" productId={sheet.productId} back={sheet.back} />}
       {sheet?.kind === 'chat' && <ChatSheet />}

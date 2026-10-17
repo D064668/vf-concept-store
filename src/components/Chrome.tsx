@@ -141,8 +141,9 @@ export function TabBar() {
  *  above the tab bar, on every screen. It hides while you scroll down anywhere
  *  and comes back when you scroll up or stop (Safari-toolbar style). It steps
  *  aside while a sheet, the search or the photo gallery is open, and on Home
- *  while Home's own message field is on screen (one place to ask at a time). */
-export function StylistFab({ news }: { news?: boolean }) {
+ *  while Home's "Talk to your stylist" button is on screen (one place to ask at a time).
+ *  No notification dot (Hyun removed it): the thin gold ring is enough. */
+export function StylistFab() {
   const { state, go } = useStore();
   const stylist = useStylist();
   const [scrollHidden, setScrollHidden] = useState(false);
@@ -173,13 +174,12 @@ export function StylistFab({ news }: { news?: boolean }) {
   return (
     <button
       className={`${s.fab} ${hidden ? s.fabHidden : ''}`}
-      aria-label={news ? `Open ${stylist.inline}, new message` : `Open ${stylist.inline}`}
+      aria-label={`Open ${stylist.inline}`}
       onClick={() => go({ type: 'sheet', sheet: { kind: 'chat' } })} // opens the stylist chat
       tabIndex={hidden ? -1 : 0}
       aria-hidden={hidden || undefined}
     >
       <Sparkle className={s.fabMark} />
-      {news && <span className={s.fabDot} aria-hidden="true" />}
     </button>
   );
 }
