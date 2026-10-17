@@ -102,8 +102,14 @@ export function LookScreen({ id }: { id: string }) {
             <Button full icon="bag" onClick={() => go({ type: 'sheet', sheet: { kind: 'quickadd', productIds: look.items.map((i) => i.productId), lookId: look.id } })}>
               Add complete look · <span className="num">{eur(pieces.reduce((n, p) => n + p.amount, 0))}</span>
             </Button>
-            <Button full variant="secondary" icon="hologram" onClick={() => go({ type: 'sheet', sheet: handoffSheet(state, 'hologram', look.heroProductId) })}>
-              {DEVICES.hologram.action}
+            {/* not connected yet: the button says it opens the camera to scan the QR code (Hyun) */}
+            <Button
+              full
+              variant="secondary"
+              icon={state.paired.includes('hologram') ? 'hologram' : 'scan'}
+              onClick={() => go({ type: 'sheet', sheet: handoffSheet(state, 'hologram', look.heroProductId) })}
+            >
+              {state.paired.includes('hologram') ? DEVICES.hologram.action : 'Scan to try on with Hologram'}
             </Button>
           </div>
         </section>

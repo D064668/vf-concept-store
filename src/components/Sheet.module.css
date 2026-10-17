@@ -57,8 +57,18 @@
 }
 
 .head {
-  flex: none;
+  /* frosted glass floating over the content (Hyun): see-through, blurred, the content
+     scrolls underneath. The body below starts at --head-h so nothing hides behind it. */
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: 8px 12px 10px 20px;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background: color-mix(in oklab, var(--surface) 80%, transparent);
+  -webkit-backdrop-filter: blur(28px) saturate(1.3);
+  backdrop-filter: blur(28px) saturate(1.3);
   touch-action: none;
   cursor: grab;
 }
@@ -96,6 +106,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* room around the line so a pulsing live dot's ring isn't clipped (it grows ~7px);
+     the negative margin keeps the text exactly where it was */
+  padding: 7px 0 7px 8px;
+  margin: -7px 0 -7px -8px;
 }
 .round {
   width: 44px;
@@ -115,6 +129,7 @@
 .body {
   flex: 1;
   min-height: 0;
+  padding-top: var(--head-h, 76px); /* room for the floating header */
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;

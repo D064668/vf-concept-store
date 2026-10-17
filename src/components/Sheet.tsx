@@ -5,7 +5,7 @@
 //    tap close, or drag the top down to close it
 //  • keeps keyboard focus inside while open, and gives it back on close
 // iOS: a native .sheet with .presentationDetents([.large]) and a grabber.
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { Icon } from './Icon';
 import s from './Sheet.module.css';
 
@@ -37,6 +37,20 @@ export function BottomSheet({
   tall?: boolean;
 }) {
   const panel = useRef<HTMLDivElement>(null);
+  const head = useRef<HTMLDivElement>(null);
+  // the header floats over the content as frosted glass (Hyun): the content starts just
+  // below it (--head-h) and scrolls softly underneath. Its height is measured, so a
+  // two-line title or a back button never covers anything.
+  useLayoutEffect(() => {
+    const h = head.current;
+    const p = panel.current;
+    if (!h || !p) return;
+    const set = () => p.style.setProperty('--head-h', `${h.offsetHeight}px`);
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(h);
+    return () => ro.disconnect();
+  }, []);
   const [closing, setClosing] = useState(false);
   const [drag, setDrag] = useState(0);
   const start = useRef<{ y: number; t: number } | null>(null);
@@ -109,7 +123,7 @@ export function BottomSheet({
         tabIndex={-1}
         style={drag ? { transform: `translateY(${drag}px)`, transition: 'none' } : undefined}
       >
-        <div className={s.head} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
+        <div ref={head} className={s.head} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
           <span className={s.grabber} aria-hidden="true" />
           <div className={s.headRow}>
             {onBack && (

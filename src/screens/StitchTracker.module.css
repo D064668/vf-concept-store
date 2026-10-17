@@ -1,0 +1,159 @@
+/* StitchTracker.module.css — the live embroidery status in My Visit */
+
+.card {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+}
+
+/* the piece, the headline and the ready time */
+.top {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.thumb {
+  flex: none;
+  width: 56px;
+  height: 70px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.what {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.piece {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--ink-muted);
+}
+.headline {
+  font: 600 17px/22px var(--font-brand);
+  color: var(--ink);
+}
+.eta {
+  font: 400 13px/18px var(--font-brand);
+  color: var(--accent-gold);
+}
+
+/* the progress bar: sage fill on a soft track, eases forward each second */
+.bar {
+  margin-top: 14px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 8%, transparent);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transition: width 1s linear;
+}
+
+/* the steps: a dot, the label, the time on the right */
+.steps {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+}
+.steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 7px 0;
+  font: 400 14px/20px var(--font-brand);
+}
+/* the line joining the dots */
+.steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 25px;
+  bottom: -9px;
+  width: 2px;
+  background: color-mix(in oklab, var(--ink) 10%, transparent);
+}
+.steps li.done:not(:last-child)::after {
+  background: var(--primary);
+}
+.dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--ink) 18%, transparent);
+  color: var(--on-primary);
+}
+.done .dot {
+  background: var(--primary);
+  box-shadow: none;
+}
+/* happening now: a sage ring that gently pulses */
+.now .dot {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+.now .dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: beat 1.6s var(--ease-brand) infinite;
+}
+@keyframes beat {
+  50% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+}
+.label {
+  padding-top: 1px;
+  color: var(--ink);
+}
+.next .label {
+  color: var(--ink-muted);
+}
+.now .label {
+  font-weight: 600;
+}
+.label em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+.time {
+  padding-top: 1px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.done .time,
+.now .time {
+  color: var(--ink);
+}
+
+.link {
+  margin-top: 10px;
+  min-height: 44px;
+  font: 600 14px/20px var(--font-brand);
+  color: var(--accent-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar i,
+  .now .dot::before {
+    transition: none;
+    animation: none;
+  }
+}

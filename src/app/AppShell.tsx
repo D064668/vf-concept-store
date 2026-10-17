@@ -19,6 +19,7 @@ import { BagScreen, CheckoutScreen, OrderScreen } from '@/screens/Checkout';
 import { MoreSheet, Visit } from '@/screens/Placeholders';
 import { Wardrobe } from '@/screens/Wardrobe';
 import { useScrollMemory } from './useScrollMemory';
+import { STITCH_RUN_MS } from '@/state/stitching';
 import { FilterSheet } from '@/screens/FilterSheet';
 import { LookScreen } from '@/screens/Look';
 import { BrandScreen } from '@/screens/Brand';
@@ -54,7 +55,13 @@ function fromUrl(): { initial: Partial<AppState>; theme: Theme; width: Width; re
   if (screen === 'bag') Object.assign(initial, { tab: 'shop', stack: ['bag'], bag: demoBag });
   if (screen === 'checkout') Object.assign(initial, { tab: 'shop', stack: ['bag', 'checkout'], bag: demoBag });
   if (screen === 'order')
-    Object.assign(initial, { tab: 'shop', stack: ['order'], paid: true, order: { id: 'SF-2614-0001', items: demoBag, stitching: true, vault: '04' } });
+    Object.assign(initial, { tab: 'shop', stack: ['order'], paid: true, order: { id: 'SF-2614-0001', items: demoBag, stitching: true, vault: '04', paidAt: Date.now() } });
+  // My Visit with a personalised piece being stitched (the live tracker), for demos
+  if (screen === 'visit' || screen === 'stitching')
+    Object.assign(initial, {
+      tab: 'visit',
+      ...(screen === 'stitching' ? { paid: true, order: { id: 'SF-2614-0001', items: demoBag, stitching: true, vault: '04', paidAt: Date.now() } } : {}),
+    });
   if (screen === 'more') Object.assign(initial, { sheet: { kind: 'more' } });
   if (screen === 'filters') Object.assign(initial, { tab: 'shop', sheet: { kind: 'filters' } });
   if (screen === 'pair') Object.assign(initial, { tab: 'shop', sheet: { kind: 'pair', device: q.get('device') ?? 'tabletop', productId: 'tnf-mountain' } });
@@ -149,7 +156,7 @@ function Frame({ width0, review }: { width0: Width; review: boolean }) {
 
 /** Which screen and which sheet are showing. iOS: TabView + NavigationStack + .sheet */
 function App() {
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
   // Home and Shop stay mounted (so Back from a look returns to where you were),
   // but tapping them in the tab bar always starts at the top of the page.
   const panes = useRef<Record<string, HTMLDivElement | null>>({});
@@ -171,6 +178,14 @@ function App() {
   });
   const top = state.stack[state.stack.length - 1];
   const sheet = state.sheet;
+  // the Tajima cell's clock: while a piece is being stitched, finish it on time (demo: ~1 minute
+  // after paying, see stitching.ts), wherever you are in the app
+  const stitchingSince = state.order?.stitching ? state.order.paidAt : undefined;
+  useEffect(() => {
+    if (stitchingSince === undefined) return;
+    const t = setTimeout(() => dispatch({ type: 'stitchDone' }), Math.max(0, stitchingSince + STITCH_RUN_MS - Date.now()));
+    return () => clearTimeout(t);
+  }, [stitchingSince, dispatch]);
   // Back returns to where you were on every page (not only Home and Shop); new pages start at the top
   const main = useRef<HTMLElement>(null);
   useScrollMemory(main, state.tab, state.stack);

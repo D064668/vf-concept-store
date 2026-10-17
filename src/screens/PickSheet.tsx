@@ -204,7 +204,8 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
                 </span>
                 <span className={s.screenText}>
                   <b>{DEVICES.hologram.action}</b>
-                  <span>See it on you, life-size</span>
+                  {/* says up front that the camera opens to scan the screen's QR code (Hyun) */}
+                  <span>{state.paired.includes('hologram') ? 'Connected · see it on you, life-size' : 'Scan its QR code to see it on you, life-size'}</span>
                 </span>
               </button>
             )}
@@ -215,7 +216,7 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
                 </span>
                 <span className={s.screenText}>
                   <b>{DEVICES.tabletop.action}</b>
-                  <span>Design the embroidery on a big screen</span>
+                  <span>{state.paired.includes('tabletop') ? 'Connected · design the embroidery on a big screen' : 'Scan its QR code to design the embroidery'}</span>
                 </span>
               </button>
             )}

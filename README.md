@@ -17,7 +17,7 @@ Open it in a desktop browser (you'll see the app at phone width) or on your phon
 
 **Handy links**
 
-- `?screen=shop` (also `picks`, `chat`, `pick`, `look`, `bag`, `checkout`, `order`, `more`, `pair`, `handoff`) opens that screen straight away.
+- `?screen=shop` (also `picks`, `chat`, `pick`, `look`, `bag`, `checkout`, `order`, `more`, `pair`, `handoff`, `visit`, `stitching`) opens that screen straight away. `stitching` = My Visit with a personalised piece being made (the live tracker runs for about a minute).
 - `?theme=dark` or `?theme=light` sets the appearance.
 - `npm run dev:review` (or `?review=1` on the link) turns on review mode: an iPhone frame plus a panel to switch theme and phone width and jump between screens. This is a prototype tool only, not part of the app (`src/app/ReviewFrame.tsx`).
 

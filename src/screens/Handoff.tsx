@@ -30,7 +30,8 @@ const ICON = { tabletop: 'table', hologram: 'hologram' } as const;
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* =================================================================
-   1 · PAIR — scan the QR code or type the 6-digit code
+   1 · PAIR — the camera opens straight away (Hyun: like the iPhone's own QR scanner);
+       "Enter the code instead" switches to the 6-digit code sheet as a fallback
    ================================================================= */
 export function PairSheet({ device, productId }: { device: Device; productId: string }) {
   const { dispatch, go } = useStore();
@@ -45,6 +46,18 @@ export function PairSheet({ device, productId }: { device: Device; productId: st
     dispatch({ type: 'pair', device });
     setTimeout(() => go({ type: 'sheet', sheet: { kind: 'handoff', device, productId } }), reduced() ? 300 : 900);
   };
+
+  // scanning: the full-screen camera, straight away
+  if (mode === 'scan')
+    return (
+      <CameraScanner
+        device={device}
+        connected={done}
+        onFound={connect}
+        onClose={() => go({ type: 'sheet', sheet: { kind: 'pick', productId } })}
+        onCode={() => setMode('code')}
+      />
+    );
 
   return (
     <BottomSheet
@@ -63,64 +76,15 @@ export function PairSheet({ device, productId }: { device: Device; productId: st
           <Connected name={d.name} />
         ) : (
           <>
-            {/* two ways to connect: a segmented control (iOS: Picker .segmented) */}
-            <div className={s.seg} role="tablist" aria-label="How to connect">
-              <button role="tab" aria-selected={mode === 'scan'} onClick={() => setMode('scan')}>
-                <Icon name="scan" size={18} /> Scan code
-              </button>
-              <button role="tab" aria-selected={mode === 'code'} onClick={() => setMode('code')}>
-                <span className={s.hash} aria-hidden="true">123</span> Enter code
-              </button>
-            </div>
-            {mode === 'scan' ? <Scanner device={device} onFound={connect} /> : <CodeEntry device={device} onMatch={connect} />}
+            {/* the fallback: type the code; or go back to the camera */}
+            <CodeEntry device={device} onMatch={connect} />
+            <button className={s.backToScan} onClick={() => setMode('scan')}>
+              <Icon name="scan" size={18} /> Scan the QR code instead
+            </button>
           </>
         )}
       </div>
     </BottomSheet>
-  );
-}
-
-/** The camera view. In the prototype it "finds" the code after a short moment. */
-function Scanner({ device, onFound }: { device: Device; onFound: () => void }) {
-  const [found, setFound] = useState(false);
-  const cb = useRef(onFound);
-  cb.current = onFound; // always call the latest version, without restarting the timers
-  useEffect(() => {
-    // pretend the camera sees the QR code on the store screen
-    const t1 = setTimeout(() => setFound(true), 2200);
-    const t2 = setTimeout(() => cb.current(), 2700);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, []);
-  return (
-    <div className={s.scanWrap}>
-      <div className={`${s.viewfinder} ${found ? s.found : ''}`} role="img" aria-label={`Camera view, pointed at the code on the ${DEVICES[device].name}`}>
-        {/* what the camera "sees": the store screen with its code */}
-        <div className={s.cameraScene} aria-hidden="true">
-          <div className={s.screenGlow}>
-            <QrCode seed={DEVICES[device].code} />
-            <span className={s.screenLabel}>S·Fashion · {DEVICES[device].name}</span>
-          </div>
-        </div>
-        <span className={s.corners} aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-        </span>
-        {!found && <span className={s.scanLine} aria-hidden="true" />}
-        {found && (
-          <span className={s.foundTick} aria-hidden="true">
-            <Icon name="check" size={28} strokeWidth={2.4} />
-          </span>
-        )}
-      </div>
-      <p className={s.help} role="status">
-        {found ? 'Code found. Connecting…' : `Point your camera at the code on the ${DEVICES[device].name} screen.`}
-      </p>
-    </div>
   );
 }
 
@@ -185,6 +149,82 @@ function CodeEntry({ device, onMatch }: { device: Device; onMatch: () => void })
   );
 }
 
+/** The full-screen camera, like the iPhone's own QR scanner (Hyun): it opens the moment you
+ *  tap "Try on with Hologram". The store around you fills the screen; the viewfinder in the
+ *  middle finds the QR code on the screen by itself, turns gold, and you're connected.
+ *  In the prototype the camera "finds" the code after a short moment.
+ *  iOS: DataScannerViewController (VisionKit) or AVCaptureSession with a metadata output. */
+function CameraScanner({
+  device,
+  connected,
+  onFound,
+  onClose,
+  onCode,
+}: {
+  device: Device;
+  connected: boolean;
+  onFound: () => void;
+  onClose: () => void;
+  onCode: () => void;
+}) {
+  const d = DEVICES[device];
+  const [found, setFound] = useState(false);
+  const cb = useRef(onFound);
+  cb.current = onFound; // always call the latest version, without restarting the timers
+  useEffect(() => {
+    const t1 = setTimeout(() => setFound(true), 2200); // the camera "sees" the code
+    const t2 = setTimeout(() => cb.current(), 2700); // …and connects
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+  return (
+    <div className={s.camera} role="dialog" aria-modal="true" aria-label={`Camera: scan the QR code on the ${d.name}`}>
+      {/* what the camera sees around the screen: the store, soft and drifting like a hand-held phone */}
+      <div className={s.camFeed} aria-hidden="true" style={{ backgroundImage: 'url("/assets/hologram-store.jpg")' }} />
+      <div className={s.camTop}>
+        <button className={s.camClose} onClick={onClose} aria-label="Close the camera">
+          <Icon name="close" size={22} />
+        </button>
+      </div>
+      <div className={s.camMid}>
+        <p className={s.camTitle}>Scan the QR code on the {d.name}</p>
+        <div className={`${s.viewfinder} ${s.camFinder} ${found ? s.found : ''}`} role="img" aria-label={`Camera view, pointed at the code on the ${d.name}`}>
+          <div className={s.cameraScene} aria-hidden="true">
+            <div className={s.screenGlow}>
+              <QrCode seed={d.code} />
+              <span className={s.screenLabel}>S·Fashion · {d.name}</span>
+            </div>
+          </div>
+          <span className={s.corners} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+          {!found && <span className={s.scanLine} aria-hidden="true" />}
+          {found && (
+            <span className={s.foundTick} aria-hidden="true">
+              <Icon name="check" size={28} strokeWidth={2.4} />
+            </span>
+          )}
+        </div>
+      </div>
+      <div className={s.camFoot}>
+        <p className={s.camHelp} role="status">
+          {connected ? `Connected to the ${d.name}. One moment…` : found ? 'Code found. Connecting…' : 'Point your camera at the code on its screen.'}
+        </p>
+        {!found && (
+          <button className={s.camAlt} onClick={onCode}>
+            Enter the code instead
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function Connected({ name }: { name: string }) {
   return (
     <div className={s.connected} role="status">
@@ -232,9 +272,14 @@ export function HandoffSheet({ device, productId }: { device: Device; productId:
   const d = DEVICES[device];
   const alreadyLive = state.live?.device === device && state.live.productId === productId;
   const [phase, setPhase] = useState<'sending' | 'live'>(alreadyLive ? 'live' : 'sending');
-  // Hologram: colour, size and "add" happen ON the Hologram. When you tap
-  // "Send to my phone" there, the piece lands back here to add to the bag.
-  const [received, setReceived] = useState(false);
+  // Colour, size and "add" can all happen ON the store screen (Hyun: every screen can add to bag):
+  //   'added' = "Add to bag" tapped on the screen → it's already in this phone's bag
+  //   'sent'  = "Send to my phone" tapped on the Hologram → it lands here, to add or keep browsing
+  const [back, setBack] = useState<null | 'added' | 'sent'>(null);
+  const addOnScreen = () => {
+    dispatch({ type: 'addFrom', device, productId: p.id });
+    setBack('added');
+  };
   const size = sizeFor(state, p.id);
   const inBag = state.bag.some((b) => b.productId === p.id);
   const oneSize = p.sizes.length === 1;
@@ -257,9 +302,9 @@ export function HandoffSheet({ device, productId }: { device: Device; productId:
 
   const steps =
     device === 'tabletop'
-      ? ['Go to the Tabletop 55″. Your piece is already on it.', 'Place, size and colour your embroidery on the big screen.', 'Your design comes back to this phone to check out.']
+      ? ['Go to the Tabletop 55″. Your piece is already on it.', 'Place, size and colour your embroidery on the big screen.', 'Tap “Add to bag” on the table, or bring the design back to this phone.']
       : // the Hologram's camera sees you; no marker on the floor (Hyun). Confirm the wording with the hardware team.
-        ['Stand in front of the Hologram, facing the screen.', `Its camera sees you, and the ${p.name} appears on you, life-size.`, 'Choose colour and size on the Hologram, then tap “Send to my phone”.'];
+        ['Stand in front of the Hologram, facing the screen.', `Its camera sees you, and the ${p.name} appears on you, life-size.`, 'Choose colour and size, then tap “Add to bag” on the Hologram, or “Send to my phone” to decide later.'];
 
   return (
     <BottomSheet
@@ -324,21 +369,41 @@ export function HandoffSheet({ device, productId }: { device: Device; productId:
 
         <div className={s.actions}>
           {device === 'tabletop' ? (
-            <>
-              <Button full icon="phone" disabled={phase !== 'live'} onClick={() => end('atelier')}>
-                Bring my design back
-              </Button>
-              <Button full variant="quiet" onClick={() => end('pick')}>
-                End session
-              </Button>
-            </>
+            back === 'added' ? (
+              // added on the table: the piece is in the bag with its embroidery
+              <div className={s.back} aria-live="polite">
+                <p className={s.backLabel}>
+                  <Icon name="check" size={16} /> Added to your bag from the {d.name}
+                </p>
+                <Button full icon="bag" onClick={() => go({ type: 'sheet', sheet: { kind: 'bag' } })}>
+                  View bag
+                </Button>
+                <Button full variant="quiet" onClick={() => end('pick')}>
+                  End session
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button full icon="phone" disabled={phase !== 'live'} onClick={() => end('atelier')}>
+                  Bring my design back
+                </Button>
+                {/* prototype only: stands in for the tap on the table */}
+                <button className={s.demoSend} disabled={phase !== 'live'} onClick={addOnScreen}>
+                  Demo: tap “Add to bag” on the Tabletop
+                </button>
+                <Button full variant="quiet" onClick={() => end('pick')}>
+                  End session
+                </Button>
+              </>
+            )
           ) : (
             <>
-              {received ? (
-                // the piece came back from the Hologram, with what was chosen there
+              {back ? (
+                // added on the Hologram, or sent back to the phone, with what was chosen there
                 <div className={s.back} aria-live="polite">
                   <p className={s.backLabel}>
-                    <Icon name="phone" size={16} /> Sent from the Hologram
+                    <Icon name={back === 'added' ? 'check' : 'phone'} size={16} />
+                    {back === 'added' ? ` Added to your bag from the ${d.name}` : ` Sent from the ${d.name}`}
                   </p>
                   <div className={s.backRow}>
                     <span className={s.backThumb}>
@@ -361,7 +426,7 @@ export function HandoffSheet({ device, productId }: { device: Device; productId:
                       Add to bag
                     </Button>
                   )}
-                  <Button full variant="quiet" onClick={() => setReceived(false)}>
+                  <Button full variant="quiet" onClick={() => setBack(null)}>
                     Keep trying on
                   </Button>
                 </div>
@@ -369,12 +434,17 @@ export function HandoffSheet({ device, productId }: { device: Device; productId:
                 <>
                   <div className={s.waiting}>
                     <span className={s.liveDot} aria-hidden="true" />
-                    {phase === 'live' ? 'Waiting for “Send to my phone” on the Hologram' : 'Connecting…'}
+                    {phase === 'live' ? 'Waiting for you on the Hologram' : 'Connecting…'}
                   </div>
-                  {/* prototype only: stands in for the tap on the Hologram */}
-                  <button className={s.demoSend} disabled={phase !== 'live'} onClick={() => setReceived(true)}>
-                    Demo: send it from the Hologram
-                  </button>
+                  {/* prototype only: these stand in for the two taps on the Hologram */}
+                  <div className={s.demoPair}>
+                    <button className={s.demoSend} disabled={phase !== 'live'} onClick={addOnScreen}>
+                      Demo: tap “Add to bag”
+                    </button>
+                    <button className={s.demoSend} disabled={phase !== 'live'} onClick={() => setBack('sent')}>
+                      Demo: tap “Send to my phone”
+                    </button>
+                  </div>
                   <Button full variant="quiet" onClick={() => end('pick')}>
                     End try-on
                   </Button>

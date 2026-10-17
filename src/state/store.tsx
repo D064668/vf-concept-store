@@ -98,6 +98,10 @@ export interface Order {
   /** true if any piece is being embroidered (it goes to the Tajima cell first) */
   stitching: boolean;
   vault: string;
+  /** when it was paid (ms): the stitching tracker in My Visit counts from here */
+  paidAt?: number;
+  /** when the embroidery was finished and the piece went into the vault (ms) */
+  readyAt?: number;
 }
 /** total pieces in the bag, counting quantities */
 export const bagCount = (bag: BagItem[]) => bag.reduce((n, b) => n + (b.qty ?? 1), 0);
@@ -181,9 +185,14 @@ type Action =
   | { type: 'composer'; onScreen: boolean }
   | { type: 'theme'; theme: AppState['theme'] }
   | { type: 'pay' }
+  /** the embroidery is finished (the demo clock in AppShell sends this) */
+  | { type: 'stitchDone' }
   | { type: 'toast'; text: string | null; action?: 'bag' | 'wardrobe' }
   | { type: 'search'; patch: Partial<SearchState> }
   | { type: 'ask'; text: string }
+  /** "Add to bag" tapped ON a store screen (Hologram, Tabletop): it lands in this phone's bag.
+   *  From the Tabletop it comes with the embroidery designed there. */
+  | { type: 'addFrom'; device: Device; productId: string }
   /** the arrival question was answered (or skipped) */
   | { type: 'plansAsked' }
   /** clear the conversation: it starts again with the stylist's greeting question */
@@ -266,6 +275,15 @@ function reducer(s: AppState, a: Action): AppState {
       const bag = exists ? s.bag.map((b) => (b.productId === a.productId ? item : b)) : [...s.bag, item];
       return { ...s, bag, paid: false, sheet: null, stack: [...s.stack.filter((x) => !CHECKOUT.includes(x)), 'bag'] };
     }
+    case 'addFrom': {
+      // tapped "Add to bag" on the Hologram or the Tabletop: the screen tells the phone
+      const size = s.sizes[a.productId] ?? fitFor(byId(a.productId));
+      const exists = s.bag.find((b) => b.productId === a.productId);
+      const personalisation = a.device === 'tabletop' ? { ...s.draft } : exists?.personalisation;
+      const item = { productId: a.productId, size: exists?.size ?? size, ...(personalisation ? { personalisation } : {}) };
+      const bag = exists ? s.bag.map((b) => (b.productId === a.productId ? item : b)) : [...s.bag, item];
+      return { ...s, bag, paid: false, toast: { id: ++toastId, text: `Added to your bag from the ${DEVICES[a.device].name}`, action: 'bag' } };
+    }
     case 'remove':
       return { ...s, bag: s.bag.filter((b) => b.productId !== a.productId) };
     case 'theme':
@@ -285,8 +303,20 @@ function reducer(s: AppState, a: Action): AppState {
         items: s.bag,
         stitching: s.bag.some((b) => b.personalisation),
         vault: '04',
+        paidAt: Date.now(),
       };
       return { ...s, paid: true, order, bag: [], stack: [...s.stack.filter((x) => !CHECKOUT.includes(x)), 'order'] };
+    }
+    case 'stitchDone': {
+      // the Tajima cell finished: the piece is in the vault
+      if (!s.order?.stitching) return s;
+      const piece = s.order.items.find((b) => b.personalisation);
+      const name = piece ? byId(piece.productId).name : 'Your piece';
+      return {
+        ...s,
+        order: { ...s.order, stitching: false, readyAt: Date.now() },
+        toast: { id: ++toastId, text: `${name} is ready in vault ${s.order.vault}` },
+      };
     }
     case 'toast':
       return { ...s, toast: a.text ? { id: ++toastId, text: a.text, action: a.action } : null };

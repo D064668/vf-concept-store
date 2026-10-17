@@ -1,7 +1,7 @@
 'use client';
 // Placeholders.tsx — tabs that come in later builds.
-//   My Visit : your visit status + the store's screens (Hologram, Tabletop);
-//              stitching + vault come next build (HANDOFF §6 · 03/04)
+//   My Visit : your visit status (a live stitching tracker for a personalised piece:
+//              StitchTracker.tsx) + the store's screens (Hologram, Tabletop)
 //   Wardrobe : not designed yet, "coming soon" (HANDOFF §9.1)
 //   More     : overlay menu, a simple version for now (HANDOFF §6 · 05)
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -13,6 +13,7 @@ import { CUSTOMER, INTERESTS, interestById, PLAN_IDEAS, PLAN_WHENS, STYLES, STYL
 import { DEVICES, handoffSheet, useStore, useStylist } from '@/state/store';
 import { RevealWords } from '@/components/Reveal';
 import { HologramStage } from './Handoff';
+import { StitchTracker } from './StitchTracker';
 import { PoweredBy } from '@/components/PoweredBy';
 import s from './Placeholders.module.css';
 
@@ -35,7 +36,10 @@ export function Visit() {
           </p>
         </header>
 
-        {/* what's happening with your order (Tajima stitching + vault come next build) */}
+        {/* a personalised piece: follow it live while the Tajima cell makes it (Hyun) */}
+        {state.order?.items.some((b) => b.personalisation) ? (
+          <StitchTracker order={state.order} />
+        ) : (
         <section className={s.status}>
           <Sparkle className={s.statusMark} />
           <div>
@@ -56,6 +60,7 @@ export function Visit() {
             )}
           </div>
         </section>
+        )}
 
         {/* the store's screens: they belong to the visit, not to the curated looks */}
         <section className={s.screensSec} aria-labelledby="screens-h">
@@ -73,7 +78,7 @@ export function Visit() {
                 {DEVICES.hologram.action}
                 {state.paired.includes('hologram') && <i className={s.on}>Connected</i>}
               </span>
-              <span>See your pick on you, life-size. No fitting room needed.</span>
+              <span>{state.paired.includes('hologram') ? 'See your pick on you, life-size. No fitting room needed.' : 'Scan its QR code to see your pick on you, life-size. No fitting room needed.'}</span>
             </span>
             <Icon name="chevron" size={18} />
           </button>
@@ -87,7 +92,7 @@ export function Visit() {
                 {DEVICES.tabletop.action}
                 {state.paired.includes('tabletop') && <i className={s.on}>Connected</i>}
               </span>
-              <span>Design your embroidery on the big table, then bring it back here.</span>
+              <span>{state.paired.includes('tabletop') ? 'Design your embroidery on the big table, then bring it back here.' : 'Scan its QR code to design your embroidery on the big table.'}</span>
             </span>
             <Icon name="chevron" size={18} />
           </button>

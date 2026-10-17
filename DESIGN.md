@@ -435,6 +435,15 @@ A 32px sage-100 avatar with the primary sparkle beside a stylist-surface bubble 
 - **Look link card:** when the stylist builds a look, a white card (8px radius, 1px inset hairline) under the reply: a 72 × 88 photo, a muted 12px line ("For your ski trip on Saturday"), the look title (600 16/22), and a primary "Shop the look →" text link. Tap → the look page.
 - **Follow-ups:** suggestion chips in one swipeable row right above the composer, always present: the starter questions in a fresh chat, the stylist's own follow-ups after it answers; "Show my curated picks" and "Try on with Hologram" are actions, not questions.
 
+### Sheet header (frosted)
+Floats over the sheet's content: surface @ 80% with blur(28px) saturate(1.3), 12px top corners; the content starts at the header's measured height and scrolls underneath.
+
+### Camera scanner (store screens)
+Full screen, near-black: the store photo blurred and darkened behind, a round frosted ✕ top-left, a 600 20/26 white title ("Scan the QR code on the Hologram"), a square viewfinder (rounded 28px) with white corner marks and a gold scan line, everything around it dimmed. Found: corners turn gold and draw in, a gold tick pops. Bottom: one line of help, and a frosted pill "Enter the code instead".
+
+### Stitch tracker (My Visit)
+A white card (chip shadow): 56 × 70 thumb, the piece + monogram in muted 13px, a 600 17/22 headline, "Ready about 14:41" in gold. A 6px progress bar (sage on ink @ 8%). Steps: 22px dots joined by a 2px line (sage once done); done = sage disc with a white tick, now = sage ring with a pulsing dot and 600 label, next = grey ring and muted label; times right-aligned, tabular. A gold underlined link at the foot.
+
 ### Accordion (product details)
 On a product's sheet, under "About this piece". A closed row between hairlines (1px ink @ 10%, top and bottom), 56px tall: the title in 600 14/20 caps (+0.06em), an optional muted count, and a 14px + on the right made of two 1.5px bars. Tap: the vertical bar rotates flat into a − and the panel opens by animating its grid row 0fr → 1fr (480ms, brand ease) while the content fades up 6px. Inside: a spec table, label column 112px in 500 11/20 caps muted (+0.08em), values 400 14/20 ink (tabular figures), rows split by 1px ink @ 8% hairlines. Reduce Motion: no animation.
 
