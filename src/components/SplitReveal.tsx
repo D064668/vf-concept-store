@@ -12,8 +12,8 @@
 //
 // `highlight` (Hyun: "bring back the text highlight, but start it a little later"):
 // after the lines rise in (in soft grey), the words light up to full ink one by one
-// AS YOU SCROLL: none lit while the paragraph's top is below the middle of the screen,
-// all lit once it has moved up to ~15% from the top. Scroll back down and they dim again.
+// AS YOU SCROLL: none lit while the paragraph's top is in the lower ~40% of the screen,
+// all lit once it has moved up to ~20% from the top. Scroll back down and they dim again.
 // Screen readers read the whole sentence once (the split lines are hidden from them).
 // iOS: split the text into lines (TextKit / Text.LayoutKey), each line in a
 //      .clipped() frame with .offset(y:) animated in, .delay(i * 0.14).
@@ -25,8 +25,8 @@ import { useInView } from './Reveal';
 import s from './SplitReveal.module.css';
 
 /** where the highlight starts and ends: the paragraph's top, as a share of the screen height */
-const LIGHT_START = 0.5; // top at the middle of the screen → the first word lights up
-const LIGHT_END = 0.15; // top at 15% from the top → every word is lit
+const LIGHT_START = 0.62; // top a bit below the middle of the screen → the first word lights up (Hyun: a little sooner)
+const LIGHT_END = 0.2; // top at 20% from the top → every word is lit
 
 export function SplitReveal({ text, className, highlight }: { text: string; className?: string; highlight?: boolean }) {
   // starts once the text is well into view, not as it peeks in (Hyun: start later)

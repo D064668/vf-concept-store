@@ -204,7 +204,7 @@
   border-radius: var(--radius-pill);
   display: grid;
   place-items: center;
-  color: var(--sage-700); /* the primary sage in both themes (Hyun) */
+  color: var(--sage-900); /* light theme: the darkest sage (Hyun); dark theme: sage 700, below */
   background: color-mix(in oklab, var(--surface) 55%, transparent);
   -webkit-backdrop-filter: var(--glass-filter);
   backdrop-filter: var(--glass-filter);
@@ -230,9 +230,11 @@
     opacity 160ms var(--ease-exit);
 }
 .fabMark {
-  width: 30px;
-  height: 30px;
-  translate: 0 1px;
+  /* bigger mark, same 60px circle (Hyun). The drawing's heavy gem sits low and its
+     light twinkles high, so it's nudged up 2px to look centred to the eye */
+  width: 38px;
+  height: 38px;
+  translate: 0 -2px;
 }
 .fabMark :global(.sf-twinkle) {
   transform-box: fill-box;
@@ -267,9 +269,11 @@
 /* dark mode: a light frosted disc, so the primary-sage sparkle stays clear */
 :global([data-theme='dark']) .fab {
   background: color-mix(in oklab, #f6f5f2 84%, transparent);
+  color: var(--sage-700);
 }
 @media (prefers-color-scheme: dark) {
   :global(:root:not([data-theme='light'])) .fab {
     background: color-mix(in oklab, #f6f5f2 84%, transparent);
+    color: var(--sage-700);
   }
 }
