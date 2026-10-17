@@ -286,6 +286,8 @@ One field to type in, talk to or ask (`src/components/Search.tsx`).
 
 **Product details accordion (Hyun, product sheet).** Under "About this piece" on every product's sheet: a closed row "PRODUCT DETAILS" with a +. Tap → it slides open (height eases open over ~0.5s, the content fades up, the + turns into a −) and shows a spec table: Type, Material, Technology, Fit, Care, Colour, Product ID, SKU (RE/DONE-style: small grey caps labels, values on the right, hairlines between rows). Tap again to close; it closes by itself when you open another piece. (First tried on the look page; Hyun moved it here.) Components: `Accordion` + `SpecTable` in `src/components/Accordion.tsx`. Data: `TECH` in `catalog.ts`, **sample values** until SAP's product master supplies the real ones (it also holds a legacy ID and barcode, not shown). iOS: `DisclosureGroup` (or a button toggling `@State` with `.animation`).
 
+**Look page hero is square (Hyun: "doesn't need so much height").** 1:1 instead of 4:5 (about 390px tall instead of 490px on a phone), so the title, brands and stylist line show sooner. The crop is anchored near the top (`focus: '50% 4%'`) so heads and hats stay in the frame; tap still opens the whole photo.
+
 **Top bars: the title is centred (Hyun)** on Curated look, Curated picks, a brand's page, the bag and checkout, like an iOS navigation title (`.barTitle`, 64px kept clear for the back and bag buttons, "…" if too long). iOS: `.navigationBarTitleDisplayMode(.inline)`.
 
 **Product sheet price is bold** (700, like the name next to it).

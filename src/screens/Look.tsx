@@ -65,7 +65,8 @@ export function LookScreen({ id }: { id: string }) {
         {/* 1 · the look, full width */}
         {/* tap the photo to see the whole look, then swipe through each piece */}
         <div className={s.hero} onClick={() => openLightbox(gallery, 0, look.title)}>
-          <PhotoSlot cover kind="fabric" photo={lookHero(look)} label={`${look.title}: the full look, worn by a model`} />
+          {/* square hero: crop from near the top, so heads (and hats) stay in the frame */}
+          <PhotoSlot cover kind="fabric" photo={{ ...lookHero(look), focus: '50% 4%' }} label={`${look.title}: the full look, worn by a model`} />
           <ExpandHint onClick={() => openLightbox(gallery, 0, look.title)} />
           <div className={s.heroTag}>
             <Tag>{`Curated look · ${pieces.length} pieces`}</Tag>

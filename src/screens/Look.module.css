@@ -89,7 +89,7 @@
 /* 1 · hero: full width (hero rule) */
 .hero {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1; /* square: shorter than the old 4:5, so the title shows sooner (Hyun) */
 }
 .heroTag {
   position: absolute;
