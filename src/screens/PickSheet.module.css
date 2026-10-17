@@ -72,7 +72,7 @@
 }
 .price {
   flex: none;
-  font: 600 18px/28px var(--font-brand);
+  font: 700 18px/28px var(--font-brand); /* bold, like the name next to it (Hyun) */
   color: var(--ink);
 }
 .title {

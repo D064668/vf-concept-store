@@ -51,8 +51,23 @@
   transform: scale(0.94);
 }
 .barTitle {
+  /* centred in the bar, like an iOS navigation title (Hyun). It sits between the
+     back and bag buttons (64px kept clear each side) and shortens with "…" if long */
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  top: calc(var(--safe-top) + 8px);
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
   font: 600 18px/24px var(--font-brand);
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
 }
 .scroll {
   position: absolute;

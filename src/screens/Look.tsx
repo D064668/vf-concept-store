@@ -169,7 +169,8 @@ export function LookScreen({ id }: { id: string }) {
 }
 
 /** A look as a card (2-column grids and rails): the full photo, a "+ Add" pill
- *  that opens "Shop the complete look", then the title and what's in it.
+ *  that quick-adds THE PIECE IN THE PHOTO (the look's lead piece, Hyun: not the whole
+ *  look; "Shop the complete look" lives on the look's own page), then the title and what's in it.
  *  Tapping the card opens the look's breakdown. `badge`: a small tag on the photo
  *  (Curated picks shows the interest the look is for: "Hiking"). */
 export function LookCard({ look, badge }: { look: Look; badge?: string }) {
@@ -199,8 +200,8 @@ export function LookCard({ look, badge }: { look: Look; badge?: string }) {
         </button>
         <button
           className={s.addPill}
-          onClick={() => go({ type: 'sheet', sheet: { kind: 'quickadd', productIds: look.items.map((i) => i.productId), lookId: look.id } })}
-          aria-label={`Add the whole look: ${look.title}`}
+          onClick={() => go({ type: 'sheet', sheet: { kind: 'quickadd', productIds: [look.heroProductId] } })}
+          aria-label={`Add ${byId(look.heroProductId).name}, from the look ${look.title}`}
         >
           <Icon name="plus" size={14} strokeWidth={2.4} />
           Add

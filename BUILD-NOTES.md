@@ -284,6 +284,12 @@ One field to type in, talk to or ask (`src/components/Search.tsx`).
 
 **Suggestion pills are always there (Hyun).** Right above the message field (and its rotating hint), one swipeable row: in a fresh or cleared chat the starter questions (What's new today? · Style a look for Saturday · Something warmer · Try on with Hologram, `CHAT_STARTERS` in `stylist.ts`); once the stylist answers, its own follow-ups replace them. They hide while the stylist is typing. **The pills are text only** (Hyun: the sparkle icon was removed), in the chat and on a product's sheet.
 
+**Top bars: the title is centred (Hyun)** on Curated look, Curated picks, a brand's page, the bag and checkout, like an iOS navigation title (`.barTitle`, 64px kept clear for the back and bag buttons, "…" if too long). iOS: `.navigationBarTitleDisplayMode(.inline)`.
+
+**Product sheet price is bold** (700, like the name next to it).
+
+**Look cards: "+ Add" adds the piece in the photo (Hyun, bug fix).** On a look card (More looks, Curated picks rows, Wardrobe), "+ Add" opens Quick add for that look's lead piece only (`heroProductId`, e.g. the Kipling Art Tote on "City weekend"), not the whole look. The whole look is still one tap away on the look's own page: "Add complete look · €…".
+
 **Stylist button (Hyun):** the sparkle mark is bigger (38px, was 30px) in the same 60px circle, nudged up 2px so it looks centred; in light mode it's the darkest sage (sage-900), in dark mode sage-700. The gold notification dot is gone.
 
 **Curation on the fly (Hyun).** When you name a plan, the stylist answers "Got it: wedding next week. I've put a look together for it…", followed by a **link card to that look** (photo, "For your wedding next week", the look's title, Shop the look →), then the look's pieces, then the follow-up **Show my curated picks**. At the same moment:
