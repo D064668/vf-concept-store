@@ -8,6 +8,7 @@
     "predev": "node scripts/build-tokens.mjs",
     "dev": "next dev -p 3300",
     "dev:review": "NEXT_PUBLIC_REVIEW=1 next dev -p 3300",
+    "present": "NEXT_PUBLIC_REVIEW=1 npm run build && next start -p 3300",
     "prebuild": "node scripts/build-tokens.mjs",
     "build": "next build",
     "start": "next start -p 3300"

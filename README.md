@@ -10,6 +10,7 @@ You need [Node.js](https://nodejs.org) 20 or newer.
 ```bash
 npm install      # once, downloads the packages
 npm run dev      # starts the app at http://localhost:3300
+npm run present  # presenting: fast build with the iPhone frame + review panel, same address
 ```
 
 Open it in a desktop browser (you'll see the app at phone width) or on your phone.
