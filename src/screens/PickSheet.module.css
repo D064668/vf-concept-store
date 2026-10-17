@@ -19,7 +19,7 @@
 }
 .track {
   display: flex;
-  height: 340px;
+  height: 280px; /* shorter (was 340), so the name and price show sooner (Hyun) */
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -376,3 +376,12 @@
   margin-top: -4px;
 }
 
+
+/* the stylist's quote ends with who said it, on its own line: "– Your stylist" */
+.quoteBy {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-muted);
+}

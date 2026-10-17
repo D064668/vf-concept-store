@@ -92,7 +92,9 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
                 cover // hero: model photos fill the frame; the lightbox shows them whole
                 kind="garment"
                 stage
-                photo={ph}
+                // the hero is shorter now, so aim near the top of model photos to keep the head in
+                // (product-only shots stay centred)
+                photo={ph.packshot ? ph : { ...ph, focus: ph.focus ?? '50% 4%' }}
                 color={p.color}
                 category={p.category}
                 label={`${p.brandName} ${p.name}, ${p.colorName}, photo ${i + 1} of ${p.photos.length}`}
@@ -118,9 +120,14 @@ export function PickSheet({ productId, back }: { productId: string; back?: 'chat
       <div className={s.content}>
         {/* the top bar already shows "Your stylist", so no second icon here */}
         <StylistMessage avatar={false}>
+          {/* shown as a quote from the stylist, in curly quote marks (Hyun) */}
+          {'“'}
           {note.lead}
           <b>{note.bold}</b>
           {note.tail}
+          {'”'}
+          {/* who said it: the stylist's name if the customer gave one, else "Your stylist" */}
+          <span className={s.quoteBy}>– {stylist.title}</span>
         </StylistMessage>
 
         {/* the piece: brand, name + price on one line, what it's made of.
