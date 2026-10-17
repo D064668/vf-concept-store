@@ -435,6 +435,9 @@ A 32px sage-100 avatar with the primary sparkle beside a stylist-surface bubble 
 - **Look link card:** when the stylist builds a look, a white card (8px radius, 1px inset hairline) under the reply: a 72 × 88 photo, a muted 12px line ("For your ski trip on Saturday"), the look title (600 16/22), and a primary "Shop the look →" text link. Tap → the look page.
 - **Follow-ups:** suggestion chips in one swipeable row right above the composer, always present: the starter questions in a fresh chat, the stylist's own follow-ups after it answers; "Show my curated picks" and "Try on with Hologram" are actions, not questions.
 
+### Accordion (product details)
+A closed row between hairlines (1px ink @ 10%, top and bottom), 56px tall: the title in 600 14/20 caps (+0.06em), a muted count ("4 pieces"), and a 14px + on the right made of two 1.5px bars. Tap: the vertical bar rotates flat into a − and the panel opens by animating its grid row 0fr → 1fr (480ms, brand ease) while the content fades up 6px. Inside: a spec table, label column 112px in 500 11/20 caps muted (+0.08em), values 400 14/20 ink, rows split by 1px ink @ 8% hairlines. Reduce Motion: no animation.
+
 ### Toast
 48px min height, ink fill, canvas text 500 14/20, sage-300 icon, gold-500 action text; rises 8px over 300ms. It sits above the tab bar.
 

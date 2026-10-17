@@ -11,6 +11,7 @@
 // iOS: a NavigationStack destination; the grid is a LazyVGrid(2 columns).
 // ------------------------------------------------------------------
 import { useEffect, useRef, useState } from 'react';
+import { Accordion, SpecTable } from '@/components/Accordion';
 import { BrandLogo } from '@/components/BrandLogo';
 import { BagButton } from '@/components/Chrome';
 import { Icon } from '@/components/Icon';
@@ -19,7 +20,7 @@ import { PhotoSlot } from '@/components/PhotoSlot';
 import { ProductCard } from '@/components/ProductCard';
 import { Reveal, RevealWords } from '@/components/Reveal';
 import { Button, StylistMessage, Tag } from '@/components/ui';
-import { byBrandOrder, byId, eur, lookById, lookHero, LOOKS, type Look } from '@/data/catalog';
+import { byBrandOrder, byId, eur, lookById, lookHero, LOOKS, TECH, type Look } from '@/data/catalog';
 import { DEVICES, handoffSheet, useStore } from '@/state/store';
 import s from './Look.module.css';
 
@@ -148,6 +149,40 @@ export function LookScreen({ id }: { id: string }) {
             </ol>
           </section>
         )}
+
+        {/* 3c · product details (Hyun): closed until tapped, then it slides open with the
+            material and tech of every piece in the look, like a spec sheet */}
+        <section className={s.section}>
+          <Accordion title="Product details" meta={`${look.items.length} pieces`}>
+            {look.items.map((it) => {
+              const p = byId(it.productId);
+              const tech = TECH[p.id];
+              if (!tech) return null;
+              return (
+                <div key={p.id} className={s.specPiece}>
+                  <p className={s.specHead}>
+                    <Tag>{it.role}</Tag>
+                    <span>
+                      {p.brandName} · <b>{p.name}</b>
+                    </span>
+                  </p>
+                  <SpecTable
+                    rows={[
+                      ['Type', tech.type],
+                      ['Material', tech.material],
+                      ['Technology', tech.technology],
+                      ['Fit', tech.fit],
+                      ['Care', tech.care],
+                      ['Colour', p.colorName],
+                      ['Product ID', tech.productId],
+                      ['SKU', tech.sku],
+                    ]}
+                  />
+                </div>
+              );
+            })}
+          </Accordion>
+        </section>
 
         {/* 4 · more looks */}
         <section className={s.section} aria-labelledby="more-h">

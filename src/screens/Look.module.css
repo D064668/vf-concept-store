@@ -374,3 +374,24 @@
   font: 400 15px/23px var(--font-brand);
   color: var(--ink-muted);
 }
+
+/* ---------- 3c · product details (inside the accordion) ---------- */
+.specPiece {
+  padding: 6px 0 22px;
+}
+.specPiece + .specPiece {
+  padding-top: 10px;
+}
+.specHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font: 400 14px/20px var(--font-brand);
+  color: var(--ink-muted);
+}
+.specHead b {
+  font-weight: 600;
+  color: var(--ink);
+}

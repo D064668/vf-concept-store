@@ -624,6 +624,31 @@ export const cleanMonogram = (v: string) =>
 /** The photo for a small thumbnail: the product on its own (packshot) when there is one */
 export const thumbFor = (p: Product) => p.photos.find((ph) => ph.packshot) ?? p.photos[0];
 
+/** "Product details" (the accordion on a look's page): the material and tech of each piece.
+ *  SAMPLE data written from the photos and product names. In the real app every row comes
+ *  from SAP's product master (material composition, technology, care, product ID, SKU). */
+export interface Tech {
+  type: string;
+  material: string;
+  technology: string;
+  fit: string;
+  care: string;
+  productId: string;
+  sku: string;
+}
+export const TECH: Record<string, Tech> = {
+  'tnf-mountain': { type: 'Jacket', material: '100% recycled nylon face, polyester lining', technology: 'Waterproof, breathable 2-layer shell; taped seams', fit: 'Relaxed, room for a layer', care: 'Machine wash 30°C, re-proof after washing', productId: '100000001', sku: 'TNF-MTJ-TAUPEGRN-M' },
+  'napapijri-puffer': { type: 'Jacket', material: '100% recycled polyester shell, recycled fill', technology: 'Insulated, quilted baffles; water-repellent finish', fit: 'Boxy', care: 'Machine wash 30°C, tumble dry low', productId: '100000002', sku: 'NAP-HPJ-BLACK-M' },
+  'icebreaker-tee': { type: 'T-shirt', material: '100% merino wool, 150 g/m²', technology: 'Breathable, odour-resistant, temperature-regulating', fit: 'Regular', care: 'Machine wash 30°C, dry flat', productId: '100000003', sku: 'ICB-MGT-RUST-M' },
+  'smartwool-crew': { type: 'Base layer', material: '100% merino wool, 250 g/m²', technology: 'Warm when wet, quick-drying, odour-resistant', fit: 'Slim, made to layer', care: 'Machine wash 30°C, dry flat', productId: '100000004', sku: 'SMW-MBC-BERRY-M' },
+  'altra-trail': { type: 'Trail shoe', material: 'Engineered mesh upper, rubber outsole', technology: 'Wide toe box, cushioned midsole, lugged grip', fit: 'True to size (EU)', care: 'Hand wash, air dry', productId: '100000005', sku: 'ALT-TRS-BLKORG-42' },
+  'timberland-boot': { type: 'Boot', material: 'Waterproof full-grain leather, rubber lug sole', technology: 'Seam-sealed waterproof build, padded collar', fit: 'True to size (EU)', care: 'Brush clean, leather balm', productId: '100000006', sku: 'TBL-6IN-DKBRN-42' },
+  'vans-oldskool': { type: 'Sneaker', material: 'Canvas and suede upper, rubber waffle sole', technology: 'Vulcanised construction, padded collar', fit: 'True to size (EU)', care: 'Spot clean', productId: '100000007', sku: 'VNS-OSK-BLKWHT-42' },
+  'eastpak-day': { type: 'Backpack', material: 'Recycled polyester', technology: 'Padded laptop sleeve (15"), water-repellent coating', fit: '24 L', care: 'Spot clean', productId: '100000008', sku: 'EPK-DAY-BLACK-OS' },
+  'jansport-superbreak': { type: 'Backpack', material: '100% recycled polyester', technology: 'Large main compartment, side bottle pocket', fit: '26 L', care: 'Spot clean', productId: '100000009', sku: 'JSP-SBK-MOSS-OS' },
+  'kipling-art': { type: 'Tote', material: 'Recycled nylon', technology: 'Zip-top, folds flat, light (0.6 kg)', fit: '26 L', care: 'Spot clean', productId: '100000010', sku: 'KPL-ART-OLIVE-OS' },
+};
+
 /** "About this piece" in the product detail. SAMPLE copy written from the photos:
  *  replace with the brands' own product descriptions (SAP commerce data). */
 export const ABOUT: Record<string, { about: string; details: string[] }> = {
