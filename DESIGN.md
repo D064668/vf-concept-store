@@ -293,7 +293,7 @@ Warm architectural stone, five botanical sage steps, a champagne gold splash, an
 - **Soft Sage 300**: primary in dark mode, toast icon, and the "Powered by" line on the deep sage band.
 
 ### Tertiary
-- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, fit dots under sizes, the monogram field's 1px underline, the bag total rule, the FAB news dot, and "Explore look" on dark photos.
+- **Champagne Gold 500**: pulsing live dots in the pick sheet, the bag count badge, the monogram field's 1px underline, the bag total rule, the FAB's thin ring and news dot, and "Explore look" on dark photos.
 - **Deep Gold 700** (accent-gold, light; gold 500 in dark): gold text on light grounds: "Explore look", bag text links, leading icons in secondary buttons and suggestion chips, the spec dot, and the dashed pin-to-loupe measurement leader.
 
 ### Neutral
@@ -322,7 +322,7 @@ Product colours (Botanical Sage, Raw Ecru, Obsidian, Stone grey, Forest, Soft Sa
 
 ### Hierarchy
 - **Statement** (300, 28/38px, -0.01em): Home's one-sentence visit statement, in full ink; it rises in line by line from behind per-line masks (1.3s, 200ms apart, brand ease) once it is well into view (top at ~60% of the screen).
-- **Lead** (300, 20/28px): the stylist's welcome line; also 22px "Welcome to" and the 30px Curated picks lead.
+- **Lead** (300, 20/28px): the stylist's welcome line ("I'm your personal stylist today."); also the 30px Curated picks lead.
 - **Headline** (700, 26/32px; 28/34px on Shop slides): look titles, the closing band, Shop slide titles.
 - **Title** (700, 22/28px): section heads ("Your stylist's picks", "In the store today") and the pick name.
 - **Sheet Title** (700, 18/24px): bottom-sheet headers.
@@ -346,7 +346,7 @@ Product colours (Botanical Sage, Raw Ecru, Obsidian, Stone grey, Forest, Soft Sa
 A single phone column. 390 × 844 is the primary viewport, working down to 360 × 800 and up to 430 × 932, in light and dark. Every screen has 20px gutters. The spacing scale runs 4 / 8 / 12 / 16 / 20 / 24 / 32.
 
 - **Chrome:** top bar 44px tall, 12px below the safe area, solid-S logo 16px tall on the left. It gains a frosted canvas backdrop once content scrolls under it. Floating tab bar 12px from each side and 14px above the bottom inset. Scrolling content clears tab bar plus FAB.
-- **Home is a four-section scroll story** (Home.tsx; the brief's arrival → statement → stacked looks → closing band). (1) Arrival: the store photo full colour at the top, a veil that turns to stone by mid-screen (D12), sparkle, "Welcome to" with the 32px line-S logo, the lead line, a glass check-in pill, the full-width primary and the composer, all rising in sequence. (2) Statement: one sentence that rises in line by line from behind per-line masks, signed with the sparkle. (3) Looks: a 22px heading, then full-bleed 4:5 look panels stacked 4px apart, each with its title, items and gold "Explore look". (4) Closing band: deep sage-900 with a white headline and a surface button on dark, handing over to Shop, ending in a small "Powered by" credit.
+- **Home is a four-section scroll story** (Home.tsx; the brief's arrival → statement → stacked looks → closing band). (1) Arrival: the store video full colour at the top, a veil that turns to stone by mid-screen (D12), sparkle, the greeting "Good afternoon, / Hyun.", the lead line "I'm your personal stylist today.", a glass check-in pill, and **one** full-width primary, **"Talk to your stylist"** (sparkle + label), that opens the chat, all rising in sequence. There is no text field on Home: a button says exactly what happens. The top-bar search slides in once that button scrolls away. (2) Statement: one sentence that rises in line by line from behind per-line masks, signed with the sparkle. (3) Looks: a 22px heading, then full-bleed 4:5 look panels stacked 4px apart, each with its title, items and gold "Explore look". (4) Closing band: deep sage-900 with a white headline and a surface button on dark, handing over to Shop, ending in a small "Powered by" credit.
 - **Shop:** a 400px full-bleed slider (snap, pill dots, glass tag), then a 22px heading with a count, a sticky frosted chip rail, a helper row, and a 2-column grid (12px column gap, 22px row gap, 3:4 images).
 - **Sheets:** bottom sheets up to the safe-top minus 10px, with a pinned foot that fades in from transparent over the sheet glass.
 
@@ -367,7 +367,7 @@ Depth comes from layering: stone ground, white surfaces, sage-tinted ambient sha
 - **Bars:** canvas or surface @ 92% with `blur(20–24px)`, used on the top bar, chip rail and tab bar.
 
 ### Named Rules
-**The Zero-Stroke Rule.** No outline strokes on cards, inputs, chips or sheets (D8). Rings drawn with box-shadow are allowed only for state: the focus ring, the selected spool's ring, the active pin ring. Hairlines are allowed only inside a material: the swatch and spool edges, and the gold underline and rules.
+**The Zero-Stroke Rule.** No outline strokes on cards, inputs, chips or sheets (D8). Rings drawn with box-shadow are allowed only for state: the focus ring, the selected spool's ring, the active pin ring. Hairlines are allowed only inside a material: the swatch and spool edges, and the gold underline and rules. **Agreed exceptions (Hyun, build 0.7), all drawn as inset box-shadows, never borders:** the product sheet's options card (1px, ink 8%) and its size pills (1px, ink 16%, so they read in dark mode); the chat's answer chips and look link card (1px, primary @ 45% / ink 8%); and the stylist FAB's 1.5px gold-500 ring, so the stylist is easy to find.
 
 **The Glass Over Something Rule.** Frosted glass sits only over imagery or scrolling content. On a flat ground, use solid surface.
 
@@ -380,7 +380,8 @@ Crisp corners (D9): 4px small media and wells (mic, send, thumbnails, menu items
 ### Buttons
 Calm, full-weight, pressed with a small scale.
 - **Shape:** 8px radius, 56px tall, 600 16/20 label, optional trailing arrow or leading icon.
-- **Primary:** sage-700 fill with the primary shadow. Hover darkens 10% toward black. Press scales to 0.98 over 100ms. Disabled drops to 45% opacity with no shadow.
+- **Primary:** sage-700 fill with the primary shadow. Hover darkens 10% toward black. Press scales to 0.98 over 100ms. Disabled drops to 45% opacity with no shadow. A leading brand sparkle (22px, current colour) marks buttons that open the stylist ("Talk to your stylist").
+- **Wording:** "Add to bag" (never "Reserve size M"); the price sits beside the name, not in the button. Multi-piece adds carry the total: "Add complete look · €620". We say "bag", never "cart".
 - **Secondary:** white surface with the chip shadow; its leading icon is accent-gold. **Quiet** is the same button on the stone ground, for use on white cards. **On dark** is a white surface with a black-tinted shadow, for the sage-900 band.
 - **Glass (Curated picks):** 40px tall (44px tap area), glass, 500 13/16, text only.
 - **Apple Pay:** the platform button, black with white text in light mode and white with black text in dark, 600 17/22 SF Pro. On iOS this is PKPaymentButton (.buy, .automatic). Never restyle it in sage.
@@ -398,22 +399,23 @@ Calm, full-weight, pressed with a small scale.
 - **Internal Padding:** 12–16px.
 
 ### Product card
-A 3:4 placeholder or photo (8px radius) with a tag top-left and a glass heart disc (34px inside a 44px tap area) top-right; the saved heart is primary and beats once. Below: name 500 13/18 (two-line clamp), colour swatch with name in muted meta, and price 600 13/18 ("€ —" until SAP data). The whole card is one tap target.
+A 3:4 placeholder or photo (8px radius) with a tag top-left and a glass heart disc (34px inside a 44px tap area) top-right; the saved heart is primary and beats once. Below: name 500 13/18 (two-line clamp), brand in muted caps meta, and price 600 13/18 (sample euros until SAP data). No colour line. A small category pill sits bottom-left on the image only when there is no top-left tag. The whole card is one tap target. Model photos fill the frame (cover); packshots stay whole on a matched ground.
 
 ### Photo placeholder (PhotoSlot)
 An honest stand-in, labelled with `role="img"` and "Photo placeholder: …". It comes in three kinds. *Garment:* a folded-garment drawing in the garment's own colour on the warm tile, lit from the top. *Fabric:* a full-bleed cloth field in the garment colour, with fine twill and window light, for model photos and hero slides. *Store:* the real store photo. A 12px caption with an image icon names what the photo will show. Pass a real `src` and an `<img>` takes the same frame and radius.
 
 ### Inputs / Fields
-- **Composer (D11):** 60px, 8px radius, white, soft shadow. A plain + (no circle), a 16px text field, a 44px mic in a stylist-surface well, and a primary send button that pops in when there is text. Focus adds a 2px focus ring around the field, over its shadow.
+- **Composer (D11):** lives in sheets only (stylist chat, product sheet), 52px compact there; not on Home. 8px radius, white, soft shadow. A plain + (no circle), a 16px text field, a 44px mic in a stylist-surface well, and a primary send button that pops in when there is text. Focus adds a 2px focus ring around the field, over its shadow.
 - **Monogram field:** a bare 54px field in Archivo Narrow 700 30px, uppercase, sitting on a 1px gold underline. Focus turns the line into a 2px primary line. It shows a character count (n/5) and 12px helper text.
 - **Segmented control (motif):** a 3px stone track (8px radius) holding three 44px segments. The chosen segment lifts to white with the chip shadow, 600 ink text and a primary icon. Use it for small mutually exclusive choices inside a card.
-- **Size options:** 5-up 44px pills. Selected is primary with its shadow, unavailable is struck through and muted, and a 4px gold dot marks your fit.
+- **Size options:** 5-up 44px pills with a 1px inset outline (ink 16%). Selected is primary with its shadow; unavailable is struck through and muted. Above: "Size · Your fit is M" and a gold "Size guide →" link. Below, one legend line: "● Available in M · XL sold out". (The gold fit dot and its key were removed: "Your fit is M" already says it.)
+- **Options card (product sheet):** colour and size grouped in one card (surface @ 70%, 1px inset ink-8% hairline, 8px radius). Row 1: "Colour  Taupe Green" (600 15/20 label, muted value) with the swatch dots right-aligned. A 1px hairline. Row 2: the size block. Everything left-aligned, under a header of brand logo → name with the price on the right (600 18) → fabric in muted meta.
 
 ### Navigation
 - **Tab bar (D2):** 68px pill, surface @ 92% glass, bar shadow, five tabs (Home · Shop · My Visit · Wardrobe · More). Inactive tabs are muted. The active tab is ink 600 with its 22px icon in primary on a 48 × 30 stylist-surface pill. `aria-current="page"`.
-- **Top bar:** solid-S logo and Curated picks glass button. Shop adds a bag button with an 18px gold count badge (black text, 2px canvas ring) that bumps on add.
-- **Stylist FAB:** 60px circle, 18px from the right, 16px above the tab bar. The brand sparkle mark (30px, twinkling) in primary on neutral frosted glass (surface @ 55%), with an optional 14px gold news dot. It hides while you scroll down and returns on scroll up or 700ms after scrolling stops, popping in (520ms, slight overshoot). On Home it appears only once the composer has scrolled out of view.
-- **Bottom sheet:** a sage-900 scrim @ 38% with a 2px blur, sheet glass, 12px top corners, a 38 × 5 grabber, a 700 18/24 title with a muted subtitle, and 44px round white buttons. Enter rises 60px over 420ms on the brand ease; exit is 220ms on the exit ease.
+- **Top bar:** solid-S logo, a bag button (on every screen) with an 18px gold count badge (black text, 2px canvas ring) that bumps on add, and the Curated picks glass button (gold text).
+- **Stylist FAB:** 60px circle, 18px from the right, 16px above the tab bar. The brand sparkle mark (30px, twinkling) in primary on neutral frosted glass (surface @ 55%), ringed by a **1.5px gold-500 inset ring**, with a 14px gold news dot until the arrival question is answered. It opens the stylist chat. It hides while you scroll down and returns on scroll up or 700ms after scrolling stops, popping in (520ms, slight overshoot). On Home it appears only once "Talk to your stylist" has scrolled out of view.
+- **Bottom sheet:** no Back arrow: closing or dragging down returns you to where you came from (in-sheet steps keep Back). A sage-900 scrim @ 38% with a 2px blur, sheet glass, 12px top corners, a 38 × 5 grabber, a 700 18/24 title with a muted subtitle, and 44px round white buttons. Enter rises 60px over 420ms on the brand ease; exit is 220ms on the exit ease.
 
 ### Personalise board (signature)
 A 392px tech-pack board on the warm tile (8px radius, soft shadow).
@@ -425,6 +427,13 @@ A 392px tech-pack board on the warm tile (8px radius, soft shadow).
 
 ### Stylist message
 A 32px sage-100 avatar with the primary sparkle beside a stylist-surface bubble (11px 14px padding, 6/10/10/10 corners), 400 15/22, key phrase 600.
+
+### Stylist chat
+- **Arrival question:** the chat's first message until answered: "You're checked in. Anything **coming up I should dress you for**?" Under it, answer chips (40px pills, ink 500 14/20, with a 1px inset sage ring: primary @ 45%) for plan ideas, then "when" chips, plus a quiet text-only "Nothing planned".
+- **Your messages:** right-aligned sage-700 bubbles with white text. **The stylist's:** the stylist message bubble, left.
+- **Pieces it suggests:** a swipeable row of product cards under the reply.
+- **Look link card:** when the stylist builds a look, a white card (8px radius, 1px inset hairline) under the reply: a 72 × 88 photo, a muted 12px line ("For your ski trip on Saturday"), the look title (600 16/22), and a primary "Shop the look →" text link. Tap → the look page.
+- **Follow-ups:** suggestion chips in one swipeable row above the composer; "Show my curated picks" and "Try on with Hologram" are actions, not questions.
 
 ### Toast
 48px min height, ink fill, canvas text 500 14/20, sage-300 icon, gold-500 action text; rises 8px over 300ms. It sits above the tab bar.
@@ -444,9 +453,13 @@ The garment media carries `view-transition-name: piece` on its card, the pick sh
 - **Do** use the solid-S logo at 16px in top bars and the line-S logo at 32px on the Home hero (D6).
 - **Do** keep every interactive control at a 44 × 44px tap area, including hearts, pins, spools and segments.
 - **Do** use ink, never muted ink, for text on stylist-surface.
+- **Do** use a real button for a doorway (Home → "Talk to your stylist"), not a text field that secretly opens something else.
+- **Do** say why on every curated piece or look ("For your ski trip on Saturday", "Because you love hiking").
+- **Do** keep the product sheet's details left-aligned and grouped (one options card), not floating centred lines.
 
 ### Don't:
-- **Don't** add 1px outline borders to cards, inputs, chips or sheets.
+- **Don't** add 1px outline borders to cards, inputs, chips or sheets (beyond the agreed inset hairlines listed in the Zero-Stroke Rule).
+- **Don't** offer plans the brands can't dress (no suits or formal wear): for a wedding, dress the trip and the days around it, and say so.
 - **Don't** fill a button with gold, or put gold on generic chrome surfaces.
 - **Don't** use weight 300 below 20px, or 600 for headings.
 - **Don't** add a VIP badge, location names or a top-right avatar (D7).
