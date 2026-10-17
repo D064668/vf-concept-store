@@ -4,7 +4,8 @@
 // Opened by the stylist button (bottom right), or by asking anything anywhere
 // (the search, the Home field, a piece's page). One conversation for the whole app.
 // Structure from Hyun's RE/DONE reference, in the S·Fashion design:
-//   • empty: a big hello + four starter questions, in the middle of the sheet
+//   • start: the stylist's question "Anything coming up I should dress you for?" with answer
+//     buttons (after check-in: "You're checked in. …"; after you clear the chat: "Hi Hyun. …")
 //   • chatting: your messages on the right (sage), the stylist's on the left
 //     (the same bubble as everywhere else), and the pieces it suggests as a
 //     row of cards you can swipe (tap = the piece's page, "+ Add" = quick add)
@@ -20,9 +21,9 @@ import { PoweredBy } from '@/components/PoweredBy';
 import { BottomSheet } from '@/components/Sheet';
 import { Composer, StylistAvatar, StylistMessage } from '@/components/ui';
 import { PhotoSlot } from '@/components/PhotoSlot';
-import { byId, CUSTOMER, lookById, lookForPlan, lookHero, PLAN_IDEAS, planTag, type Look, type Plan } from '@/data/catalog';
-import { CHAT_HELLO, CHAT_HINTS, CHAT_STARTERS } from '@/data/stylist';
-import { ARRIVAL_QUESTION, DEVICES, handoffSheet, SHOW_PICKS, useStore, useStylist, type ChatLine } from '@/state/store';
+import { byId, lookById, lookForPlan, lookHero, PLAN_IDEAS, planTag, type Look, type Plan } from '@/data/catalog';
+import { CHAT_HINTS } from '@/data/stylist';
+import { arrivalQuestion, DEVICES, handoffSheet, SHOW_PICKS, useStore, useStylist, type ChatLine } from '@/state/store';
 import s from './ChatSheet.module.css';
 
 export function ChatSheet() {
@@ -53,9 +54,6 @@ export function ChatSheet() {
   // the follow-up questions under the stylist's last answer sit right above the field
   const lastReply = [...thread].reverse().find((l) => l.role === 'stylist');
   const followUps = thread.length && !thinking ? lastReply?.followUps : undefined;
-  // the chat STARTS with the arrival question (until it's answered); after that, an empty
-  // chat shows the hello and starter questions
-  const empty = !thread.length && !thinking && state.plansAsked;
 
   return (
     <BottomSheet
@@ -91,7 +89,7 @@ export function ChatSheet() {
           <button
             className={s.yes}
             onClick={() => {
-              dispatch({ type: 'search', patch: { thread: [], thinking: false } });
+              dispatch({ type: 'clearChat' }); // starts again with the stylist's greeting question
               setConfirmClear(false);
             }}
           >
@@ -103,42 +101,24 @@ export function ChatSheet() {
         </div>
       )}
 
-      {empty ? (
-        /* ---- empty: the hello and four starter questions ---- */
-        <div className={s.hello}>
-          {/* the header already says "Your stylist", so the eyebrow says what to do */}
-          <p className={s.eyebrow}>Ask me anything</p>
-          <h2 className={s.title}>
-            Hi {CUSTOMER.firstName}, {CHAT_HELLO}
-          </h2>
-          <div className={s.starters}>
-            {CHAT_STARTERS.map((q) => (
-              <button key={q} className={s.starter} onClick={() => ask(q)}>
-                {q}
-              </button>
-            ))}
+      {/* ---- the conversation: it always starts with the stylist's question ---- */}
+      <div className={s.thread} aria-live="polite">
+        <Arrival />
+        {thread.map((l) => (
+          <Message key={l.id} line={l} />
+        ))}
+        {thinking && (
+          <div className={s.thinking} aria-label={`${stylist.title} is typing`}>
+            <StylistAvatar />
+            <span className={s.dots}>
+              <i />
+              <i />
+              <i />
+            </span>
           </div>
-        </div>
-      ) : (
-        /* ---- the conversation ---- */
-        <div className={s.thread} aria-live="polite">
-          <Arrival />
-          {thread.map((l) => (
-            <Message key={l.id} line={l} />
-          ))}
-          {thinking && (
-            <div className={s.thinking} aria-label={`${stylist.title} is typing`}>
-              <StylistAvatar />
-              <span className={s.dots}>
-                <i />
-                <i />
-                <i />
-              </span>
-            </div>
-          )}
-          <div ref={end} />
-        </div>
-      )}
+        )}
+        <div ref={end} />
+      </div>
     </BottomSheet>
   );
 }
@@ -233,8 +213,11 @@ function Arrival() {
   const { state, dispatch } = useStore();
   const [what, setWhat] = useState<string | null>(null);
   if (state.plansAsked) return null; // answered: the exchange now lives in the conversation
-  const finish = (p: Plan | null) => dispatch({ type: 'arrival', plan: p });
-  const [lead, bold] = ARRIVAL_QUESTION.split(/(coming up I should dress you for)/);
+  const finish = (p: Plan | null) => {
+    dispatch({ type: 'arrival', plan: p });
+    setWhat(null); // forget the half-answer, so a cleared chat starts completely fresh
+  };
+  const [lead, bold] = arrivalQuestion(state.chatRestarted).split(/(coming up I should dress you for)/);
   return (
     <div className={s.arrival}>
       <StylistMessage>

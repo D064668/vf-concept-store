@@ -12,7 +12,7 @@
 import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import type { BrandId } from '@/components/BrandLogo';
-import { byId, DEFAULT_PROFILE, fitFor, isFormal, lookForPlan, planTag, planWords, type Category, type Interest, type Plan, type Photo, type MotifId, type PlacementId, type Size, type ThreadId } from '@/data/catalog';
+import { byId, CUSTOMER, DEFAULT_PROFILE, fitFor, isFormal, lookForPlan, planTag, planWords, type Category, type Interest, type Plan, type Photo, type MotifId, type PlacementId, type Size, type ThreadId } from '@/data/catalog';
 
 export type Tab = 'home' | 'shop' | 'visit' | 'wardrobe';
 /** screens pushed on top of a tab. `look:<id>` = a curated look's detail */
@@ -132,6 +132,8 @@ export interface AppState {
   live: { device: Device; productId: string } | null;
   /** the stylist's arrival question ("Anything coming up?") has been answered this visit */
   plansAsked: boolean;
+  /** the chat was cleared: the stylist greets you again ("Hi Hyun. Anything coming up…") */
+  chatRestarted: boolean;
   /** What your stylist knows (More → your name): your style words and your interests, in order */
   profile: { styles: string[]; interests: Interest[]; /** the name you gave your stylist ('' = "Your stylist") */ stylistName: string; /** one-time things coming up */ plans: Plan[] };
 }
@@ -145,6 +147,7 @@ export const initialState: AppState = {
   sizes: {},
   profile: DEFAULT_PROFILE,
   plansAsked: false,
+  chatRestarted: false,
   saved: ['tnf-mountain'], // the stylist's pick is saved by default (HANDOFF §6 · 06)
   bag: [],
   draft: DEFAULT_DRAFT,
@@ -183,6 +186,8 @@ type Action =
   | { type: 'ask'; text: string }
   /** the arrival question was answered (or skipped) */
   | { type: 'plansAsked' }
+  /** clear the conversation: it starts again with the stylist's greeting question */
+  | { type: 'clearChat' }
   /** your answer to "Anything coming up I should dress you for?" (null = nothing planned).
    *  It's saved to Your plans, the chat shows the exchange, and the curated picks re-order. */
   | { type: 'arrival'; plan: Plan | null }
@@ -197,6 +202,9 @@ type Action =
 let toastId = 0;
 /** the stylist's first question after check-in */
 export const ARRIVAL_QUESTION = 'You’re checked in. Anything coming up I should dress you for?';
+/** the same question after you clear the chat (you're already checked in, so it greets you instead) */
+export const arrivalQuestion = (restarted: boolean) =>
+  restarted ? `Hi ${CUSTOMER.firstName}. Anything coming up I should dress you for?` : ARRIVAL_QUESTION;
 /** the follow-up that opens Curated picks (an action, not a question) */
 export const SHOW_PICKS = 'Show my curated picks';
 /** demo order-number prefix (the real one comes from SAP) */
@@ -286,11 +294,15 @@ function reducer(s: AppState, a: Action): AppState {
       return { ...s, search: { ...s.search, ...a.patch } };
     case 'plansAsked':
       return { ...s, plansAsked: true };
+    case 'clearChat':
+      // a fresh start looks like the first one: the stylist's question and the answer buttons
+      // (your plans and picks stay: only the conversation is cleared)
+      return { ...s, plansAsked: false, chatRestarted: true, search: { ...s.search, thread: [], thinking: false } };
     case 'arrival': {
       const look = lookForPlan(a.plan ?? undefined);
       // the exchange becomes the first lines of the conversation, so it's still there next time
       const lines: ChatLine[] = [
-        { id: ++toastId, role: 'stylist', text: ARRIVAL_QUESTION, bold: 'coming up I should dress you for' },
+        { id: ++toastId, role: 'stylist', text: arrivalQuestion(s.chatRestarted), bold: 'coming up I should dress you for' },
         { id: ++toastId, role: 'user', text: a.plan ? `${a.plan.what} · ${a.plan.when}` : 'Nothing planned' },
         a.plan
           ? {
@@ -309,13 +321,22 @@ function reducer(s: AppState, a: Action): AppState {
               productIds: look?.items.map((it) => it.productId),
               followUps: [SHOW_PICKS, 'Something warmer'],
             }
-          : {
-              id: ++toastId,
-              role: 'stylist',
-              text: 'No problem. Your curated picks follow what you love. Tell me any time, or add a plan in Your plans.',
-              bold: 'follow what you love',
-              followUps: [SHOW_PICKS, 'What’s new today?'],
-            },
+          : s.profile.plans[0]
+            ? {
+                // nothing new, but a plan from earlier still shapes the picks: say so
+                id: ++toastId,
+                role: 'stylist',
+                text: `No problem. Your picks are still ready for your ${planWords(s.profile.plans[0])}.`,
+                bold: planWords(s.profile.plans[0]),
+                followUps: [SHOW_PICKS, 'What’s new today?'],
+              }
+            : {
+                id: ++toastId,
+                role: 'stylist',
+                text: 'No problem. Your curated picks follow what you love. Tell me any time, or add a plan in Your plans.',
+                bold: 'follow what you love',
+                followUps: [SHOW_PICKS, 'What’s new today?'],
+              },
       ];
       return {
         ...s,

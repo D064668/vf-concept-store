@@ -69,47 +69,7 @@
   }
 }
 
-/* ---------- empty: the hello, in the middle of the sheet ---------- */
-.hello {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 24px var(--gutter) 40px;
-  animation: rise 520ms var(--ease-brand);
-}
-.eyebrow {
-  font: 700 12px/16px var(--font-brand);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-gold);
-}
-.title {
-  margin-top: 10px;
-  font: 700 30px/36px var(--font-brand);
-  letter-spacing: -0.015em;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.starters {
-  margin-top: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-/* the starter questions: outlined pills that wrap, like RE/DONE */
-.starter {
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: var(--radius-pill);
-  background: var(--stylist-surface);
-  font: 500 14px/20px var(--font-brand);
-  color: var(--ink);
-  transition: transform var(--duration-instant) var(--ease-brand);
-}
-.starter:active {
-  transform: scale(0.96);
-}
+/* the arrival question rises in (the stylist's first message) */
 @keyframes rise {
   from {
     opacity: 0;
@@ -167,12 +127,6 @@
   flex-direction: column;
   gap: 12px;
   animation: rise 420ms var(--ease-brand);
-}
-.hello .arrival {
-  margin-top: 24px;
-}
-.hello .arrival + .starters {
-  margin-top: 28px;
 }
 .arrival .user {
   margin: 0;

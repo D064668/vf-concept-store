@@ -429,7 +429,7 @@ A 392px tech-pack board on the warm tile (8px radius, soft shadow).
 A 32px sage-100 avatar with the primary sparkle beside a stylist-surface bubble (11px 14px padding, 6/10/10/10 corners), 400 15/22, key phrase 600.
 
 ### Stylist chat
-- **Arrival question:** the chat's first message until answered: "You're checked in. Anything **coming up I should dress you for**?" Under it, answer chips (40px pills, ink 500 14/20, with a 1px inset sage ring: primary @ 45%) for plan ideas, then "when" chips, plus a quiet text-only "Nothing planned".
+- **Arrival question:** the chat always starts with it (there is no separate empty or hello screen): "You're checked in. Anything **coming up I should dress you for**?", or after you clear the chat "Hi Hyun. Anything **coming up I should dress you for**?" Under it, answer chips (40px pills, ink 500 14/20, with a 1px inset sage ring: primary @ 45%) for plan ideas, then "when" chips, plus a quiet text-only "Nothing planned".
 - **Your messages:** right-aligned sage-700 bubbles with white text. **The stylist's:** the stylist message bubble, left.
 - **Pieces it suggests:** a swipeable row of product cards under the reply.
 - **Look link card:** when the stylist builds a look, a white card (8px radius, 1px inset hairline) under the reply: a 72 × 88 photo, a muted 12px line ("For your ski trip on Saturday"), the look title (600 16/22), and a primary "Shop the look →" text link. Tap → the look page.
