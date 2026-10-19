@@ -209,6 +209,16 @@ Every product card (Shop grid, rails) now has the same "+ Add".
 - Quick add: `.sheet` with `.presentationDetents([.medium, .large])`.
 - "+ Add": a `Button` overlaid `.bottomTrailing` on the image.
 
+## Sheet footer glass and stylist-name Apply button (build 0.7)
+
+**Glass footer on all sheets** (`src/components/Sheet.tsx`, `Sheet.module.css`):
+The sheet footer (holds the message composer on the product sheet) was a solid bar with a gradient. Changed to frosted glass: `position: absolute; z-index: 2; background: var(--sheet-bg); backdrop-filter: var(--sheet-filter)` — matching the existing glass header. The body gets `padding-bottom: var(--foot-h)` (measured via `ResizeObserver`) so content is never hidden behind the glass. This improves every sheet that has a footer.
+
+**Apply button on "Your stylist's name"** (`src/screens/Placeholders.tsx`, `Placeholders.module.css`):
+Added a full-width sage primary "Apply" button below the name field and live preview. It calls `open('member')` to return to the Member page. The name saves live as the user types, so Apply is purely a UX confirmation step (same as pressing Enter in the field).
+
+**Also fixed:** `scripts/build-tokens.mjs` was using `new URL(import.meta.url).pathname` which leaves `%20` on paths with spaces (the corporate Mac path contains "SAP SE"). Fixed by using `fileURLToPath(import.meta.url)` from `node:url`. This was blocking `npm run present`.
+
 ## Scroll reveals and the logo (build 0.4)
 
 - **Logo = Home.** Tapping the S·Fashion logo in the top bar takes you Home from any tab. If you're already Home, it scrolls back to the top (like tapping the status bar on iOS).
@@ -453,6 +463,10 @@ The garment you tap moves smoothly into the stylist sheet, and from there into P
    Edit these freely in `src/data/catalog.ts` and `src/screens/Home.tsx`.
 6. **The slider tag is now a badge.** "Curated for you · 1 of 3" sits as a badge at the top-left of the slide instead of as a label above the title.
 7. **The old previous-agent files are out of the build.** `src/data/storeData.ts` and `src/components/GarmentIllustration.tsx` had invented prices and mill names, which HANDOFF says not to invent. They were moved to `_to_delete/`.
+8. **Home look modules touch edge-to-edge (Hyun):** removed the 4px vertical margin between look cards on Home (`margin-bottom: 0` on `.look` in `src/screens/Home.module.css`) so the modules touch seamlessly with no gap.
+9. **Stylist button background white in light mode (Hyun):** changed the FAB's background in light mode from `surface @ 55%` to `canvas @ 84%` (`color-mix(in oklab, #f6f5f2 84%, transparent)` in `src/components/Chrome.module.css`), matching dark mode so the button appears as a clean, bright, white/light frosted disc even over dark photos and the dark closing band.
+10. **Stylist button gold ring width (Hyun):** increased the FAB's inset gold ring by 1pt from 1.5px to 2.5px (`inset 0 0 0 2.5px var(--gold-500)` in `src/components/Chrome.module.css`) to make the stroke slightly more defined.
+11. **Floating bag icon on Curated picks & look pages (Hyun):** removed the frosted glass circle background from the bag button on the Curated picks overview (`src/screens/Picks.tsx`) and detail (`src/screens/Look.tsx`) pages, displaying just the floating icon like the Shop page while preserving its right-aligned position.
 
 ## Still placeholder
 

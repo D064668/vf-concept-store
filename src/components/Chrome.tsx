@@ -80,12 +80,12 @@ export function CuratedPicksButton() {
  *  `glass`: a frosted round button, for the back-arrow bars (look, curated picks). */
 /** The bag, with its count. `glass`: frosted, on photo/back-arrow bars.
  *  `round`: the white round style of a sheet's header buttons (next to the close ⌄). */
-export function BagButton({ glass, round }: { glass?: boolean; round?: boolean }) {
+export function BagButton({ glass, round, className }: { glass?: boolean; round?: boolean; className?: string }) {
   const { state, go } = useStore();
   const n = bagCount(state.bag);
   return (
     <button
-      className={`${s.bag} ${glass ? s.bagGlass : ''} ${round ? s.bagRound : ''}`}
+      className={`${s.bag} ${glass ? s.bagGlass : ''} ${round ? s.bagRound : ''} ${className ?? ''}`}
       aria-label={n ? `Bag, ${n} ${n === 1 ? 'piece' : 'pieces'}` : 'Bag, empty'}
       onClick={() => go({ type: 'sheet', sheet: { kind: 'bag' } })}
     >

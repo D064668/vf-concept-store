@@ -225,7 +225,8 @@
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
-  margin-bottom: 4px;
+  /* Removed vertical margin so the look modules touch with no gap */
+  margin-bottom: 0;
   text-align: left;
   overflow: hidden;
   color: var(--on-photo);

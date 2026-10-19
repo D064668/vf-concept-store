@@ -14,8 +14,12 @@
 // ------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+// fileURLToPath turns this file's URL into a real filesystem path, decoding
+// things like %20 back into spaces. (Plain new URL(...).pathname leaves the
+// %20 in, which breaks when the folder name has spaces, e.g. "SAP SE".)
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const src = JSON.parse(fs.readFileSync(path.join(root, 'design-system/tokens.json'), 'utf8'));
 
 // ---------- 1. Read colour tokens into { name: {light, dark} } ----------

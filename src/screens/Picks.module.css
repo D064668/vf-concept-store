@@ -69,6 +69,11 @@
   text-overflow: ellipsis;
   pointer-events: none;
 }
+/* floating bag icon aligned to the right edge (Hyun) */
+.bag {
+  margin-left: auto;
+  flex: none;
+}
 .scroll {
   position: absolute;
   inset: 0;

@@ -55,8 +55,8 @@ export function Picks() {
           <Icon name="back" size={22} />
         </button>
         <h1 className={s.barTitle}>Curated picks</h1>
-        {/* the bag is always one tap away (Hyun) */}
-        <BagButton glass />
+        {/* Floating bag icon without glass circle, maintaining position (Hyun) */}
+        <BagButton className={s.bag} />
       </header>
 
       <div className={s.scroll} ref={scroller}>

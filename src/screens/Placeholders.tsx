@@ -252,6 +252,11 @@ export function MoreSheet() {
               <Sparkle className={s.namePreviewMark} />
               {stylist.title} · With you now
             </p>
+            {/* Apply: the name already saves as you type, so this just confirms and
+                returns to the Member page (same as pressing Enter in the field) */}
+            <button className={s.nameApply} onClick={() => open('member')}>
+              Apply
+            </button>
             {stylistName.trim() && (
               <button className={s.seeLooks} onClick={() => dispatch({ type: 'profile', patch: { stylistName: '' } })}>
                 Go back to “Your stylist”

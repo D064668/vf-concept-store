@@ -38,19 +38,27 @@ export function BottomSheet({
 }) {
   const panel = useRef<HTMLDivElement>(null);
   const head = useRef<HTMLDivElement>(null);
-  // the header floats over the content as frosted glass (Hyun): the content starts just
-  // below it (--head-h) and scrolls softly underneath. Its height is measured, so a
-  // two-line title or a back button never covers anything.
+  const foot = useRef<HTMLDivElement>(null);
+  const hasFooter = !!footer;
+  // The header AND the footer float over the content as frosted glass (Hyun): the content
+  // starts below the header (--head-h) and ends behind the footer (--foot-h), scrolling
+  // softly underneath both. Their heights are measured, so a two-line title, a back button
+  // or a taller composer never covers anything.
   useLayoutEffect(() => {
     const h = head.current;
     const p = panel.current;
     if (!h || !p) return;
-    const set = () => p.style.setProperty('--head-h', `${h.offsetHeight}px`);
+    const f = foot.current; // null when the sheet has no footer
+    const set = () => {
+      p.style.setProperty('--head-h', `${h.offsetHeight}px`);
+      if (f) p.style.setProperty('--foot-h', `${f.offsetHeight}px`);
+    };
     set();
     const ro = new ResizeObserver(set);
     ro.observe(h);
+    if (f) ro.observe(f);
     return () => ro.disconnect();
-  }, []);
+  }, [hasFooter]);
   const [closing, setClosing] = useState(false);
   const [drag, setDrag] = useState(0);
   const start = useRef<{ y: number; t: number } | null>(null);
@@ -143,7 +151,11 @@ export function BottomSheet({
           </div>
         </div>
         <div className={s.body}>{children}</div>
-        {footer && <div className={s.foot}>{footer}</div>}
+        {footer && (
+          <div ref={foot} className={s.foot}>
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );

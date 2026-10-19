@@ -130,6 +130,7 @@
   flex: 1;
   min-height: 0;
   padding-top: var(--head-h, 76px); /* room for the floating header */
+  padding-bottom: var(--foot-h, 0px); /* room for the floating footer, so content isn't hidden behind it */
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
@@ -138,7 +139,15 @@
   display: none;
 }
 .foot {
-  flex: none;
+  /* frosted glass floating over the content (Hyun), matching the header: see-through,
+     blurred, the content scrolls softly underneath instead of ending in a hard cut. */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
   padding: 10px var(--gutter) calc(var(--safe-bottom) + 12px);
-  background: linear-gradient(to bottom, transparent, var(--sheet-bg) 30%);
+  background: var(--sheet-bg);
+  -webkit-backdrop-filter: var(--sheet-filter);
+  backdrop-filter: var(--sheet-filter);
 }
