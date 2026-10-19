@@ -50,7 +50,7 @@ export interface Product {
 
 /** "€330". Sample prices (Hyun: "could be random"); the real ones come from SAP commerce. */
 export const eur = (n: number) => `€${n.toLocaleString('en-IE')}`;
-/** embroidery at the Tajima cell, per piece (sample) */
+/** embroidery at the Ricoma studio, per piece (sample) */
 export const PERSONALISATION_PRICE = 25;
 export const APPAREL_SIZES: Size[] = ['XS', 'S', 'M', 'L', 'XL'];
 export const SHOE_SIZES: Size[] = ['40', '41', '42', '43', '44', '45'];

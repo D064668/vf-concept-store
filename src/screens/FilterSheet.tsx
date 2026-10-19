@@ -112,7 +112,7 @@ export function FilterSheet() {
 
         <section className={s.switches}>
           <Switch label="New in" sub="Arrived in store this week" on={f.newIn} set={(v) => setF({ ...f, newIn: v })} />
-          <Switch label="Personalisable" sub="Can be embroidered at the Tajima cell" on={f.personalisable} set={(v) => setF({ ...f, personalisable: v })} />
+          <Switch label="Personalisable" sub="Can be embroidered in the Ricoma studio" on={f.personalisable} set={(v) => setF({ ...f, personalisable: v })} />
         </section>
       </div>
     </BottomSheet>

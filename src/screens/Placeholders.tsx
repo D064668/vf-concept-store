@@ -69,7 +69,7 @@ export function Visit() {
           <Sparkle className={s.statusMark} />
           <div>
             <b>
-              {!state.order ? 'No active orders yet' : state.order.stitching ? 'Your piece is on its way to the Tajima embroidery studio' : `Your pieces are ready in vault ${state.order.vault}`}
+              {!state.order ? 'No active orders yet' : state.order.stitching ? 'Your piece is on its way to the Ricoma embroidery studio' : `Your pieces are ready in vault ${state.order.vault}`}
             </b>
             <p>
               {!state.order

@@ -304,7 +304,7 @@ export function CheckoutScreen() {
           <button className={s.applePay} onClick={() => dispatch({ type: 'pay' })} disabled={!n}>
             Pay with Apple Pay
           </button>
-          <p className={s.note}>{anyEmbroidery ? 'Personalised pieces go to the Tajima cell first; the rest wait in the vault.' : 'Your pieces wait for you in the vault.'}</p>
+          <p className={s.note}>{anyEmbroidery ? 'Personalised pieces go to the Ricoma studio first; the rest wait in the vault.' : 'Your pieces wait for you in the vault.'}</p>
         </section>
       </div>
     </Page>
@@ -325,7 +325,7 @@ export function OrderScreen() {
         <section className={s.ticket} aria-labelledby="order-h">
           <span className={s.status}>
             <span className={s.statusDot} aria-hidden="true" />
-            {o.stitching ? 'Being stitched · Tajima cell' : `Ready in vault ${o.vault}`}
+            {o.stitching ? 'Being stitched · Ricoma studio' : `Ready in vault ${o.vault}`}
           </span>
           <Sparkle className={s.ticketMark} />
           <h1 id="order-h" className={s.ticketTitle}>

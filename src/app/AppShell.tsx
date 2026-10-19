@@ -178,7 +178,7 @@ function App() {
   });
   const top = state.stack[state.stack.length - 1];
   const sheet = state.sheet;
-  // the Tajima cell's clock: while a piece is being stitched, finish it on time (demo: ~1 minute
+  // the Ricoma studio's clock: while a piece is being stitched, finish it on time (demo: ~1 minute
   // after paying, see stitching.ts), wherever you are in the app
   const stitchingSince = state.order?.stitching ? state.order.paidAt : undefined;
   useEffect(() => {

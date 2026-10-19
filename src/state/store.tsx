@@ -95,7 +95,7 @@ export interface BagItem {
 export interface Order {
   id: string;
   items: BagItem[];
-  /** true if any piece is being embroidered (it goes to the Tajima cell first) */
+  /** true if any piece is being embroidered (it goes to the Ricoma studio first) */
   stitching: boolean;
   vault: string;
   /** when it was paid (ms): the stitching tracker in My Visit counts from here */
@@ -308,7 +308,7 @@ function reducer(s: AppState, a: Action): AppState {
       return { ...s, paid: true, order, bag: [], stack: [...s.stack.filter((x) => !CHECKOUT.includes(x)), 'order'] };
     }
     case 'stitchDone': {
-      // the Tajima cell finished: the piece is in the vault
+      // the Ricoma studio finished: the piece is in the vault
       if (!s.order?.stitching) return s;
       const piece = s.order.items.find((b) => b.personalisation);
       const name = piece ? byId(piece.productId).name : 'Your piece';

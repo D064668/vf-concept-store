@@ -233,10 +233,22 @@
 }
 .pills {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 4px var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.pills::-webkit-scrollbar {
+  display: none;
 }
 .pill {
+  flex: none;
+  white-space: nowrap;
   min-height: 40px;
   padding: 8px 14px;
   border-radius: var(--radius-pill);

@@ -25,7 +25,7 @@ export function StitchTracker({ order }: { order: Order }) {
   const { go } = useStore();
   const finished = !order.stitching;
   const [now, setNow] = useState(() => Date.now());
-  const [tajimaTip, setTajimaTip] = useState(false);
+  const [ricomaTip, setRicomaTip] = useState(false);
 
   // tick every second while it's being made
   useEffect(() => {
@@ -36,11 +36,11 @@ export function StitchTracker({ order }: { order: Order }) {
 
   // close tooltip on escape key
   useEffect(() => {
-    if (!tajimaTip) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setTajimaTip(false);
+    if (!ricomaTip) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setRicomaTip(false);
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [tajimaTip]);
+  }, [ricomaTip]);
 
   const st = stitchStatus(order.paidAt ?? now, now, finished);
   const item = order.items.find((b) => b.personalisation) ?? order.items[0];
@@ -56,7 +56,7 @@ export function StitchTracker({ order }: { order: Order }) {
       : st.current === 'check'
         ? 'Quality check'
         : st.current === 'hoop'
-          ? 'In the Tajima embroidery studio'
+          ? 'In the Ricoma embroidery studio'
           : 'Paid · going to the embroidery studio';
 
   return (
@@ -97,34 +97,34 @@ export function StitchTracker({ order }: { order: Order }) {
               {step.key === 'hoop' && (
                 <>
                   In the{' '}
-                  <span className={s.tajimaWrap}>
+                  <span className={s.ricomaWrap}>
                     <button
                       type="button"
-                      className={s.tajimaLink}
-                      onClick={() => setTajimaTip((v) => !v)}
-                      aria-expanded={tajimaTip}
-                      aria-label="What is Tajima? Tap for info"
+                      className={s.ricomaLink}
+                      onClick={() => setRicomaTip((v) => !v)}
+                      aria-expanded={ricomaTip}
+                      aria-label="What is Ricoma? Tap for info"
                     >
-                      Tajima
+                      Ricoma
                     </button>
-                    {tajimaTip && (
+                    {ricomaTip && (
                       <>
-                        <div className={s.tooltipBackdrop} onClick={() => setTajimaTip(false)} />
+                        <div className={s.tooltipBackdrop} onClick={() => setRicomaTip(false)} />
                         <div className={s.tooltip} role="tooltip">
                           <div className={s.tooltipArrow} />
                           <div className={s.tooltipHead}>
-                            <b className={s.tooltipTitle}>Tajima</b>
+                            <b className={s.tooltipTitle}>Ricoma</b>
                             <button
                               type="button"
                               className={s.tooltipClose}
-                              onClick={() => setTajimaTip(false)}
+                              onClick={() => setRicomaTip(false)}
                               aria-label="Close"
                             >
                               ✕
                             </button>
                           </div>
                           <p className={s.tooltipText}>
-                            A premier Japanese maker of precision embroidery machines. In this store, an automated Tajima unit precision-stitches your personalised monogram or motif.
+                            A maker of precision embroidery systems. An in-store unit stitches your custom design.
                           </p>
                         </div>
                       </>

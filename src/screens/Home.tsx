@@ -33,7 +33,7 @@ export function Home() {
   // the statement follows your plan once you've told the stylist one (otherwise: what you love)
   const plan = state.profile.plans[0];
   const { planLook } = looksFor(state.profile.interests, plan);
-  const statement = `Today is about one piece. Chosen ${planLook && plan ? (isFormal(plan) ? `for the trip to your ${planWords(plan)}` : `for your ${planWords(plan)}`) : 'for what you love'}, made yours at the Tajima cell, and waiting in the vault when you are.`;
+  const statement = `Today is about one piece. Chosen ${planLook && plan ? (isFormal(plan) ? `for the trip to your ${planWords(plan)}` : `for your ${planWords(plan)}`) : 'for what you love'}, made yours in the Ricoma studio, and waiting in the vault when you are.`;
   const scroller = useRef<HTMLDivElement>(null);
   const composer = useRef<HTMLDivElement>(null);
   const [bar, setBar] = useState(0);

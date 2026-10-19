@@ -14,13 +14,10 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Icon } from './Icon';
 import { Sparkle } from './brand';
 import { PhotoSlot } from './PhotoSlot';
-import { BrandLogo, type BrandId } from './BrandLogo';
-import { BRANDS, CUSTOMER, TODAY_PICK, type Product } from '@/data/catalog';
+import { TODAY_PICK, type Product } from '@/data/catalog';
 import { ASK_PILLS, detectPlan, matchProducts, SEARCH_HINTS, stylistReply, VOICE_DEMO } from '@/data/stylist';
-import { DEVICES, filterCount, handoffSheet, useStore, useStylist, withTransition } from '@/state/store';
+import { DEVICES, filterCount, handoffSheet, useStore, useStylist } from '@/state/store';
 import s from './Search.module.css';
-
-const RECENT = ['The North Face', 'Merino base layer'];
 
 /* ------------------------------------------------------------------ */
 export function SearchRow() {
@@ -145,22 +142,9 @@ export function SearchPanel() {
   // it sends the jacket straight to the hologram (pairing first if needed)
   const ask = (t: string) =>
     t === DEVICES.hologram.action ? go({ type: 'sheet', sheet: handoffSheet(state, 'hologram', TODAY_PICK.productId) }) : dispatch({ type: 'ask', text: t });
-  // a brand logo opens that brand's results page: its looks, then all its pieces (Hyun)
-  const brand = (id: BrandId) => go({ type: 'push', screen: `brand:${id}` });
   const typed = query.trim();
   const matches = typed ? matchProducts(typed) : [];
   const openPiece = (id: string) => openPick(id);
-  const quick = (label: string) => {
-    const f = { ...state.filters };
-    if (label === `Size ${CUSTOMER.fitSize}`) f.sizes = [CUSTOMER.fitSize];
-    if (label === 'New in') f.newIn = true;
-    if (label === 'Personalisable') f.personalisable = true;
-    if (label === 'Outerwear') f.categories = ['Outerwear'];
-    withTransition(() => {
-      dispatch({ type: 'filters', filters: f });
-      dispatch({ type: 'tab', tab: 'shop' });
-    });
-  };
 
   return (
     <>
@@ -196,7 +180,7 @@ export function SearchPanel() {
             )}
           </div>
         ) : (
-          /* ---- empty: suggestions ---- */
+          /* ---- empty: conversational questions only (Hyun) ---- */
           <div className={s.block}>
             {thread.length > 0 && (
               // a conversation is going: one tap goes back to it (the chat sheet)
@@ -211,7 +195,7 @@ export function SearchPanel() {
               </button>
             )}
             <p className={s.label}>Ask {stylist.inline}</p>
-            <div className={s.pills}>
+            <div className={s.pills} role="group" aria-label="Suggested questions">
               {ASK_PILLS.map((q) => (
                 <button key={q} className={`${s.pill} ${s.askPill}`} onClick={() => ask(q)}>
                   <Sparkle className={s.pillSpark} />
@@ -219,37 +203,6 @@ export function SearchPanel() {
                 </button>
               ))}
             </div>
-            <p className={s.label}>Quick picks</p>
-            <div className={s.pills}>
-              {[`Size ${CUSTOMER.fitSize}`, 'New in', 'Personalisable', 'Outerwear'].map((q) => (
-                <button key={q} className={s.pill} onClick={() => quick(q)}>
-                  {q}
-                </button>
-              ))}
-            </div>
-            <p className={s.label}>Brands in the store</p>
-            <div className={s.brands}>
-              {BRANDS.map((b) => (
-                <button key={b.id} className={s.brand} onClick={() => brand(b.id)} aria-label={`Show ${b.name}`}>
-                  <BrandLogo id={b.id} />
-                </button>
-              ))}
-            </div>
-            <p className={s.label}>Recent</p>
-            <ul className={s.recent}>
-              {RECENT.map((r) => (
-                <li key={r}>
-                  <button onClick={() => dispatch({ type: 'search', patch: { query: r } })}>
-                    <Icon name="clock" size={18} />
-                    {r}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button className={s.browse} onClick={() => go({ type: 'sheet', sheet: { kind: 'filters' } })}>
-              <Icon name="sliders" size={18} />
-              Browse by size, colour and type
-            </button>
           </div>
         )}
       </div>
