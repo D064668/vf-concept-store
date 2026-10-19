@@ -242,21 +242,61 @@ export function SearchBrain() {
     return () => clearTimeout(t);
   }, [thinking, thread, dispatch]);
 
-  // demo voice: the words appear as if spoken, then the question is sent
+  // Voice input: listens via Web Speech Recognition if available, else falls back to demo
   useEffect(() => {
     if (!listening) return;
-    let i = 0;
-    let done: ReturnType<typeof setTimeout>;
-    const start = setTimeout(function tick() {
-      i += 1;
-      dispatch({ type: 'search', patch: { query: VOICE_DEMO.slice(0, i) } });
-      if (i < VOICE_DEMO.length) done = setTimeout(tick, 45);
-      else done = setTimeout(() => dispatch({ type: 'ask', text: VOICE_DEMO }), 600);
-    }, 900);
-    return () => {
-      clearTimeout(start);
-      clearTimeout(done);
-    };
+
+    const SpeechRec = typeof window !== 'undefined' ? (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition : null;
+    if (SpeechRec) {
+      const rec = new SpeechRec();
+      rec.continuous = false;
+      rec.interimResults = true;
+      rec.lang = 'en-US';
+
+      rec.onresult = (event: any) => {
+        let currentTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          currentTranscript += event.results[i][0].transcript;
+        }
+        dispatch({ type: 'search', patch: { query: currentTranscript } });
+        if (event.results[0]?.isFinal && currentTranscript.trim()) {
+          dispatch({ type: 'ask', text: currentTranscript.trim() });
+        }
+      };
+
+      rec.onerror = () => {
+        fallbackDemo();
+      };
+
+      try {
+        rec.start();
+      } catch {
+        fallbackDemo();
+      }
+
+      return () => {
+        try {
+          rec.abort();
+        } catch {}
+      };
+    } else {
+      fallbackDemo();
+    }
+
+    function fallbackDemo() {
+      let i = 0;
+      let done: ReturnType<typeof setTimeout>;
+      const start = setTimeout(function tick() {
+        i += 1;
+        dispatch({ type: 'search', patch: { query: VOICE_DEMO.slice(0, i) } });
+        if (i < VOICE_DEMO.length) done = setTimeout(tick, 45);
+        else done = setTimeout(() => dispatch({ type: 'ask', text: VOICE_DEMO }), 600);
+      }, 900);
+      return () => {
+        clearTimeout(start);
+        clearTimeout(done);
+      };
+    }
   }, [listening, dispatch]);
 
   return null;

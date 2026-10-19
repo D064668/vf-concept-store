@@ -24,6 +24,7 @@ import { PhotoSlot } from '@/components/PhotoSlot';
 import { byId, lookById, lookForPlan, lookHero, PLAN_IDEAS, planTag, type Look, type Plan } from '@/data/catalog';
 import { CHAT_HINTS, CHAT_STARTERS } from '@/data/stylist';
 import { arrivalQuestion, DEVICES, handoffSheet, SHOW_PICKS, useStore, useStylist, type ChatLine } from '@/state/store';
+import { useVoiceStylist } from './useVoiceStylist';
 import s from './ChatSheet.module.css';
 
 export function ChatSheet() {
@@ -34,8 +35,6 @@ export function ChatSheet() {
   const end = useRef<HTMLDivElement>(null);
 
   // new message → scroll down to it
-  // (scrolls only the sheet itself — and the effect returns nothing: some hosts, like the
-  //  claude.ai preview, wrap scrollIntoView and return a value, which React then tried to call)
   useEffect(() => {
     let box = end.current?.parentElement ?? null;
     while (box && !/auto|scroll/.test(getComputedStyle(box).overflowY)) box = box.parentElement;
@@ -43,7 +42,6 @@ export function ChatSheet() {
   }, [thread.length, thinking]);
 
   // two follow-ups are actions, not questions:
-  //   "Try on with Hologram" sends the piece to the Hologram; "Show my curated picks" opens them
   const ask = (q: string) =>
     q === DEVICES.hologram.action
       ? go({ type: 'sheet', sheet: handoffSheet(state, 'hologram', lastPiece(thread) ?? 'tnf-mountain') })
@@ -51,8 +49,42 @@ export function ChatSheet() {
         ? go({ type: 'push', screen: 'picks' })
         : dispatch({ type: 'ask', text: q });
 
-  // the follow-up questions under the stylist's last answer sit right above the field
+  // Opt-in Living Voice Stylist: triggered by tapping the live conversation indicator
+  const [voiceActive, setVoiceActive] = useState(false);
+  const { status, transcript, startListening, speakText, stopAll } = useVoiceStylist({
+    onTranscript: (userText) => ask(userText),
+  });
+
+  const spokenReplyRef = useRef<number | null>(null);
   const lastReply = [...thread].reverse().find((l) => l.role === 'stylist');
+
+  // Toggle live voice conversation on/off when tapping the indicator
+  const toggleVoiceMode = () => {
+    if (voiceActive) {
+      setVoiceActive(false);
+      stopAll();
+    } else {
+      setVoiceActive(true);
+      // Speak greeting or the current stylist reply aloud
+      const textToSpeak = lastReply?.text ?? arrivalQuestion(state.chatRestarted);
+      speakText(textToSpeak);
+    }
+  };
+
+  // When a new stylist reply arrives in the conversation, speak it aloud ONLY if voice is active!
+  useEffect(() => {
+    if (!voiceActive || !lastReply) return;
+    if (spokenReplyRef.current === lastReply.id) return;
+    spokenReplyRef.current = lastReply.id;
+    speakText(lastReply.text);
+  }, [voiceActive, lastReply, speakText]);
+
+  const handleClose = () => {
+    stopAll();
+    setVoiceActive(false);
+    go({ type: 'sheet', sheet: null });
+  };
+
   // the suggestion pills above the message field: the stylist's follow-ups after it answers,
   // otherwise (a fresh chat) the starter questions. Hidden while the stylist is typing.
   const followUps = thinking ? undefined : (lastReply?.followUps ?? CHAT_STARTERS);
@@ -62,12 +94,27 @@ export function ChatSheet() {
       tall
       title={stylist.title}
       subtitle={
-        <>
-          <span className={s.live} aria-hidden="true" />
-          At your service
-        </>
+        <button
+          type="button"
+          className={s.liveBtn}
+          data-active={voiceActive}
+          onClick={toggleVoiceMode}
+          aria-label={voiceActive ? 'Live voice active. Tap to turn off' : 'Tap to start live voice talk'}
+          title={voiceActive ? 'Live voice active · Tap to silence' : 'Tap to start live voice talk'}
+        >
+          <span className={s.liveDot} data-pulse={voiceActive} aria-hidden="true" />
+          <span>
+            {status === 'speaking'
+              ? 'Speaking…'
+              : status === 'listening'
+              ? 'Listening…'
+              : voiceActive
+              ? 'Live talk active'
+              : 'At your service · Tap to talk'}
+          </span>
+        </button>
       }
-      leading={<StylistAvatar size={40} />}
+      leading={<StylistAvatar size={40} speaking={status === 'speaking'} />}
       actions={
         // clear the chat: only once there's something to clear
         thread.length > 0 && (
@@ -76,10 +123,23 @@ export function ChatSheet() {
           </button>
         )
       }
-      onClose={() => go({ type: 'sheet', sheet: null })}
+      onClose={handleClose}
       footer={
         <>
-          <Composer compact placeholder="Tell me what you’re after…" hints={CHAT_HINTS} pills={followUps} onAsk={ask} />
+          <Composer
+            compact
+            placeholder={status === 'listening' ? 'Listening… speak naturally' : 'Tell me what you’re after…'}
+            hints={status === 'listening' ? undefined : CHAT_HINTS}
+            pills={followUps}
+            listening={status === 'listening'}
+            transcript={status === 'listening' ? transcript : undefined}
+            onMic={() => {
+              if (!voiceActive) setVoiceActive(true);
+              if (status === 'listening') stopAll();
+              else startListening();
+            }}
+            onAsk={ask}
+          />
           <PoweredBy size="sm" row className={s.powered} />
         </>
       }

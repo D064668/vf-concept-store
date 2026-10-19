@@ -84,6 +84,7 @@ function fromUrl(): { initial: Partial<AppState>; theme: Theme; width: Width; re
   if (screen === 'brand') Object.assign(initial, { tab: 'shop', stack: [`brand:${q.get('id') ?? 'vans'}`] });
   if (screen === 'wardrobe') Object.assign(initial, { tab: 'wardrobe' });
   if (screen === 'search') Object.assign(initial, { tab: 'shop', search: { open: true, query: '', listening: false, thread: [], thinking: false } });
+  if (screen === 'home') Object.assign(initial, { tab: 'home' });
   // appearance: the review link wins (?theme=dark), else what the person chose last time, else system
   let saved: Theme | null = null;
   try {

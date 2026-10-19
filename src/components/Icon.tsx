@@ -39,6 +39,8 @@ const PATHS = {
   people: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3.5 19.5c.4-3 2.6-5 5.5-5s5.1 2 5.5 5M15.5 5.2a3 3 0 0 1 0 5.6M17.5 14.6c1.8.6 2.8 2.3 3 4.9', // person.2
   contrast: 'M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 4v16', // circle.lefthalf.filled
   clock: 'M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 8v4l3 2', // clock
+  volume: 'M11 5L6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a9.5 9.5 0 0 1 0 14', // speaker.wave.2
+  volumeMute: 'M11 5L6 9H2v6h4l5 4V5zM22 9l-6 6M16 9l6 6', // speaker.slash
 } as const;
 
 export type IconName = keyof typeof PATHS;

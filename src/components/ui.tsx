@@ -1,7 +1,7 @@
 'use client';
 // ui.tsx — the small building blocks every screen reuses (HANDOFF §5).
 // Each block has one job. iOS: each maps to one SwiftUI View or ButtonStyle.
-import { forwardRef, useEffect, useId, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useEffect, useId, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
 import { Sparkle } from './brand';
 import { SIZE_GUIDES, SIZES, type Category, type Size } from '@/data/catalog';
@@ -83,9 +83,9 @@ export function Tag({ kind = 'glass', children }: { kind?: 'pick' | 'glass'; chi
 }
 
 /* ---------------- Stylist (§5.9) ---------------- */
-export function StylistAvatar({ size = 32 }: { size?: number }) {
+export function StylistAvatar({ size = 32, speaking }: { size?: number; speaking?: boolean }) {
   return (
-    <span className={s.avatar} style={{ width: size, height: size }} aria-hidden="true">
+    <span className={cx(s.avatar, speaking && s.avatarSpeaking)} style={{ width: size, height: size }} aria-hidden="true">
       <Sparkle style={{ width: size * 0.56, height: size * 0.56 }} />
     </span>
   );
@@ -195,6 +195,9 @@ export function Composer({
   hints,
   pills,
   compact,
+  listening,
+  transcript,
+  onMic,
   onAsk,
 }: {
   placeholder: string;
@@ -203,13 +206,16 @@ export function Composer({
   hints?: string[];
   pills?: string[];
   compact?: boolean;
+  listening?: boolean;
+  transcript?: string;
+  onMic?: () => void;
   /** what to do with a question (the chat passes its own); otherwise it goes to the stylist chat */
   onAsk?: (q: string) => void;
 }) {
   const [text, setText] = useState('');
   const [hint, setHint] = useState(0);
   const [focused, setFocused] = useState(false);
-  const { dispatch, go } = useStore();
+  const { state, dispatch, go } = useStore();
   const stylist = useStylist();
   const id = useId();
   const openSearch = (listening = false) => dispatch({ type: 'search', patch: { open: true, listening, query: listening ? '' : text } });
@@ -221,14 +227,38 @@ export function Composer({
     else dispatch({ type: 'ask', text: q.trim() });
   };
 
+  // Sync streaming speech transcript while listening; clear immediately when listening finishes or stops
+  const wasListeningRef = useRef(false);
+  useEffect(() => {
+    if (listening) {
+      wasListeningRef.current = true;
+      if (transcript !== undefined) {
+        setText(transcript);
+      }
+    } else if (wasListeningRef.current) {
+      wasListeningRef.current = false;
+      setText('');
+    }
+  }, [listening, transcript]);
+
+  // When a new message is added to the conversation thread (via speech, pills, or submit), clear the field
+  const threadLen = state.search.thread.length;
+  const lastThreadLen = useRef(threadLen);
+  useEffect(() => {
+    if (threadLen !== lastThreadLen.current) {
+      lastThreadLen.current = threadLen;
+      setText('');
+    }
+  }, [threadLen]);
+
   // the example hints take turns every few seconds while the field is empty
   useEffect(() => {
-    if (!hints?.length || text || focused) return;
+    if (!hints?.length || text || focused || listening) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const iv = setInterval(() => setHint((h) => (h + 1) % hints.length), 3600);
     return () => clearInterval(iv);
-  }, [hints, text, focused]);
-  const showHint = !!hints?.length && !text;
+  }, [hints, text, focused, listening]);
+  const showHint = !!hints?.length && !text && !listening;
 
   return (
     <div className={s.composerWrap}>
@@ -274,26 +304,46 @@ export function Composer({
                 : () => setFocused(true)
             }
             onBlur={() => setFocused(false)}
-            placeholder={showHint ? '' : placeholder}
+            placeholder={showHint || listening ? '' : placeholder}
             autoComplete="off"
             enterKeyHint="send"
+            readOnly={listening}
           />
-          {showHint && (
+          {listening && !text ? (
+            <span className={s.hint} aria-hidden="true" key="listening">
+              <span className={s.liveDot} />
+              Listening…
+            </span>
+          ) : showHint ? (
             // the rotating hint: drawn over the empty field, it rises in each time it changes
             <span className={s.hint} aria-hidden="true" key={hint}>
               {hints![hint]}
             </span>
-          )}
+          ) : null}
         </div>
         <button
           type="button"
-          className={s.mic}
-          aria-label={`Speak to ${stylist.inline}`}
-          onClick={() => (linked ? openSearch(true) : dispatch({ type: 'toast', text: 'Voice connects in the next build' }))}
+          className={cx(s.mic, listening && s.listening)}
+          aria-label={listening ? 'Stop listening' : `Speak to ${stylist.inline}`}
+          aria-pressed={listening}
+          onClick={() => {
+            if (onMic) onMic();
+            else if (linked) openSearch(true);
+            else dispatch({ type: 'toast', text: 'Voice microphone is active in the stylist chat' });
+          }}
         >
-          <Icon name="mic" size={22} />
+          {listening ? (
+            <span className={s.wave} aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+          ) : (
+            <Icon name="mic" size={22} />
+          )}
         </button>
-        {text.trim() && (
+        {text.trim() && !listening && (
           <button type="submit" className={s.send} aria-label="Send">
             <Icon name="send" size={20} />
           </button>

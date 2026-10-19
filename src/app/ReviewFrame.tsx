@@ -89,7 +89,7 @@ export function ReviewPanel({
           ['pair', 'Pair a screen'],
           ['handoff', 'Hologram try-on'],
         ].map(([k, l]) => (
-          <button key={k} onClick={() => (k === 'home' ? (dispatch({ type: 'tab', tab: 'home' }), jump('home')) : jump(k))}>
+          <button key={k} onClick={() => jump(k)}>
             {l}
           </button>
         ))}
