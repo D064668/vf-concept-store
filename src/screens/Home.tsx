@@ -55,6 +55,11 @@ export function Home() {
       // frost the top bar over the first 48px of scroll (iOS scroll-edge), so the logo
       // never sits on a busy part of the photo or on text passing underneath
       setBar(el.scrollTop / 48);
+
+      // On the hero at the very top (< 220px), keep diamond button hidden.
+      // When scrolling down to the statement paragraph, pop it in (Hyun)
+      const onHero = el.scrollTop < 220;
+      dispatch({ type: 'composer', onScreen: onHero });
     };
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     onScroll();
@@ -66,11 +71,11 @@ export function Home() {
     const io = new IntersectionObserver(
       ([e]) => {
         setComposerGone(!e.isIntersecting);
-        dispatch({ type: 'composer', onScreen: e.isIntersecting }); // the stylist button waits until it's gone
       },
       { root: el, threshold: 0 }
     );
     if (composer.current) io.observe(composer.current);
+
     return () => {
       el.removeEventListener('scroll', onScroll);
       window.removeEventListener('sf:home-top', toTop);

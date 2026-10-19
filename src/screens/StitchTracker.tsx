@@ -4,11 +4,11 @@
 //   [photo]  Mountain Jacket · Monogram H·L
 //            Stitching now · 64%                 ready about 14:41
 //            ███████████░░░░░
-//   ✓ Paid                        14:20
-//   ✓ On the hoop · Tajima cell   14:22
-//   ● Stitching · 3,970 of 6,200  since 14:24
-//   ○ Quality check               about 14:38
-//   ○ Ready in vault 04           about 14:41
+//   ✓ Paid                             14:20
+//   ✓ In the machine queue · Tajima    14:22
+//   ● Stitching · 3,970 of 6,200       since 14:24
+//   ○ Quality check                    about 14:38
+//   ○ Ready in vault 04                about 14:41
 // It updates by itself every second; when it's done, every step is ticked and the
 // card offers the vault code. The timing lives in src/state/stitching.ts (demo clock).
 // iOS: a card with a List of steps; the stitching step has a ProgressView.
@@ -25,6 +25,7 @@ export function StitchTracker({ order }: { order: Order }) {
   const { go } = useStore();
   const finished = !order.stitching;
   const [now, setNow] = useState(() => Date.now());
+  const [tajimaTip, setTajimaTip] = useState(false);
 
   // tick every second while it's being made
   useEffect(() => {
@@ -32,6 +33,14 @@ export function StitchTracker({ order }: { order: Order }) {
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, [finished]);
+
+  // close tooltip on escape key
+  useEffect(() => {
+    if (!tajimaTip) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setTajimaTip(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [tajimaTip]);
 
   const st = stitchStatus(order.paidAt ?? now, now, finished);
   const item = order.items.find((b) => b.personalisation) ?? order.items[0];
@@ -47,8 +56,8 @@ export function StitchTracker({ order }: { order: Order }) {
       : st.current === 'check'
         ? 'Quality check'
         : st.current === 'hoop'
-          ? 'On the hoop'
-          : 'Paid · going to the Tajima cell';
+          ? 'In the Tajima embroidery studio'
+          : 'Paid · going to the embroidery studio';
 
   return (
     <section className={`${s.card} ${finished ? s.done : ''}`} aria-labelledby="stitch-h" aria-live="polite">
@@ -84,8 +93,47 @@ export function StitchTracker({ order }: { order: Order }) {
               {step.state === 'done' && <Icon name="check" size={12} strokeWidth={3} />}
             </span>
             <span className={s.label}>
-              {step.key === 'ready' ? `Ready in vault ${order.vault}` : step.label}
-              {step.key === 'hoop' && <em> · Tajima cell</em>}
+              {step.key === 'ready' && `Ready in vault ${order.vault}`}
+              {step.key === 'hoop' && (
+                <>
+                  In the{' '}
+                  <span className={s.tajimaWrap}>
+                    <button
+                      type="button"
+                      className={s.tajimaLink}
+                      onClick={() => setTajimaTip((v) => !v)}
+                      aria-expanded={tajimaTip}
+                      aria-label="What is Tajima? Tap for info"
+                    >
+                      Tajima
+                    </button>
+                    {tajimaTip && (
+                      <>
+                        <div className={s.tooltipBackdrop} onClick={() => setTajimaTip(false)} />
+                        <div className={s.tooltip} role="tooltip">
+                          <div className={s.tooltipArrow} />
+                          <div className={s.tooltipHead}>
+                            <b className={s.tooltipTitle}>Tajima</b>
+                            <button
+                              type="button"
+                              className={s.tooltipClose}
+                              onClick={() => setTajimaTip(false)}
+                              aria-label="Close"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <p className={s.tooltipText}>
+                            A premier Japanese maker of precision embroidery machines. In this store, an automated Tajima unit precision-stitches your personalised monogram or motif.
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </span>{' '}
+                  embroidery studio
+                </>
+              )}
+              {step.key !== 'ready' && step.key !== 'hoop' && step.label}
               {step.key === 'stitch' && step.state === 'now' && (
                 <em className="num">
                   {' '}

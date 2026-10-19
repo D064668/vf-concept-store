@@ -34,7 +34,8 @@ export function Picks() {
   const track = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [slide, setSlide] = useState(0);
-  useAutoplay(track, FEATURED.length);
+  // faster rotation with less hold time per slide (Hyun: 3.2s instead of 5s)
+  useAutoplay(track, FEATURED.length, 3200);
 
   useEffect(() => {
     const el = scroller.current!;

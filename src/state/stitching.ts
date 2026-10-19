@@ -4,12 +4,12 @@
 // The real Tajima cell reports its own progress; here the whole run takes about a
 // minute so it can be shown in a meeting, and the clock on screen reads like store time:
 //
-//   step            real seconds after paying   store time
-//   Paid            0                           14:20
-//   On the hoop     5                           14:22
-//   Stitching       10 → 45 (0 → 100%)          14:24
-//   Quality check   45                          14:38
-//   Ready in vault  55                          14:41
+//   step                            real seconds after paying   store time
+//   Paid                            0                           14:20
+//   In the Tajima embroidery studio 5                           14:22
+//   Stitching                       10 → 45 (0 → 100%)          14:24
+//   Quality check                   45                          14:38
+//   Ready in vault                  55                          14:41
 //
 // iOS: the same steps come from the order status API (push updates); show them in a
 //      List with a ProgressView on the stitching step.
@@ -19,7 +19,7 @@ import { CUSTOMER } from '@/data/catalog';
 /** when each step starts, in real seconds after paying, and in store minutes after paying */
 const STEPS = [
   { key: 'paid', label: 'Paid', at: 0, minute: 0 },
-  { key: 'hoop', label: 'On the hoop', at: 5, minute: 2 },
+  { key: 'hoop', label: 'In the Tajima embroidery studio', at: 5, minute: 2 },
   { key: 'stitch', label: 'Stitching', at: 10, minute: 4 },
   { key: 'check', label: 'Quality check', at: 45, minute: 18 },
   { key: 'ready', label: 'Ready in the vault', at: 55, minute: 21 },

@@ -357,14 +357,18 @@
   flex-direction: column;
   gap: 10px;
 }
-/* suggested questions, one row you can swipe sideways */
+/* suggested questions: single row scrolling horizontally, full pill shape with vertical headroom (Hyun) */
 .askPills {
   display: flex;
+  flex-wrap: nowrap;
   gap: 8px;
-  margin: 0 calc(var(--gutter) * -1);
-  padding: 0 var(--gutter);
+  margin: -4px calc(var(--gutter) * -1) -2px;
+  padding: 4px var(--gutter);
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 .askPills::-webkit-scrollbar {
   display: none;
@@ -382,15 +386,6 @@
   background: var(--stylist-surface);
   white-space: nowrap;
   transition: transform var(--duration-instant) var(--ease-brand);
-}
-/* 44px tap area around the 36px pill */
-.askPill {
-  position: relative;
-}
-.askPill::after {
-  content: '';
-  position: absolute;
-  inset: -4px 0;
 }
 .askPill:active {
   transform: scale(0.96);

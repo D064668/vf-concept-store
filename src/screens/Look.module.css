@@ -171,6 +171,22 @@
   color: var(--ink-muted);
   white-space: nowrap;
 }
+/* "View all looks" gold link at the top right of More looks (Hyun) */
+.viewAll {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  font: 600 13px/18px var(--font-brand);
+  color: var(--accent-gold);
+  white-space: nowrap;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: opacity var(--duration-instant) var(--ease-brand);
+}
+.viewAll:active {
+  opacity: 0.65;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -345,7 +361,8 @@
 /* one more photo of the look, full width (hero rule), tap = lightbox */
 .storyPhoto {
   position: relative;
-  aspect-ratio: 4 / 5;
+  /* 20% shorter square frame (1 / 1 down from 4 / 5) (Hyun) */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   cursor: zoom-in;
 }

@@ -64,7 +64,7 @@ export function ChatSheet() {
       subtitle={
         <>
           <span className={s.live} aria-hidden="true" />
-          With you now
+          At your service
         </>
       }
       leading={<StylistAvatar size={40} />}

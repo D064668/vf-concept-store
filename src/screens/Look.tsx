@@ -106,7 +106,7 @@ export function LookScreen({ id }: { id: string }) {
             <Button
               full
               variant="secondary"
-              icon={state.paired.includes('hologram') ? 'hologram' : 'scan'}
+              icon="hologram"
               onClick={() => go({ type: 'sheet', sheet: handoffSheet(state, 'hologram', look.heroProductId) })}
             >
               {state.paired.includes('hologram') ? DEVICES.hologram.action : 'Scan to try on with Hologram'}
@@ -160,7 +160,9 @@ export function LookScreen({ id }: { id: string }) {
         <section className={s.section} aria-labelledby="more-h">
           <div className={s.head}>
             <RevealWords id="more-h" text="More looks" />
-            <p className="num">{others.length} looks</p>
+            <button type="button" className={s.viewAll} onClick={() => go({ type: 'push', screen: 'picks' })}>
+              View all looks
+            </button>
           </div>
           <div className={s.rail}>
             {others.map((l) => (

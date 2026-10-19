@@ -20,7 +20,8 @@
 .carousel {
   --bar-h: calc(var(--safe-top) + 120px); /* height of the top bar with its search row */
   position: relative;
-  height: calc(var(--bar-h) + 460px);
+  /* Shorter slider height (380px down from 460px) to reveal more in-store content (Hyun) */
+  height: calc(var(--bar-h) + 380px);
 }
 .track {
   height: 100%;

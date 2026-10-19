@@ -249,7 +249,7 @@
 .hero {
   position: relative;
   margin: 20px 0 36px;
-  height: 500px;
+  height: 400px; /* reduced ~20% from 500px (Hyun) */
   overflow: visible; /* the dots sit just under the photo */
 }
 .track {

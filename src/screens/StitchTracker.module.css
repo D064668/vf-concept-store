@@ -150,6 +150,103 @@
   text-underline-offset: 3px;
 }
 
+/* Tajima interactive tooltip link (Hyun) */
+.tajimaWrap {
+  position: relative;
+  display: inline-block;
+}
+.tajimaLink {
+  all: unset;
+  display: inline;
+  font: inherit;
+  font-weight: 600;
+  color: var(--accent-gold);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.tajimaLink:active {
+  opacity: 0.7;
+}
+
+.tooltipBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: -50px;
+  width: 270px;
+  max-width: calc(100vw - 64px);
+  padding: 12px 14px;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  z-index: 25;
+  text-align: left;
+  animation: tipIn var(--duration-instant) var(--ease-brand);
+}
+
+@keyframes tipIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltipArrow {
+  position: absolute;
+  bottom: -6px;
+  left: 62px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: var(--surface);
+  border-right: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+}
+
+.tooltipHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.tooltipTitle {
+  font: 600 13px/18px var(--font-brand);
+  color: var(--accent-gold);
+  letter-spacing: -0.01em;
+}
+.tooltipClose {
+  all: unset;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  cursor: pointer;
+  border-radius: 50%;
+}
+.tooltipClose:active {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 8%, transparent);
+}
+.tooltipText {
+  margin: 0;
+  font: 400 12px/17px var(--font-brand);
+  color: var(--ink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bar i,
   .now .dot::before {

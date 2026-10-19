@@ -4,7 +4,7 @@
 //              StitchTracker.tsx) + the store's screens (Hologram, Tabletop)
 //   Wardrobe : not designed yet, "coming soon" (HANDOFF §9.1)
 //   More     : overlay menu, a simple version for now (HANDOFF §6 · 05)
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Sparkle } from '@/components/brand';
 import { BagButton, CuratedPicksButton, TopBar } from '@/components/Chrome';
 import { Icon, type IconName } from '@/components/Icon';
@@ -20,13 +20,38 @@ import s from './Placeholders.module.css';
 export function Visit() {
   const { state, go } = useStore();
   const pickId = TODAY_PICK.productId;
+  const scroller = useRef<HTMLDivElement>(null);
+  const [y, setY] = useState(0);
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    setY(el.scrollTop);
+    let last = el.scrollTop;
+    const on = () => {
+      const now = el.scrollTop;
+      setY(now);
+      // the logo row tucks away while you scroll down, and returns when you scroll up (same as Shop)
+      if (now < 140) setCollapsed(false);
+      else if (now > last + 6) setCollapsed(true);
+      else if (now < last - 6) setCollapsed(false);
+      last = now;
+    };
+    el.addEventListener('scroll', on, { passive: true });
+    return () => el.removeEventListener('scroll', on);
+  }, []);
+
+  // Frosted backdrop fades in over the first 32px of scroll (Hyun: transparent blurred background like Shop)
+  const barProgress = Math.min(1, y / 32);
+
   return (
-    <div className={s.screen}>
-      <TopBar search="always">
+    <div className={s.screen} data-collapsed={collapsed ? '' : undefined}>
+      <TopBar tone="ink" progress={barProgress} search="always" collapsed={collapsed}>
         <BagButton />
         <CuratedPicksButton />
       </TopBar>
-      <div className={s.visitScroll}>
+      <div className={s.visitScroll} ref={scroller}>
         <header className={s.visitHead}>
           <RevealWords as="h1" text="My visit" />
           <p>
@@ -44,7 +69,7 @@ export function Visit() {
           <Sparkle className={s.statusMark} />
           <div>
             <b>
-              {!state.order ? 'Nothing on the hoop yet' : state.order.stitching ? 'Your piece is on its way to the Tajima cell' : `Your pieces are ready in vault ${state.order.vault}`}
+              {!state.order ? 'No active orders yet' : state.order.stitching ? 'Your piece is on its way to the Tajima embroidery studio' : `Your pieces are ready in vault ${state.order.vault}`}
             </b>
             <p>
               {!state.order
@@ -250,7 +275,7 @@ export function MoreSheet() {
             {/* a live preview of how the stylist will sign its messages */}
             <p className={s.namePreview}>
               <Sparkle className={s.namePreviewMark} />
-              {stylist.title} · With you now
+              {stylist.title} · At your service
             </p>
             {/* Apply: the name already saves as you type, so this just confirms and
                 returns to the Member page (same as pressing Enter in the field) */}

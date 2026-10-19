@@ -6,7 +6,7 @@
 // Tapping any heart in the app shows "Saved to your Wardrobe · View", so people
 // learn where hearts go.
 // iOS: a NavigationStack page with a segmented Picker (Saved | Owned) and LazyVGrids.
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BagButton, CuratedPicksButton, TopBar } from '@/components/Chrome';
 import { Icon } from '@/components/Icon';
 import { PhotoSlot } from '@/components/PhotoSlot';
@@ -19,19 +19,42 @@ import s from './Wardrobe.module.css';
 
 export function Wardrobe() {
   const { state, dispatch, openPick } = useStore();
+  const scroller = useRef<HTMLDivElement>(null);
+  const [y, setY] = useState(0);
+  const [collapsed, setCollapsed] = useState(false);
   const [part, setPart] = useState<'saved' | 'owned'>('saved');
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    setY(el.scrollTop);
+    let last = el.scrollTop;
+    const on = () => {
+      const now = el.scrollTop;
+      setY(now);
+      if (now < 140) setCollapsed(false);
+      else if (now > last + 6) setCollapsed(true);
+      else if (now < last - 6) setCollapsed(false);
+      last = now;
+    };
+    el.addEventListener('scroll', on, { passive: true });
+    return () => el.removeEventListener('scroll', on);
+  }, []);
+
+  const barProgress = Math.min(1, y / 32);
+
   // saved looks are stored as "look:<id>", saved pieces by their product id
   const looks = state.saved.filter((id) => id.startsWith('look:')).map((id) => lookById(id.slice(5)));
   const pieces = state.saved.filter((id) => !id.startsWith('look:')).map(byId);
   const owned = state.order?.items ?? [];
 
   return (
-    <div className={s.screen}>
-      <TopBar search="always">
+    <div className={s.screen} data-collapsed={collapsed ? '' : undefined}>
+      <TopBar tone="ink" progress={barProgress} search="always" collapsed={collapsed}>
         <BagButton />
         <CuratedPicksButton />
       </TopBar>
-      <div className={s.scroll}>
+      <div className={s.scroll} ref={scroller}>
         <header className={s.head}>
           <RevealWords as="h1" text="Wardrobe" />
           {/* Saved | Owned */}

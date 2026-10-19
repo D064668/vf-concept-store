@@ -176,7 +176,8 @@
 
 /* ---------- 2 · Statement ---------- */
 .statement {
-  padding: 88px var(--gutter) 72px;
+  /* Generous bottom padding to fully balance top & bottom space around statement (Hyun) */
+  padding: 88px var(--gutter) 176px;
   background: linear-gradient(to bottom, var(--backdrop-bottom), var(--canvas));
 }
 /* the statement's type, as before (light 300, 28/38) — now all in ink, rising line by line */
